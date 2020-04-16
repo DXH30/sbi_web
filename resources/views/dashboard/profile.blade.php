@@ -102,13 +102,16 @@
                     <div class="ibox-content">
                         {{-- Cek grup Admin atau yang lainnya --}}
                         @if(auth()->user()->group_id == 1)
-                        <form method="get">
+                        <form method="post" enctype="multipart/form-data" action="{{url('profile/c')}}">
+                            @csrf
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Nama Admin</label>
-                                <div class="col-sm-10"><input type="text" name="nama" class="form-control"></div>
+                                <div class="col-sm-10"><input type="text" name="nama" class="form-control"
+                                        value="{{$admin->first()->nama ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">No. Telp Kantor</label>
-                                <div class="col-sm-10"><input type="text" name="telp_kantor" class="form-control"></div>
+                                <div class="col-sm-10"><input type="text" name="no_telp" class="form-control"
+                                        value="{{$admin->first()->no_telp ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group row">
@@ -168,6 +171,15 @@
                         @elseif(auth()->user()->group_id == 3)
                         <form method="post" enctype="multipart/form-data" action="{{url('profile/c')}}">
                             @csrf
+                            <div class="form-group row"><label for="" class="col-sm-2 col-form-label">Asosiasi</label>
+                                <div class="col-sm-10">
+                                    <select name="asos_id" id="" class="form-control">
+                                        @foreach($asosiasi_list as $asos)
+                                        <option value="{{$asos['id']}}">{{$asos['nama']}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Nama Perusahaan</label>
                                 <div class="col-sm-10"><input type="text" name="nama" class="form-control"
                                         value="{{$perusahaan->first()->nama ?? ''}}"></div>
@@ -276,6 +288,15 @@
                         @elseif(auth()->user()->group_id == 4)
                         <form method="post" enctype="multipart/form-data" action="{{url('profile/c')}}">
                             @csrf
+                            <div class="form-group row"><label for="" class="col-sm-2 col-form-label">Asosiasi</label>
+                                <div class="col-sm-10">
+                                    <select name="asos_id" id="" class="form-control">
+                                        @foreach($asosiasi_list as $asos)
+                                        <option value="{{$asos['id']}}">{{$asos['nama']}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Nama</label>
                                 <div class="col-sm-10"><input type="text" name="nama" class="form-control"
                                         value="{{$professional->first()->nama ?? ''}}"></div>

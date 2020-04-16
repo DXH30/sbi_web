@@ -39,6 +39,8 @@ class Professional extends Migration
 			$table->string('foto_ktp');
 			$table->UnsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('asos_id');
+            $table->foreign('asos_id')->references('id')->on('asosiasi');
             $table->timestamps();
 		 });
     }

@@ -21,6 +21,7 @@ use App\JenisKendaraan;
 use App\ModeTransportasi;
 use App\Lettercode;
 use App\Rayon;
+use App\Admin;
 use Highlight\Mode;
 
 class DashboardController extends Controller
@@ -33,10 +34,35 @@ class DashboardController extends Controller
 
     public function __invoke()
     {
+        $obj = array();
         if (Auth::user()->have_profile == 0) {
             return redirect()->route('profile');
         }
-        return view('dashboard.index');
+        if (Auth::user()->group_id == 1) {
+            $obj = [
+                'asosiasi' => Asosiasi::get(),
+                'rayon' => Rayon::get(),
+                'lettercode' => Lettercode::get(),
+                'perusahaan' => Perusahaan::get(),
+                'professional' => Professional::get(),
+                'mode_transportasi' => ModeTransportasi::get(),
+                'jenis_kendaraan' => JenisKendaraan::get(),
+                'ketersediaan_kendaraan' => KetersediaanKendaraan::get(),
+                'kendaraan' => Kendaraan::get()
+            ];
+        } elseif (Auth::user()->group_id == 2) {
+            $obj = [
+                'perusahaan' => Perusahaan::get(),
+                'professional' => Professional::get(),
+                'kendaraan' => Kendaraan::get(),
+            ];
+        } elseif (Auth::user()->group_id == 3 || Auth::user()->group_id == 4) {
+            $obj = [
+                'ketersediaan_kendaraan' => KetersediaanKendaraan::get(),
+            ];
+        }
+
+        return view('dashboard.index', $obj);
     }
 
     public function profile($a = NULL, Request $request)
@@ -48,10 +74,11 @@ class DashboardController extends Controller
             'kabupaten' => Kabupaten::get(),
             'kecamatan' => Kecamatan::get(),
             'kelurahan' => Kelurahan::get(),
+            'asosiasi_list' => Asosiasi::get(),
         ];
         switch (Auth::user()->group_id) {
             case 1:
-                $obj['admin'] = "";
+                $obj['admin'] = Admin::where('user_id', Auth::id())->get();
                 break;
             case 2:
                 $obj['asosiasi'] = Asosiasi::where('user_id', Auth::id())->get();
@@ -68,6 +95,21 @@ class DashboardController extends Controller
             return view('dashboard.profile', $obj);
         } else if ($a == 'c') {
             if (Auth::user()->group_id == 1) {
+                $validator = Validator::make($request->all(), [
+                    'nama' => 'required',
+                    'no_telp' => 'required'
+                ]);
+                $data_in = Admin::firstOrNew(array('user_id' => Auth::id()));
+                $data_in->nama = $request->nama;
+                $data_in->no_telp = $request->no_telp;
+                $data_in->user_id = Auth::id();
+                if ($validator->fails()) {
+                    return redirect()->back()->withErrors(["Mohon lengkapi data terlebih dahulu"]);
+                } else {
+                    $data_in->save();
+                    User::where('id', Auth::id())->update(['have_profile' => 1]);
+                    return redirect()->back();
+                }
             } else if (Auth::user()->group_id == 2) {
                 $validator = Validator::make($request->all(), [
                     'nama' => 'required',
@@ -109,7 +151,8 @@ class DashboardController extends Controller
                     'nik' => 'required',
                     'nama_wakil' => 'required',
                     'jabatan' => 'required',
-                    'no_hp' => 'required'
+                    'no_hp' => 'required',
+                    'asos_id' => 'required'
                 ]);
 
                 $data_in = Perusahaan::firstOrNew(array('user_id' => Auth::id()));
@@ -129,6 +172,7 @@ class DashboardController extends Controller
                 $data_in->no_hp = $request->no_hp;
                 $data_in->logo_perusahaan = 'perusahaan_' . Auth::id() . ".png";
                 $data_in->user_id = Auth::id();
+                $data_in->asos_id = $request->asos_id;
                 if ($validator->fails()) {
                     return redirect()->back()->withErrors(["Mohon lengkapi data terlebih dahulu"]);
                 } else {
@@ -153,7 +197,8 @@ class DashboardController extends Controller
                     'tanggal_lahir' => 'required',
                     'nik' => 'required',
                     'nama_perusahaan' => 'required',
-                    'email_perusahaan' => 'required'
+                    'email_perusahaan' => 'required',
+                    'asos_id' => 'required'
                 ]);
 
                 $data_in = Professional::firstOrNew(array('user_id' => Auth::id()));
@@ -176,6 +221,8 @@ class DashboardController extends Controller
                 $data_in->foto = 'professional_' . Auth::id() . ".png";
                 $data_in->foto_ktp = 'professional_ktp_' . Auth::id() . ".png";
                 $data_in->user_id = Auth::id();
+                $data_in->asos_id = $request->asos_id;
+
                 if ($validator->fails()) {
                     return redirect()->back()->withErrors(["Mohon lengkapi data terlebih dahulu"]);
                 } else {

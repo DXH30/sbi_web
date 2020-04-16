@@ -65,16 +65,10 @@
     </div>
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Basic Form</h2>
+            <h2>DASHBOARD</h2>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item">
-                    <a href="/home">Home</a>
-                </li>
-                <li class="breadcrumb-item">
-                    <a>Setup</a>
-                </li>
-                <li class="breadcrumb-item active">
-                    <strong>Profile</strong>
+                <li class="breadcrumb-item" class="active">
+                    <a href="{{url('/')}}"><strong>Home</strong></a>
                 </li>
             </ol>
         </div>
@@ -86,7 +80,7 @@
             <div class="col-lg-12">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        <h5>Sebelum melanjutkan <small>Mohon lengkapi profil anda terlebih dahulu</small></h5>
+                        <h5>Dashboard</h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -97,93 +91,298 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        {{-- Cek grup Admin atau yang lainnya --}}
+
+                        @section('tabel_asosiasi')
+                        <h1>Asosiasi</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Nama</th>
+                                    <th>Telp Kantor</th>
+                                    <th>Ketua Umum</th>
+                                    <th>Logo Asosiasi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($asosiasi as $ass)
+                                <tr>
+                                    <td>{{$ass['nama']}}</td>
+                                    <td>{{$ass['telp_kantor']}}</td>
+                                    <td>{{$ass['ketua_umum']}}</td>
+                                    <td>{{$ass['logo_asosiasi']}}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @endsection
+
+                        @section('tabel_rayon')
+                        <h1>Rayon</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nama Rayon</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($rayon as $ray)
+                                <tr>
+                                    <td>{{$ray['id']}}</td>
+                                    <td>{{$ray['nama']}}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @endsection
+
+                        @section('tabel_lettercode')
+                        <h1>Lettercode</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Lettercode</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($lettercode as $letter)
+                                <tr>
+                                    <td>{{$letter['id']}}</td>
+                                    <td>{{$letter['code']}}</td>
+                                    <td>{{$letter['keterangan']}}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @endsection
+
+                        @section('tabel_perusahaan')
+                        <h1>Perusahaan</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nama</th>
+                                    <th>Email</th>
+                                    <th>provinsi</th>
+                                    <th>kabupaten</th>
+                                    <th>Telp</th>
+                                    <th>Website</th>
+                                    <th>No Akta Notaris</th>
+                                    <th>NPWP</th>
+                                    <th>No Kemenkumham</th>
+                                    <th>NIK</th>
+                                    <th>Nama Wakil</th>
+                                    <th>Jabatan</th>
+                                    <th>No Hp</th>
+                                    <th>Logo Perusahaan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($perusahaan as $usaha)
+                                <tr>
+                                    <td>{{$usaha['id']}}</td>
+                                    <td>{{$usaha['nama']}}</td>
+                                    <td>{{$usaha['email']}}</td>
+                                    <td>{{$usaha['id_prov']}}</td>
+                                    <td>{{$usaha['id_kab']}}</td>
+                                    <td>{{$usaha['telp']}}</td>
+                                    <td>{{$usaha['website']}}</td>
+                                    <td>{{$usaha['no_akta_notaris']}}</td>
+                                    <td>{{$usaha['npwp']}}</td>
+                                    <td>{{$usaha['no_kemenkumham']}}</td>
+                                    <td>{{$usaha['nik']}}</td>
+                                    <td>{{$usaha['jabatan']}}</td>
+                                    <td>{{$usaha['no_hp']}}</td>
+                                    <td>{{$usaha['logo_perusahaan']}}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @endsection
+
+                        @section('professional')
+                        <h1>Professional</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Nama</th>
+                                    <th>Email</th>
+                                    <th>Keahlian</th>
+                                    <th>Alamat</th>
+                                    <th>RTRW</th>
+                                    <th>Kelurahan</th>
+                                    <th>Kecamatan</th>
+                                    <th>Kabupaten</th>
+                                    <th>Provinsi</th>
+                                    <th>Kode Post</th>
+                                    <th>NPWP</th>
+                                    <th>Tempat Lahir</th>
+                                    <th>Tanggal Lahir</th>
+                                    <th>NIK</th>
+                                    <th>Nama Perusahaan</th>
+                                    <th>Email Perusahaan</th>
+                                    <th>Foto</th>
+                                    <th>Foto KTP</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($professional as $prof)
+                                <tr>
+                                    <td>{{$prof['id']}}</td>
+                                    <td>{{$prof['nama']}}</td>
+                                    <td>{{$prof['email']}}</td>
+                                    <td>{{$prof['id_kel']}}</td>
+                                    <td>{{$prof['id_kec']}}</td>
+                                    <td>{{$prof['id_kab']}}</td>
+                                    <td>{{$prof['id_prov']}}</td>
+                                    <td>{{$prof['kode_pos']}}</td>
+                                    <td>{{$prof['npwp']}}</td>
+                                    <td>{{$prof['tempat_lahir']}}</td>
+                                    <td>{{$prof['tanggal_lahir']}}</td>
+                                    <td>{{$prof['nik']}}</td>
+                                    <td>{{$prof['nama_perusahaan']}}</td>
+                                    <td>{{$prof['email_perusahaan']}}</td>
+                                    <td>{{$prof['foto']}}</td>
+                                    <td>{{$prof['foto_ktp']}}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @endsection
+
+                        @section('mode_transportasi')
+                        <h1>Mode transportasi</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Mode Transportasi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($mode_transportasi as $mt)
+                                <tr>
+                                    <td>{{$mt['id']}}</td>
+                                    <td>{{$mt['mode']}}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @endsection
+
+                        @section('tabel_jenis_kendaraan')
+                        <h1>Jenis Kendaraan</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Jenis Kendaraan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($jenis_kendaraan as $jk)
+                                <tr>
+                                    <td>{{$jk['id']}}</td>
+                                    <td>{{$jk['jenis']}}</td>
+                                    <td>{{$jk['mode_id']}}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @endsection
+                        @section('kendaraan')
+                        <h1>Kendaraan</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>No</th>
+                                    <th>Merk</th>
+                                    <th>Ukuran</th>
+                                    <th>Berat Kosong</th>
+                                    <th>Berat Max</th>
+                                    <th>Model Mesin</th>
+                                    <th>Kap Silinder</th>
+                                    <th>Kecepatan Max</th>
+                                    <th>Tenaga Max</th>
+                                    <th>Gambar</th>
+                                    <th>Jenis</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($kendaraan as $knd)
+                                <tr>
+                                    <td>{{$knd['id']}}</td>
+                                    <td>{{$knd['no']}}</td>
+                                    <td>{{$knd['merk']}}</td>
+                                    <td>{{$knd['ukuran']}}</td>
+                                    <td>{{$knd['berat_kosong']}}</td>
+                                    <td>{{$knd['berat_max']}}</td>
+                                    <td>{{$knd['model_mesin']}}</td>
+                                    <td>{{$knd['kap_silinder']}}</td>
+                                    <td>{{$knd['kecepatan_max']}}</td>
+                                    <td>{{$knd['tenaga_max']}}</td>
+                                    <td>{{$knd['gambar']}}</td>
+                                    <td>{{$knd['id_jenis']}}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @endsection
+                        @section('tabel_ketersediaan_kendaraan')
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Kendaraan</th>
+                                    <th>User</th>
+                                    <th>Rayon</th>
+                                    <th>Lettercode</th>
+                                    <th>Jumlah</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($ketersediaan_kendaraan as $kknd)
+                                <tr>
+                                    <td>{{$kknd['id']}}</td>
+                                    <td>{{$kknd['id_kendaraan']}}</td>
+                                    <td>{{$kknd['id_user']}}</td>
+                                    <td>{{$kknd['id_rayon']}}</td>
+                                    <td>{{$kknd['id_letter']}}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @endsection
                         @if(auth()->user()->group_id == 1)
-                        <form method="get">
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Nama Admin</label>
-                                <div class="col-sm-10"><input type="text" name="nama" class="form-control"></div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">No. Telp Kantor</label>
-                                <div class="col-sm-10"><input type="text" name="telp_kantor" class="form-control"></div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group row">
-                                <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-white btn-sm" type="submit">Hapus</button>
-                                    <button class="btn btn-primary btn-sm" type="submit">Simpan</button>
-                                </div>
-                            </div>
-                        </form>
+                        @yield('tabel_asosiasi')
+                        @yield('tabel_rayon')
+                        @yield('tabel_lettercode')
+                        @yield('tabel_perusahaan')
+                        @yield('tabel_professional')
+                        @yield('mode_transportasi')
+                        @yield('tabel_jenis_kendaraan')
+                        @yield('kendaraan')
                         @elseif(auth()->user()->group_id == 2)
-                        <form method="get">
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Nama Asosiasi</label>
-                                <div class="col-sm-10"><input type="text" name="nama" class="form-control"></div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">No. Telp Kantor</label>
-                                <div class="col-sm-10"><input type="text" name="telp_kantor" class="form-control"></div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">NPWP</label>
-                                <div class="col-sm-10"><input type="text" name="npwp" class="form-control"></div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Ketua Umum</label>
-                                <div class="col-sm-10"><input type="text" name="ketua_umum" class="form-control"></div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">NIK</label>
-                                <div class="col-sm-10"><input type="number" name="nik_ketum" class="form-control"></div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">No. HP</label>
-                                <div class="col-sm-10"><input type="text" name="no_hp" class="form-control"></div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Logo Asosiasi</label>
-                                <div class="col-sm-10"><input type="text" name="logo_asosiasi" class="form-control"></div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group row">
-                                <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-white btn-sm" type="submit">Hapus</button>
-                                    <button class="btn btn-primary btn-sm" type="submit">Simpan</button>
-                                </div>
-                            </div>
-                        </form>
+                        @yield('tabel_rayon')
+                        @yield('tabel_lettercode')
+                        @yield('tabel_perusahaan')
+                        @yield('tabel_professional')
+                        @yield('mode_transportasi')
+                        @yield('tabel_jenis_kendaraan')
+                        @yield('kendaraan')
                         @elseif(auth()->user()->group_id == 3)
-                        <form method="get">
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Nama Perusahaan</label>
-                                <div class="col-sm-10"><input type="text" name="nama" class="form-control"></div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Email</label>
-                                <div class="col-sm-10"><input type="email" name="email" class="form-control"></div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-white btn-sm" type="submit">Cancel</button>
-                                    <button class="btn btn-primary btn-sm" type="submit">Save changes</button>
-                                </div>
-                            </div>
-                        </form>
+                        @yield('mode_transportasi')
+                        @yield('tabel_jenis_kendaraan')
+                        @yield('kendaraan')
                         @elseif(auth()->user()->group_id == 4)
-                        <form method="get">
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Nama Perusahaan</label>
-                                <div class="col-sm-10"><input type="text" name="nama" class="form-control"></div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Email</label>
-                                <div class="col-sm-10"><input type="email" name="email" class="form-control"></div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-white btn-sm" type="submit">Cancel</button>
-                                    <button class="btn btn-primary btn-sm" type="submit">Save changes</button>
-                                </div>
-                            </div>
-                        </form>
+                        @yield('mode_transportasi')
+                        @yield('tabel_jenis_kendaraan')
+                        @yield('kendaraan')
                         @endif
                     </div>
                 </div>
