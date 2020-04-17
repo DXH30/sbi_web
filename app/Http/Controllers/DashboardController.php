@@ -410,7 +410,7 @@ class DashboardController extends Controller
             }
         } else {
             $obj = [
-                'jeniskendaraan' => JenisKendaraan::get(),
+                'jenis_kendaraan' => JenisKendaraan::get(),
                 'kendaraan' => Kendaraan::get(),
                 'rayon' => Rayon::get(),
                 'lettercode' => Lettercode::get()
