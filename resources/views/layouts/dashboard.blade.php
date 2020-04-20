@@ -31,17 +31,23 @@
                                 class="nav-label">Dashboard</span></a>
                     </li>
                     <li>
-                        <a href="#"><i class="fa fa-sitemap"></i> <span class="nav-label">Formulir </span><span
-                                class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-sitemap"></i>
+                            <span class="nav-label">
+                                Formulir
+                            </span>
+                            <span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level collapse" aria-expanded="false">
                             @if(auth()->user()->group_id == 1)
-                            <li><a href="{{url('lettercode')}}">Lettercode</a></li>
+                            <li><a href="{{url('kategori')}}">Kategori</a></li>
+                            <li><a href="{{url('rayon')}}">Rayon</a></li>
                             <li><a href="{{url('mode_transportasi')}}">Mode Transportasi</a></li>
                             <li><a href="{{url('jenis_kendaraan')}}">Jenis Kendaraan</a></li>
-                            @elseif(auth()->user()->group_id == 2)
-                            <li><a href="{{url('rayon')}}">Rayon</a></li>
-                            <li><a href="{{url('lettercode')}}">Lettercode</a></li>
                             <li><a href="{{url('kendaraan')}}">Kendaraan</a></li>
+                            <li><a href="{{url('lokasi')}}">Lokasi</a></li>
+                            <li><a href="{{url('keanggotaan')}}">Keanggotaan</a></li>
+                            @elseif(auth()->user()->group_id == 2)
+                            <li><a href="{{url('keanggotaan')}}">Keanggotaan</a></li>
+                            <li><a href="{{url('data_rayon')}}">Data Rayon</a></li>
                             @elseif(auth()->user()->group_id == 3 || auth()->user()->group_id == 4)
                             <li><a href="{{url('kendaraan')}}">+ Kendaraan</a></li>
                             @endif

@@ -66,7 +66,7 @@
     </div>
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Form isian Rayon</h2>
+            <h2>Form isian Data Rayon</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="/home">Home</a>
@@ -75,7 +75,7 @@
                     <a>Formulir</a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <strong>Rayon</strong>
+                    <strong>Data Rayon</strong>
                 </li>
             </ol>
         </div>
@@ -98,30 +98,41 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <h1>Rayon</h1>
+                        <h1>Data Rayon</h1>
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th>Hapus</th>
-                                    <th>Nama Rayon</th>
+                                    <th>Rayon</th>
+                                    <th>Wilayah</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($rayon as $ray)
+                                @foreach($data_rayon as $dr)
                                 <tr>
                                     <td>
-                                        <a href="{{url('/rayon/d?id=').$ray['id']}}" class="btn btn-danger">
+                                        <a href="{{url('/data_rayon/d?id=').$dr['id']}}" class="btn btn-danger">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </td>
-                                    <td>{{$ray['nama']}}</td>
+                                    <td>{{$rayon->where('id', $dr['id_rayon'])->first()['nama']}}</td>
+                                    <td>{{$dr['wilayah']}}</td>
                                 </tr>
                                 @endforeach
                                 <tr>
-                                    <form action="{{url('/rayon/c')}}" method="post">
+                                    <form action="{{url('/data_rayon/c')}}" method="post">
                                         @csrf
                                         <td><button class="btn btn-info submit"><i class="fa fa-plus"></i></button></td>
-                                        <td><input name="nama" class="form-control" placeholder="Nama Rayon"></td>
+                                        <td>
+                                            <select class="form-control" name="id_rayon" id="id_rayon">
+                                                @foreach($rayon as $ray)
+                                                <option value="{{$ray['id']}}">{{$ray['nama']}}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="wilayah">
+                                        </td>
                                     </form>
                                 </tr>
                             </tbody>

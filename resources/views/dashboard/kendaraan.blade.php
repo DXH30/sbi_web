@@ -56,9 +56,10 @@
                     <span class="m-r-sm text-muted welcome-message">Selamat datang di SBI</span>
                 </li>
                 <li>
-                    <a href="{{url('/logout')}}">
-                        <i class="fa fa-sign-out"></i> Log out
-                    </a>
+                    <form action="{{route('logout')}}" method="post">
+                        @csrf
+                        <button type="submit"><i class="fa fa-sign-out"></i> Logout</button>
+                    </form>
                 </li>
             </ul>
         </nav>
@@ -98,7 +99,7 @@
                     </div>
                     <div class="ibox-content">
                         {{-- Cek grup Admin atau yang lainnya --}}
-                        @if(auth()->user()->group_id == 2)
+                        @if(auth()->user()->group_id == 1)
                         <form method="post" action="{{ url('kendaraan/c')}}">
                             @csrf
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">No Kendaraan</label>
@@ -109,8 +110,14 @@
                                 <div class="col-sm-10"><input type="text" name="merk" class="form-control"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Ukuran</label>
-                                <div class="col-sm-10"><input type="text" name="ukuran" class="form-control"></div>
+                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Ukuran Karoseri</label>
+                                <div class="col-sm-10"><input type="text" name="ukuran_karoseri" class="form-control">
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Ukuran mobil</label>
+                                <div class="col-sm-10"><input type="text" name="ukuran_mobil" class="form-control">
+                                </div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Berat Kosong</label>
@@ -144,18 +151,19 @@
                                 <div class="col-sm-10"><input type="text" name="gambar" class="form-control"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
-                            <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Jenis</label>
-                                <select class="form-control m-b" name="id_jenis">
-                                    @foreach($jenis_kendaraan as $jk)
-                                    @if(isset($jenis_kendaraan->first()->id) && $jk['id'] ==
-                                    $jenis_kendaraan->first()->id)
-                                    <option value="{{$jk['id']}}" selected>{{$jk['jenis']}}</option>
-                                    @else
-                                    <option value="{{$jk['id']}}">{{$jk['jenis']}}</option>
-                                    @endif
-                                    @endforeach
-                                </select>
+                                <div class="col-sm-10">
+                                    <select class="form-control m-b" name="id_jenis">
+                                        @foreach($jenis_kendaraan as $jk)
+                                        @if(isset($jenis_kendaraan->first()->id) && $jk['id'] ==
+                                        $jenis_kendaraan->first()->id)
+                                        <option value="{{$jk['id']}}" selected>{{$jk['jenis']}}</option>
+                                        @else
+                                        <option value="{{$jk['id']}}">{{$jk['jenis']}}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group row">
@@ -169,42 +177,50 @@
                         <form method="post" action="{{url('kendaraan/c')}}">
                             @csrf
                             <div class="form-group row"><label class="col-sm-2 col-form-label">Kendaraan</label>
-                                <select class="form-control m-b" name="id_kendaraan">
-                                    @foreach($kendaraan as $knd)
-                                    @if(isset($kendaraan->first()->id) && $knd['id'] ==
-                                    $kendaraan->first()->id)
-                                    <option value="{{$knd['id']}}" selected>{{$knd['no']}}</option>
-                                    @else
-                                    <option value="{{$knd['id']}}">{{$knd['no']}}</option>
-                                    @endif
-                                    @endforeach
-                                </select>
+                                <div class="col-sm-10">
+                                    <select class="form-control m-b" name="id_kendaraan">
+                                        @foreach($kendaraan as $knd)
+                                        @if(isset($kendaraan->first()->id) && $knd['id'] ==
+                                        $kendaraan->first()->id)
+                                        <option value="{{$knd['id']}}" selected>{{$knd['no']}}</option>
+                                        @else
+                                        <option value="{{$knd['id']}}">{{$knd['no']}}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Rayon</label>
-                                <select class="form-control m-b" name="id_rayon">
-                                    @foreach($rayon as $rayont)
-                                    @if(isset($rayon->first()->id) && $rayont['id'] ==
-                                    $rayon->first()->id)
-                                    <option value="{{$rayont['id']}}" selected>{{$rayont['nama']}}</option>
-                                    @else
-                                    <option value="{{$rayont['id']}}">{{$rayont['nama']}}</option>
-                                    @endif
-                                    @endforeach
-                                </select>
+                                <div class="col-sm-10">
+                                    <select class="form-control m-b" name="id_rayon">
+                                        @foreach($rayon as $rayont)
+                                        @if(isset($rayon->first()->id) && $rayont['id'] ==
+                                        $rayon->first()->id)
+                                        <option value="{{$rayont['id']}}" selected>{{$rayont['nama']}}</option>
+                                        @else
+                                        <option value="{{$rayont['id']}}">{{$rayont['nama']}}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                             <div class="hr-line-dashed"></div>
-                            <div class="form-group row"><label class="col-sm-2 col-form-label">Lettercode</label>
-                                <select class="form-control m-b" name="id_letter">
-                                    @foreach($lettercode as $letter)
-                                    @if(isset($lettercode->first()->id) && $letter['id'] ==
-                                    $lettercode->first()->id)
-                                    <option value="{{$letter['id']}}" selected>{{$letter['code']}}</option>
-                                    @else
-                                    <option value="{{$letter['id']}}">{{$letter['code']}}</option>
-                                    @endif
-                                    @endforeach
-                                </select>
+                            <div class="form-group row"><label class="col-sm-2 col-form-label">Lokasi</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control m-b" name="id_letter">
+                                        @foreach($lokasi as $lok)
+                                        @if(isset($lokasi->first()->id) && $lok['id'] ==
+                                        $lokasi->first()->id)
+                                        <option value="{{$lok['id']}}" selected>
+                                            {{$lok['lettercode']}}:{{$lok['lokasi']}}</option>
+                                        @else
+                                        <option value="{{$lok['id']}}">{{$lok['lettercode']}}:{{$lok['lokasi']}}
+                                        </option>
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Jumlah</label>

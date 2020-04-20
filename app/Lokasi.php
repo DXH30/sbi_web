@@ -4,13 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Lettercode extends Model
+class Lokasi extends Model
 {
-    protected $table = 'lettercode';
+    protected $table = 'lokasi';
     protected $fillable = [
         'id',
-        'code',
-        'keterangan'
+        'lettercode',
+        'lokasi'
     ];
 
     public $timestamps = false;

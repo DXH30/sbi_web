@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(KecamatanTableSeeder::class);
         $this->call(KelurahanTableSeeder::class);
         $this->call(RayonSeeder::class);
+        $this->call(KategoriSeeder::class);
         $this->call(LettercodeSeeder::class);
         $this->call(KendaraanSeeder::class);
     }

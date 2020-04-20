@@ -13,15 +13,20 @@ class Asosiasi extends Migration
      */
     public function up()
     {
+        Schema::create('kategori', function(Blueprint $table) {
+            $table->id();
+            $table->string('nama');
+        });
+
         Schema::create('rayon', function(Blueprint $table) {
             $table->id();
             $table->string('nama');
         });
 
-        Schema::create('lettercode', function(Blueprint $table) {
+        Schema::create('lokasi', function(Blueprint $table) {
             $table->id();
-            $table->string('code');
-            $table->string('keterangan');
+            $table->string('lettercode');
+            $table->string('lokasi');
         });
 
         Schema::create('asosiasi', function(Blueprint $table) {
@@ -37,6 +42,15 @@ class Asosiasi extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
+
+        Schema::create('data_rayon', function(Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('id_rayon');
+            $table->foreign('id_rayon')->references('id')->on('rayon');
+            $table->unsignedBigInteger('id_asos');
+            $table->foreign('id_asos')->references('id')->on('asosiasi');
+            $table->string('wilayah');
+        });
     }
 
     /**
@@ -46,8 +60,10 @@ class Asosiasi extends Migration
      */
     public function down()
     {
+        Schema::dropIfExists('data_rayon');
         Schema::dropIfExists('asosiasi');
         Schema::dropIfExists('lettercode');
         Schema::dropIfExists('rayon');
+        Schema::dropIfExists('kategori');
     }
 }

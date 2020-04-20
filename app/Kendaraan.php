@@ -12,12 +12,8 @@ class Kendaraan extends Model
         'no',
         'merk',
         'ukuran',
-        'berat_kosong',
-        'berat_max',
-        'model_mesin',
-        'kap_silinder',
-        'kecepatan_max',
-        'tenaga_max',
+        'berat',
+        'spesifikasi',
         'gambar',
         'id_jenis'
     ];

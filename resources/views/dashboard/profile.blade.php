@@ -56,9 +56,10 @@
                     <span class="m-r-sm text-muted welcome-message">Selamat datang di SBI</span>
                 </li>
                 <li>
-                    <a href="{{url('/logout')}}">
-                        <i class="fa fa-sign-out"></i> Log out
-                    </a>
+                    <form action="{{route('logout')}}" method="post">
+                        @csrf
+                        <button type="submit"><i class="fa fa-sign-out"></i> Logout</button>
+                    </form>
                 </li>
             </ul>
         </nav>
@@ -180,6 +181,7 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Nama Perusahaan</label>
                                 <div class="col-sm-10"><input type="text" name="nama" class="form-control"
                                         value="{{$perusahaan->first()->nama ?? ''}}"></div>
@@ -297,6 +299,21 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group row">
+                                <label for="" class="col-sm-2 col-form-label">Rayon</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="rayon_id" id="rayon_id">
+                                        @foreach($data_rayon as $dr)
+                                        <option value="{{$dr['id']}}">
+                                            {{$rayon->where('id', $dr['id_rayon'])->first()['nama']}} :
+                                            {{$dr['wilayah']}}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Nama</label>
                                 <div class="col-sm-10"><input type="text" name="nama" class="form-control"
                                         value="{{$professional->first()->nama ?? ''}}"></div>

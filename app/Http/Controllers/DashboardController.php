@@ -19,9 +19,11 @@ use App\Perusahaan;
 use App\Professional;
 use App\JenisKendaraan;
 use App\ModeTransportasi;
-use App\Lettercode;
+use App\Lokasi;
 use App\Rayon;
+use App\DataRayon;
 use App\Admin;
+use App\Kategori;
 use Highlight\Mode;
 
 class DashboardController extends Controller
@@ -38,35 +40,26 @@ class DashboardController extends Controller
         if (Auth::user()->have_profile == 0) {
             return redirect()->route('profile');
         }
-        if (Auth::user()->group_id == 1) {
-            $obj = [
-                'asosiasi' => Asosiasi::get(),
-                'rayon' => Rayon::get(),
-                'lettercode' => Lettercode::get(),
-                'perusahaan' => Perusahaan::get(),
-                'professional' => Professional::get(),
-                'mode_transportasi' => ModeTransportasi::get(),
-                'jenis_kendaraan' => JenisKendaraan::get(),
-                'ketersediaan_kendaraan' => KetersediaanKendaraan::get(),
-                'kendaraan' => Kendaraan::get()
-            ];
-        } elseif (Auth::user()->group_id == 2) {
-            $obj = [
-                'perusahaan' => Perusahaan::get(),
-                'professional' => Professional::get(),
-                'kendaraan' => Kendaraan::get(),
-            ];
-        } elseif (Auth::user()->group_id == 3 || Auth::user()->group_id == 4) {
-            $obj = [
-                'ketersediaan_kendaraan' => KetersediaanKendaraan::get(),
-            ];
-        }
+
+        $obj = [
+            'asosiasi' => Asosiasi::get(),
+            'rayon' => Rayon::get(),
+            'data_rayon' => DataRayon::get(),
+            'lokasi' => Lokasi::get(),
+            'perusahaan' => Perusahaan::get(),
+            'professional' => Professional::get(),
+            'mode_transportasi' => ModeTransportasi::get(),
+            'jenis_kendaraan' => JenisKendaraan::get(),
+            'ketersediaan_kendaraan' => KetersediaanKendaraan::get(),
+            'kendaraan' => Kendaraan::get()
+        ];
 
         return view('dashboard.index', $obj);
     }
 
     public function profile($a = NULL, Request $request)
     {
+        $id_asos = Asosiasi::get()->where('user_id', Auth::id())->first()['id'];
         $obj = [
             'group_id' => User::select('group_id')->where('id', auth()->user()->id),
             'group_name' => Group::select('name')->where('id', auth()->user()->group_id),
@@ -75,7 +68,12 @@ class DashboardController extends Controller
             'kecamatan' => Kecamatan::get(),
             'kelurahan' => Kelurahan::get(),
             'asosiasi_list' => Asosiasi::get(),
+            'data_rayon' => DataRayon::get(),
+            'rayon' => Rayon::get(),
         ];
+
+        // $obj['data_rayon'] = DataRayon::where('id_asos', $id_asos)->get();
+
         switch (Auth::user()->group_id) {
             case 1:
                 $obj['admin'] = Admin::where('user_id', Auth::id())->get();
@@ -85,9 +83,13 @@ class DashboardController extends Controller
                 break;
             case 3:
                 $obj['perusahaan'] = Perusahaan::where('user_id', Auth::id())->get();
+                // $id_asos = Asosiasi::get()->where('user_id', Auth::id())->first()['id'];
+                // $obj['data_rayon'] = DataRayon::where('id_asos', $id_asos)->get();
                 break;
             case 4:
                 $obj['professional'] = Professional::where('user_id', Auth::id())->get();
+                // $id_asos = Asosiasi::get()->where('user_id', Auth::id())->first()['id'];
+                // $obj['data_rayon'] = DataRayon::where('id_asos', $id_asos)->get();
                 break;
         }
 
@@ -234,6 +236,38 @@ class DashboardController extends Controller
         }
     }
 
+    public function kategori($a = NULL, Request $request)
+    {
+        if ($a == 'c') {
+            $validator = Validator::make($request->all(), [
+                'nama' => 'required'
+            ]);
+            $data_in = Kategori::firstOrNew(array('nama' => $request->nama));
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors(["Mohon lengkapi data terlebih dahulu"]);
+            } else {
+                $data_in->save();
+                return redirect()->back();
+            }
+        } elseif ($a == 'u') {
+            $validator = Validator::make($request->all(), [
+                'nama' => 'required'
+            ]);
+            $data_in = Rayon::firstOrNew(array('id' => $request->id));
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors(["Mohon lengkapi data terlebih dahulu"]);
+            } else {
+                $data_in->save();
+                return redirect()->back();
+            }
+        } else {
+            $obj = [
+                'kategori' => Kategori::get()
+            ];
+            return view('dashboard.kategori', $obj);
+        }
+    }
+
     public function rayon($a = NULL, Request $request)
     {
         if ($a == 'c') {
@@ -258,19 +292,82 @@ class DashboardController extends Controller
                 $data_in->save();
                 return redirect()->back();
             }
+        } elseif ($a == 'd') {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required'
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors(["Mohon lengkapi data terlebih dahulu"]);
+            } else {
+                Rayon::where('id', $request->id)->delete();
+                return redirect()->back();
+            }
         } else {
-            return view('dashboard.rayon');
+            $obj = [
+                'rayon' => Rayon::get()
+            ];
+            return view('dashboard.rayon', $obj);
         }
     }
 
-    public function lettercode($a = NULL, Request $request)
+    public function data_rayon($a = NULL, Request $request)
     {
         if ($a == 'c') {
             $validator = Validator::make($request->all(), [
-                'code' => 'required'
+                'id_rayon' => 'required',
+                'wilayah' => 'required'
             ]);
-            $data_in = Lettercode::firstOrNew(array('code' => $request->code));
-            $data_in->keterangan = $request->keterangan;
+            $data_in = new DataRayon;
+            $data_in->id_rayon = $request->id_rayon;
+            $data_in->wilayah = $request->wilayah;
+            $data_in->id_asos = Asosiasi::get()->where('user_id', Auth::id())->first()['id'];
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors(["Mohon lengkapi data terlebih dahulu"]);
+            } else {
+                $data_in->save();
+                return redirect()->back();
+            }
+        } elseif ($a == 'u') {
+            $validator = Validator::make($request->all(), [
+                'nama' => 'required'
+            ]);
+            $data_in = DataRayon::firstOrNew(array('id' => $request->id));
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors(["Mohon lengkapi data terlebih dahulu"]);
+            } else {
+                $data_in->save();
+                return redirect()->back();
+            }
+        } elseif ($a == 'd') {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required'
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors(["Mohon lengkapi data terlebih dahulu"]);
+            } else {
+                DataRayon::where('id', $request->id)->delete();
+                return redirect()->back();
+            }
+        } else {
+            $obj = [
+                'data_rayon' => DataRayon::get(),
+                'rayon' => Rayon::get()
+            ];
+            return view('dashboard.data_rayon', $obj);
+        }
+    }
+
+    public function lokasi($a = NULL, Request $request)
+    {
+        if ($a == 'c') {
+            $validator = Validator::make($request->all(), [
+                'lettercode' => 'required',
+                'lokasi' => 'required'
+            ]);
+            $data_in = Lokasi::firstOrNew(array('lettercode' => $request->lettercode));
+            $data_in->lokasi = $request->lokasi;
 
             if ($validator->fails()) {
                 return redirect()->back()->withErrors(["Mohon lengkapi data terlebih dahulu"]);
@@ -282,7 +379,7 @@ class DashboardController extends Controller
             $validator = Validator::make($request->all(), [
                 'code' => 'required'
             ]);
-            $data_in = Lettercode::firstOrNew(array('id' => $request->id));
+            $data_in = Lokasi::firstOrNew(array('id' => $request->id));
 
             if ($validator->fails()) {
                 return redirect()->back()->withErrors(["Mohon lengkapi data terlebih dahulu"]);
@@ -290,8 +387,22 @@ class DashboardController extends Controller
                 $data_in->save();
                 return redirect()->back();
             }
+        } elseif ($a == 'd') {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required'
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors(["Mohon lengkapi data terlebih dahulu"]);
+            } else {
+                Lokasi::where('id', $request->id)->delete();
+                return redirect()->back();
+            }
         } else {
-            return view('dashboard.lettercode');
+            $obj = [
+                'lokasi' => Lokasi::get()
+            ];
+            return view('dashboard.lokasi', $obj);
         }
     }
 
@@ -319,8 +430,22 @@ class DashboardController extends Controller
                 $data_in->save();
                 return redirect()->back();
             }
+        } elseif ($a == 'd') {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required'
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors(["Mohon lengkapi data terlebih dahulu"]);
+            } else {
+                ModeTransportasi::where('id', $request->id)->delete();
+                return redirect()->back();
+            }
         } else {
-            return view('dashboard.mode_transportasi');
+            $obj = [
+                'mode_transportasi' => ModeTransportasi::get()
+            ];
+            return view('dashboard.mode_transportasi', $obj);
         }
     }
 
@@ -340,8 +465,20 @@ class DashboardController extends Controller
                 $data_in->save();
                 return redirect()->back();
             }
+        } elseif ($a == 'd') {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required'
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors(["Mohon lengkapi data terlebih dahulu"]);
+            } else {
+                JenisKendaraan::where('id', $request->id)->delete();
+                return redirect()->back();
+            }
         } else {
             $obj = [
+                'jenis_kendaraan' => JenisKendaraan::get(),
                 'mode_transportasi' => ModeTransportasi::get()
             ];
             return view('dashboard.jenis_kendaraan', $obj);
@@ -352,11 +489,12 @@ class DashboardController extends Controller
     {
         if ($a == 'c') {
             // Untuk input jenis kendaraan (asosiasi)
-            if (Auth::user()->group_id == 2) {
+            if (Auth::user()->group_id == 1) {
                 $validator = Validator::make($request->all(), [
                     'no' => 'required',
                     'merk' => 'required',
-                    'ukuran' => 'required',
+                    'ukuran_karoseri' => 'required',
+                    'ukuran_mobil' => 'required',
                     'berat_kosong' => 'required',
                     'berat_max' => 'required',
                     'model_mesin' => 'required',
@@ -366,16 +504,27 @@ class DashboardController extends Controller
                     'gambar' => 'required',
                     'id_jenis' => 'required'
                 ]);
+
                 $data_in = Kendaraan::firstOrNew(array('id' => $request->id));
                 $data_in->no = $request->no;
                 $data_in->merk = $request->merk;
-                $data_in->ukuran = $request->ukuran;
-                $data_in->berat_kosong = $request->berat_kosong;
-                $data_in->berat_max = $request->berat_max;
-                $data_in->model_mesin = $request->model_mesin;
-                $data_in->kap_silinder = $request->kap_silinder;
-                $data_in->kecepatan_max = $request->kecepatan_max;
-                $data_in->tenaga_max = $request->tenaga_max;
+                $data_in->ukuran = json_encode([
+                    'ukuran_karoseri' => $request->ukuran_karoseri,
+                    'ukuran_mobil' => $request->ukuran_mobil
+                ]);
+
+                $data_in->berat = json_encode([
+                    'berat_kosong' => $request->berat_kosong,
+                    'berat_max' => $request->berat_max
+                ]);
+
+                $data_in->spesifikasi = json_encode([
+                    'model_mesin' => $request->model_mesin,
+                    'kap_silinder' => $request->kap_silinder,
+                    'kecepatan_max' => $request->kecepatan_max,
+                    'tenaga_max' => $request->tenaga_max,
+                ]);
+
                 $data_in->gambar = $request->gambar;
                 $data_in->id_jenis = $request->id_jenis;
                 if ($validator->fails()) {
@@ -408,12 +557,26 @@ class DashboardController extends Controller
                     return redirect()->back();
                 }
             }
+        } elseif ($a == 'd') {
+            $validator = Validator::make($request->all(), [
+                'id' => 'required'
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors(["Mohon lengkapi data terlebih dahulu"]);
+            } else {
+                if (Auth::user()->group_id == 1)
+                    Kendaraan::where('id', $request->id)->delete();
+                elseif (Auth::user()->group_id == 3 || Auth::user()->group_id == 4)
+                    KetersediaanKendaraan::where('id', $request->id)->delete();
+                return redirect()->back();
+            }
         } else {
             $obj = [
                 'jenis_kendaraan' => JenisKendaraan::get(),
                 'kendaraan' => Kendaraan::get(),
                 'rayon' => Rayon::get(),
-                'lettercode' => Lettercode::get()
+                'lokasi' => Lokasi::get()
             ];
             return view('dashboard.kendaraan', $obj);
         }

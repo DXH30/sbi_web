@@ -66,7 +66,7 @@
     </div>
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Form isian Rayon</h2>
+            <h2>Form isian Lettercode</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="/home">Home</a>
@@ -75,7 +75,7 @@
                     <a>Formulir</a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <strong>Rayon</strong>
+                    <strong>Lettercode</strong>
                 </li>
             </ol>
         </div>
@@ -87,7 +87,7 @@
             <div class="col-lg-12">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        <h5>Form isian Rayon</h5>
+                        <h5>Form isian Lettercode</h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -98,30 +98,33 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <h1>Rayon</h1>
+                        <h1>Lokasi</h1>
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th>Hapus</th>
-                                    <th>Nama Rayon</th>
+                                    <th>Lettercode</th>
+                                    <th>Lokasi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($rayon as $ray)
+                                @foreach($lokasi as $letter)
                                 <tr>
                                     <td>
-                                        <a href="{{url('/rayon/d?id=').$ray['id']}}" class="btn btn-danger">
+                                        <a href="{{url('/lokasi/d?id=').$letter['id']}}" class="btn btn-danger">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </td>
-                                    <td>{{$ray['nama']}}</td>
+                                    <td>{{$letter['lettercode']}}</td>
+                                    <td>{{$letter['lokasi']}}</td>
                                 </tr>
                                 @endforeach
                                 <tr>
-                                    <form action="{{url('/rayon/c')}}" method="post">
+                                    <form action="{{url('/lokasi/c')}}" method="post">
                                         @csrf
                                         <td><button class="btn btn-info submit"><i class="fa fa-plus"></i></button></td>
-                                        <td><input name="nama" class="form-control" placeholder="Nama Rayon"></td>
+                                        <td><input name="lettercode" class="form-control" placeholder="lettercode"></td>
+                                        <td><input name="lokasi" class="form-control" placeholder="lokasi"></td>
                                     </form>
                                 </tr>
                             </tbody>

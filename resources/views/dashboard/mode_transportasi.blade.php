@@ -56,9 +56,10 @@
                     <span class="m-r-sm text-muted welcome-message">Selamat datang di SBI</span>
                 </li>
                 <li>
-                    <a href="{{url('/logout')}}">
-                        <i class="fa fa-sign-out"></i> Log out
-                    </a>
+                    <form action="{{route('logout')}}" method="post">
+                        @csrf
+                        <button type="submit"><i class="fa fa-sign-out"></i> Logout</button>
+                    </form>
                 </li>
             </ul>
         </nav>
@@ -97,18 +98,35 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <form method="post" action="{{url('mode_transportasi/c')}}">
-                            @csrf
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Mode</label>
-                                <div class="col-sm-10"><input type="text" name="mode" class="form-control"></div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-white btn-sm" type="submit">Cancel</button>
-                                    <button class="btn btn-primary btn-sm" type="submit">Tambah</button>
-                                </div>
-                            </div>
-                        </form>
+                        <h1>Mode transportasi</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Hapus</th>
+                                    <th>Mode Transportasi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($mode_transportasi as $mt)
+                                <tr>
+                                    <td>
+                                        <a href="{{url('/mode_transportasi/d?id=').$mt['id']}}" class="btn btn-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                    <td>{{$mt['mode']}}</td>
+                                </tr>
+                                @endforeach
+                                <tr>
+                                    <form action="{{url('/mode_transportasi/c')}}" method="post">
+                                        @csrf
+                                        <td><button class="btn btn-info submit"><i class="fa fa-plus"></i></button></td>
+                                        <td><input name="mode" class="form-control" placeholder="Mode Transportasi">
+                                        </td>
+                                    </form>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

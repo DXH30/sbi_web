@@ -25,6 +25,9 @@ class UsersTableSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@email.com',
             'password' => Hash::make('password123'),
+            'email_verified_at' => date("Y-m-d H:i:s"),
+            'created_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("Y-m-d H:i:s"),
             'group_id' => 1,
         ]);
 
@@ -32,6 +35,9 @@ class UsersTableSeeder extends Seeder
             'name' => 'asosiasi',
             'email' => 'asosiasi@email.com',
             'password' => Hash::make('password123'),
+            'email_verified_at' => date("Y-m-d H:i:s"),
+            'created_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("Y-m-d H:i:s"),
             'group_id' => 2,
         ]);
 
@@ -39,6 +45,9 @@ class UsersTableSeeder extends Seeder
             'name' => 'perusahaan',
             'email' => 'perusahaan@email.com',
             'password' => Hash::make('password123'),
+            'email_verified_at' => date("Y-m-d H:i:s"),
+            'created_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("Y-m-d H:i:s"),
             'group_id' => 3,
         ]);
 
@@ -46,6 +55,9 @@ class UsersTableSeeder extends Seeder
             'name' => 'professional',
             'email' => 'professional@email.com',
             'password' => Hash::make('password123'),
+            'email_verified_at' => date("Y-m-d H:i:s"),
+            'created_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("Y-m-d H:i:s"),
             'group_id' => 4,
         ]);
     }

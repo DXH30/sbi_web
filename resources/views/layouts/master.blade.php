@@ -6,13 +6,9 @@
 </head>
 
 <body>
-    <div id="wrapper">
-        @section('sidebar')
-
-        @show
-        @yield('content')
-    </div>
-
+    @section('sidebar')
+    @show
+    @yield('content')
     @yield('script')
 </body>
 

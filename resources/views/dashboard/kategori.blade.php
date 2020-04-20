@@ -56,16 +56,17 @@
                     <span class="m-r-sm text-muted welcome-message">Selamat datang di SBI</span>
                 </li>
                 <li>
-                    <a href="{{url('/logout')}}">
-                        <i class="fa fa-sign-out"></i> Log out
-                    </a>
+                    <form action="{{route('logout')}}" method="post">
+                        @csrf
+                        <button type="submit"><i class="fa fa-sign-out"></i> Logout</button>
+                    </form>
                 </li>
             </ul>
         </nav>
     </div>
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Form isian Lettercode</h2>
+            <h2>Form isian Kategori</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="/home">Home</a>
@@ -74,7 +75,7 @@
                     <a>Formulir</a>
                 </li>
                 <li class="breadcrumb-item active">
-                    <strong>Lettercode</strong>
+                    <strong>Kategori</strong>
                 </li>
             </ol>
         </div>
@@ -86,7 +87,7 @@
             <div class="col-lg-12">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        <h5>Form isian Lettercode</h5>
+                        <h5>Form isian Kategori</h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
@@ -97,21 +98,34 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <form method="post" action="{{url('lettercode/c')}}">
-                            @csrf
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Code</label>
-                                <div class="col-sm-10"><input type="text" name="code" class="form-control"></div>
-                            </div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Keterangan</label>
-                                <div class="col-sm-10"><input type="text" name="keterangan" class="form-control"></div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-white btn-sm" type="submit">Cancel</button>
-                                    <button class="btn btn-primary btn-sm" type="submit">Tambah</button>
-                                </div>
-                            </div>
-                        </form>
+                        <h1>Kategori</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Hapus</th>
+                                    <th>Kategori</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($kategori as $kat)
+                                <tr>
+                                    <td>
+                                        <a href="{{url('/kategori/d?id=').$kat['id']}}" class="btn btn-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                    <td>{{$kat['nama']}}</td>
+                                </tr>
+                                @endforeach
+                                <tr>
+                                    <form action="{{url('/kategori/c')}}" method="post">
+                                        @csrf
+                                        <td><button class="btn btn-info submit"><i class="fa fa-plus"></i></button></td>
+                                        <td><input name="nama" class="form-control" placeholder="Kategori"></td>
+                                    </form>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

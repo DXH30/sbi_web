@@ -12,12 +12,12 @@ class LettercodeSeeder extends Seeder
     public function run()
     {
         $lettercode_list = [
-            ['code' => 'AAA', 'keterangan' => 'Keterangan 1'],
-            ['code' => 'BBB', 'keterangan' => 'Keterangan 2'],
-            ['code' => 'CCC', 'keterangan' => 'Keterangan 3'],
-            ['code' => 'DDD', 'keterangan' => 'Keterangan 4']
+            ['lettercode' => 'AAA', 'lokasi' => 'Keterangan 1'],
+            ['lettercode' => 'BBB', 'lokasi' => 'Keterangan 2'],
+            ['lettercode' => 'CCC', 'lokasi' => 'Keterangan 3'],
+            ['lettercode' => 'DDD', 'lokasi' => 'Keterangan 4']
         ];
 
-        DB::table('lettercode')->insert($lettercode_list);
+        DB::table('lokasi')->insert($lettercode_list);
     }
 }

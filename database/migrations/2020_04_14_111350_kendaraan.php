@@ -25,17 +25,18 @@ class Kendaraan extends Migration
             $table->foreign('mode_id')->references('id')->on('mode_transportasi');
         });
 
+        Schema::create('status_kendaraan', function(Blueprint $table) {
+            $table->id();
+            $table->string('status');
+        });
+
         Schema::create('kendaraan', function(Blueprint $table) {
             $table->id();
             $table->string('no');
             $table->string('merk');
             $table->string('ukuran');
-            $table->string('berat_kosong');
-            $table->string('berat_max');
-            $table->string('model_mesin');
-            $table->string('kap_silinder');
-            $table->string('kecepatan_max');
-            $table->string('tenaga_max');
+            $table->string('berat');
+            $table->text('spesifikasi');
             $table->string('gambar');
             $table->unsignedBigInteger('id_jenis');
             $table->foreign('id_jenis')->references('id')->on('jenis_kendaraan');
@@ -47,10 +48,10 @@ class Kendaraan extends Migration
             $table->foreign('id_kendaraan')->references('id')->on('kendaraan');
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id')->on('users');
-            $table->unsignedBigInteger('id_rayon');
-            $table->foreign('id_rayon')->references('id')->on('rayon');
-            $table->unsignedBigInteger('id_letter');
-            $table->foreign('id_letter')->references('id')->on('lettercode');
+            // $table->unsignedBigInteger('id_rayon');
+            // $table->foreign('id_rayon')->references('id')->on('data_rayon');
+            $table->unsignedBigInteger('id_status');
+            $table->foreign('id_status')->references('id')->on('status_kendaraan');
             $table->unsignedBigInteger('jumlah');
         });
     }
@@ -65,6 +66,7 @@ class Kendaraan extends Migration
         Schema::dropIfExists('ketersediaan_kendaraan');
         Schema::dropIfExists('kendaraan');
         Schema::dropIfExists('jenis_kendaraan');
+        Schema::dropIfExists('status_kendaraan');
         Schema::dropIfExists('mode_transportasi');
     }
 }

@@ -71,6 +71,8 @@ class Perusahaan extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('asos_id');
             $table->foreign('asos_id')->references('id')->on('asosiasi');
+            $table->unsignedBigInteger('rayon_id');
+            $table->foreign('rayon_id')->references('id')->on('data_rayon');
             $table->timestamps();
         });
     }

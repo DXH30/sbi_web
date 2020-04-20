@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
+Auth::routes(['verify' => true]);
+
 Route::get('/', function () {
     return view('landing');
 });
@@ -24,26 +26,36 @@ Route::get('api', 'ApiController');
 Route::get('api/getUsers', 'ApiController@getUsers');
 
 // RegisterController
-Route::get('/register', 'RegistrationController@create');
-Route::post('/register', 'RegistrationController@store');
+// Route::get('/register', 'RegistrationController@create');
+// Route::post('/register', 'RegistrationController@store');
 
 // SesssionsController
-Route::get('/login', 'LoginController')->name('login');
-Route::post('/login', 'LoginController@authenticate');
-Route::get('/logout', 'LoginController@logout');
+// Route::get('/login', 'LoginController')->name('login');
+// Route::post('/login', 'LoginController@authenticate');
+// Route::get('/logout', 'LoginController@logout');
 
 // DashboardController
 Route::get('/dashboard', 'DashboardController')->name('dashboard');
-Route::get('/profile', 'DashboardController@profile')->name('profile');
+Route::get('/profile', 'DashboardController@profile')->name('profile')->middleware('verified');
 Route::post('/profile/{a}', 'DashboardController@profile');
+
+Route::get('/kategori', 'DashboardController@kategori')->name('kategori');
+Route::get('/kategori/{a}', 'DashboardController@kategori');
+Route::post('/kategori/{a}', 'DashboardController@kategori');
+
+Route::get('/keanggotaan', 'DashboardController');
 
 Route::get('/rayon', 'DashboardController@rayon')->name('rayon');
 Route::get('/rayon/{a}', 'DashboardController@rayon');
 Route::post('/rayon/{a}', 'DashboardController@rayon');
 
-Route::get('/lettercode', 'DashboardController@lettercode')->name('lettercode');
-Route::get('/lettercode/{a}', 'DashboardController@lettercode');
-Route::post('/lettercode/{a}', 'DashboardController@lettercode');
+Route::get('/data_rayon', 'DashboardController@data_rayon')->name('data_rayon');
+Route::get('/data_rayon/{a}', 'DashboardController@data_rayon');
+Route::post('/data_rayon/{a}', 'DashboardController@data_rayon');
+
+Route::get('/lokasi', 'DashboardController@lokasi')->name('lokasi');
+Route::get('/lokasi/{a}', 'DashboardController@lokasi');
+Route::post('/lokasi/{a}', 'DashboardController@lokasi');
 
 Route::get('/mode_transportasi', 'DashboardController@mode_transportasi')->name('mode_transportasi');
 Route::get('/mode_transportasi/{a}', 'DashboardController@mode_transportasi');
@@ -73,3 +85,9 @@ Route::get('/getKelurahan', 'ApiController@getKelurahan');
 Route::get('/getKelurahan/{id_kec}', 'ApiController@getKelurahan');
 Route::get('/getKelurahan/{id_kec}/{id_kel}', 'ApiController@getKelurahan');
 
+Route::get('/sendMail', 'MailController@sendMail');
+Route::post('/sendMail', 'MailController@sendMail');
+
+Auth::routes();
+
+Route::get('/home', 'DashboardController')->name('home');

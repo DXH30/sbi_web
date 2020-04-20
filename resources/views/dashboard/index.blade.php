@@ -56,9 +56,10 @@
                     <span class="m-r-sm text-muted welcome-message">Selamat datang di SBI</span>
                 </li>
                 <li>
-                    <a href="{{url('/logout')}}">
-                        <i class="fa fa-sign-out"></i> Log out
-                    </a>
+                    <form action="{{route('logout')}}" method="post">
+                        @csrf
+                        <button type="submit"><i class="fa fa-sign-out"></i> Logout</button>
+                    </form>
                 </li>
             </ul>
         </nav>
@@ -91,7 +92,6 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-
                         @section('tabel_asosiasi')
                         <h1>Asosiasi</h1>
                         <table class="table">
@@ -101,11 +101,17 @@
                                     <th>Telp Kantor</th>
                                     <th>Ketua Umum</th>
                                     <th>Logo Asosiasi</th>
+                                    <th>Hapus</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($asosiasi as $ass)
                                 <tr>
+                                    <td>
+                                        <a href="{{url('hapus/asosiasi/d?id=').$ass['id']}}" class="btn btn-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
                                     <td>{{$ass['nama']}}</td>
                                     <td>{{$ass['telp_kantor']}}</td>
                                     <td>{{$ass['ketua_umum']}}</td>
@@ -121,39 +127,104 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>Hapus</th>
                                     <th>Nama Rayon</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($rayon as $ray)
                                 <tr>
-                                    <td>{{$ray['id']}}</td>
+                                    <td>
+                                        <a href="{{url('/rayon/d?id=').$ray['id']}}" class="btn btn-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
                                     <td>{{$ray['nama']}}</td>
                                 </tr>
                                 @endforeach
+                                <tr>
+                                    <form action="{{url('/rayon/c')}}" method="post">
+                                        @csrf
+                                        <td><button class="btn btn-info submit"><i class="fa fa-plus"></i></button></td>
+                                        <td><input name="nama" class="form-control" placeholder="Nama Rayon"></td>
+                                    </form>
+                                </tr>
                             </tbody>
                         </table>
                         @endsection
 
-                        @section('tabel_lettercode')
-                        <h1>Lettercode</h1>
+                        @section('tabel_data_rayon')
+                        <h1>Data Rayon</h1>
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Lettercode</th>
-                                    <th>Keterangan</th>
+                                    <th>Hapus</th>
+                                    <th>Rayon</th>
+                                    <th>Wilayah</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($lettercode as $letter)
+                                @foreach($data_rayon as $dr)
                                 <tr>
-                                    <td>{{$letter['id']}}</td>
-                                    <td>{{$letter['code']}}</td>
-                                    <td>{{$letter['keterangan']}}</td>
+                                    <td>
+                                        <a href="{{url('/data_rayon/d?id=').$dr['id']}}" class="btn btn-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                    <td>{{$rayon->where('id', $dr['id_rayon'])->first()['nama']}}</td>
+                                    <td>{{$dr['wilayah']}}</td>
                                 </tr>
                                 @endforeach
+                                <tr>
+                                    <form action="{{url('/data_rayon/c')}}" method="post">
+                                        @csrf
+                                        <td><button class="btn btn-info submit"><i class="fa fa-plus"></i></button></td>
+                                        <td>
+                                            <select class="form-control" name="id_rayon" id="id_rayon">
+                                                @foreach($rayon as $ray)
+                                                <option value="{{$ray['id']}}">{{$ray['nama']}}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="wilayah">
+                                        </td>
+                                    </form>
+                                </tr>
+                            </tbody>
+                        </table>
+                        @endsection
+
+                        @section('tabel_lokasi')
+                        <h1>Lokasi</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Hapus</th>
+                                    <th>Lettercode</th>
+                                    <th>Lokasi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($lokasi as $letter)
+                                <tr>
+                                    <td>
+                                        <a href="{{url('/lokasi/d?id=').$letter['id']}}" class="btn btn-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                    <td>{{$letter['lettercode']}}</td>
+                                    <td>{{$letter['lokasi']}}</td>
+                                </tr>
+                                @endforeach
+                                <tr>
+                                    <form action="{{url('/lokasi/c')}}" method="post">
+                                        @csrf
+                                        <td><button class="btn btn-info submit"><i class="fa fa-plus"></i></button></td>
+                                        <td><input name="lettercode" class="form-control" placeholder="lettercode"></td>
+                                        <td><input name="lokasi" class="form-control" placeholder="lokasi"></td>
+                                    </form>
+                                </tr>
                             </tbody>
                         </table>
                         @endsection
@@ -203,7 +274,7 @@
                         </table>
                         @endsection
 
-                        @section('professional')
+                        @section('tabel_professional')
                         <h1>Professional</h1>
                         <table class="table">
                             <thead>
@@ -213,15 +284,8 @@
                                     <th>Email</th>
                                     <th>Keahlian</th>
                                     <th>Alamat</th>
-                                    <th>RTRW</th>
-                                    <th>Kelurahan</th>
-                                    <th>Kecamatan</th>
-                                    <th>Kabupaten</th>
-                                    <th>Provinsi</th>
-                                    <th>Kode Post</th>
                                     <th>NPWP</th>
-                                    <th>Tempat Lahir</th>
-                                    <th>Tanggal Lahir</th>
+                                    <th>Tempat/Tanggal Lahir</th>
                                     <th>NIK</th>
                                     <th>Nama Perusahaan</th>
                                     <th>Email Perusahaan</th>
@@ -235,14 +299,31 @@
                                     <td>{{$prof['id']}}</td>
                                     <td>{{$prof['nama']}}</td>
                                     <td>{{$prof['email']}}</td>
-                                    <td>{{$prof['id_kel']}}</td>
-                                    <td>{{$prof['id_kec']}}</td>
-                                    <td>{{$prof['id_kab']}}</td>
-                                    <td>{{$prof['id_prov']}}</td>
-                                    <td>{{$prof['kode_pos']}}</td>
+                                    <td>{{$prof['keahlian']}}</td>
+                                    <table>
+                                        <tr>
+                                            <td>Kelurahan</td>
+                                            <td>{{$prof['id_kel']}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Kecamatan</td>
+                                            <td>{{$prof['id_kec']}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Kabupaten</td>
+                                            <td>{{$prof['id_kab']}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Provinsi</td>
+                                            <td>{{$prof['id_prov']}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Kode Pos</td>
+                                            <td>{{$prof['kode_pos']}}</td>
+                                        </tr>
+                                    </table>
                                     <td>{{$prof['npwp']}}</td>
-                                    <td>{{$prof['tempat_lahir']}}</td>
-                                    <td>{{$prof['tanggal_lahir']}}</td>
+                                    <td>{{$prof['tempat_lahir']}}, {{$prof['tanggal_lahir']}}</td>
                                     <td>{{$prof['nik']}}</td>
                                     <td>{{$prof['nama_perusahaan']}}</td>
                                     <td>{{$prof['email_perusahaan']}}</td>
@@ -259,17 +340,29 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>Hapus</th>
                                     <th>Mode Transportasi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($mode_transportasi as $mt)
                                 <tr>
-                                    <td>{{$mt['id']}}</td>
+                                    <td>
+                                        <a href="{{url('/mode_transportasi/d?id=').$mt['id']}}" class="btn btn-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
                                     <td>{{$mt['mode']}}</td>
                                 </tr>
                                 @endforeach
+                                <tr>
+                                    <form action="{{url('/mode_transportasi/c')}}" method="post">
+                                        @csrf
+                                        <td><button class="btn btn-info submit"><i class="fa fa-plus"></i></button></td>
+                                        <td><input name="mode" class="form-control" placeholder="Mode Transportasi">
+                                        </td>
+                                    </form>
+                                </tr>
                             </tbody>
                         </table>
                         @endsection
@@ -279,18 +372,37 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
+                                    <th>Hapus</th>
                                     <th>Jenis Kendaraan</th>
+                                    <th>Mode transportasi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($jenis_kendaraan as $jk)
                                 <tr>
-                                    <td>{{$jk['id']}}</td>
+                                    <td>
+                                        <a href="{{url('/jenis_kendaraan/d?id=').$jk['id']}}" class="btn btn-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
                                     <td>{{$jk['jenis']}}</td>
-                                    <td>{{$jk['mode_id']}}</td>
+                                    <td>{{$mode_transportasi->where('id', $jk['mode_id'])->first()['mode']}}</td>
                                 </tr>
                                 @endforeach
+                                <tr>
+                                    <form action="{{url('/jenis_kendaraan/c')}}" method="post">
+                                        @csrf
+                                        <td><button class="btn btn-info submit"><i class="fa fa-plus"></i></button></td>
+                                        <td><input name="jenis" class="form-control" placeholder="Jenis Kendaraan"></td>
+                                        <td>
+                                            <select name="mode_id" id="mode_id" class="form-control">
+                                                @foreach($mode_transportasi as $mt)
+                                                <option value="{{$mt['id']}}">{{$mt['mode']}}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                    </form>
+                                </tr>
                             </tbody>
                         </table>
                         @endsection
@@ -303,12 +415,8 @@
                                     <th>No</th>
                                     <th>Merk</th>
                                     <th>Ukuran</th>
-                                    <th>Berat Kosong</th>
-                                    <th>Berat Max</th>
-                                    <th>Model Mesin</th>
-                                    <th>Kap Silinder</th>
-                                    <th>Kecepatan Max</th>
-                                    <th>Tenaga Max</th>
+                                    <th>Berat</th>
+                                    <th>Spesifikasi</th>
                                     <th>Gambar</th>
                                     <th>Jenis</th>
                                 </tr>
@@ -319,15 +427,50 @@
                                     <td>{{$knd['id']}}</td>
                                     <td>{{$knd['no']}}</td>
                                     <td>{{$knd['merk']}}</td>
-                                    <td>{{$knd['ukuran']}}</td>
-                                    <td>{{$knd['berat_kosong']}}</td>
-                                    <td>{{$knd['berat_max']}}</td>
-                                    <td>{{$knd['model_mesin']}}</td>
-                                    <td>{{$knd['kap_silinder']}}</td>
-                                    <td>{{$knd['kecepatan_max']}}</td>
-                                    <td>{{$knd['tenaga_max']}}</td>
+                                    <td>
+                                        <?php
+                                        $ukuran = json_decode($knd['ukuran'], true);
+                                        $ukuran_key = array_keys($ukuran);
+                                        ?>
+                                        <table>
+                                            @foreach($ukuran_key as $key)
+                                            <tr>
+                                                <td><strong>{{$key}}</strong></td>
+                                                <td>{{$ukuran[$key]}}</td>
+                                            </tr>
+                                            @endforeach
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $berat = json_decode($knd['berat'], true);
+                                        $berat_key = array_keys($berat);
+                                        ?>
+                                        <table>
+                                            @foreach($berat_key as $key)
+                                            <tr>
+                                                <td><strong>{{$key}}</strong></td>
+                                                <td>{{$berat[$key]}}</td>
+                                            </tr>
+                                            @endforeach
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $spesifikasi = json_decode($knd['spesifikasi'], true);
+                                        $spesifikasi_key = array_keys($spesifikasi);
+                                        ?>
+                                        <table>
+                                            @foreach($spesifikasi_key as $key)
+                                            <tr>
+                                                <td><strong>{{$key}}</strong></td>
+                                                <td>{{$spesifikasi[$key]}}</td>
+                                            </tr>
+                                            @endforeach
+                                        </table>
+                                    </td>
                                     <td>{{$knd['gambar']}}</td>
-                                    <td>{{$knd['id_jenis']}}</td>
+                                    <td>{{$jenis_kendaraan->where('id', $knd['id_jenis'])->first()['jenis']}}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -360,21 +503,22 @@
                         @endsection
                         @if(auth()->user()->group_id == 1)
                         @yield('tabel_asosiasi')
-                        @yield('tabel_rayon')
-                        @yield('tabel_lettercode')
+                        {{-- @yield('tabel_rayon') --}}
+                        {{-- @yield('tabel_lokasi') --}}
                         @yield('tabel_perusahaan')
                         @yield('tabel_professional')
-                        @yield('mode_transportasi')
-                        @yield('tabel_jenis_kendaraan')
+                        {{-- @yield('mode_transportasi') --}}
+                        {{-- @yield('tabel_jenis_kendaraan') --}}
                         @yield('kendaraan')
                         @elseif(auth()->user()->group_id == 2)
-                        @yield('tabel_rayon')
-                        @yield('tabel_lettercode')
+                        {{-- @yield('tabel_rayon') --}}
+                        {{-- @yield('tabel_lettercode') --}}
                         @yield('tabel_perusahaan')
                         @yield('tabel_professional')
-                        @yield('mode_transportasi')
-                        @yield('tabel_jenis_kendaraan')
-                        @yield('kendaraan')
+                        @yield('tabel_data_rayon')
+                        {{-- @yield('mode_transportasi') --}}
+                        {{-- @yield('tabel_jenis_kendaraan') --}}
+                        {{-- @yield('kendaraan') --}}
                         @elseif(auth()->user()->group_id == 3)
                         @yield('mode_transportasi')
                         @yield('tabel_jenis_kendaraan')

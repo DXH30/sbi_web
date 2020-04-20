@@ -56,9 +56,10 @@
                     <span class="m-r-sm text-muted welcome-message">Selamat datang di SBI</span>
                 </li>
                 <li>
-                    <a href="{{url('/logout')}}">
-                        <i class="fa fa-sign-out"></i> Log out
-                    </a>
+                    <form action="{{route('logout')}}" method="post">
+                        @csrf
+                        <button type="submit"><i class="fa fa-sign-out"></i> Logout</button>
+                    </form>
                 </li>
             </ul>
         </nav>
@@ -97,30 +98,43 @@
                         </div>
                     </div>
                     <div class="ibox-content">
-                        <form method="post" action="{{url('jenis_kendaraan/c')}}">
-                            @csrf
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Jenis</label>
-                                <div class="col-sm-10"><input type="text" name="jenis" class="form-control"></div>
-                            </div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Mode Transportasi</label>
-                                <select class="form-control m-b" name="mode_id">
-                                    @foreach($mode_transportasi as $mt)
-                                    @if(isset($mode_transportasi->first()->id) && $mt['id'] ==
-                                    $mode_transportasi->first()->id)
-                                    <option value="{{$mt['id']}}" selected>{{$mt['mode']}}</option>
-                                    @else
-                                    <option value="{{$mt['id']}}">{{$mt['mode']}}</option>
-                                    @endif
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-white btn-sm" type="submit">Cancel</button>
-                                    <button class="btn btn-primary btn-sm" type="submit">Tambah</button>
-                                </div>
-                            </div>
-                        </form>
+                        <h1>Jenis Kendaraan</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Hapus</th>
+                                    <th>Jenis Kendaraan</th>
+                                    <th>Mode transportasi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($jenis_kendaraan as $jk)
+                                <tr>
+                                    <td>
+                                        <a href="{{url('/jenis_kendaraan/d?id=').$jk['id']}}" class="btn btn-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                    <td>{{$jk['jenis']}}</td>
+                                    <td>{{$mode_transportasi->where('id', $jk['mode_id'])->first()['mode']}}</td>
+                                </tr>
+                                @endforeach
+                                <tr>
+                                    <form action="{{url('/jenis_kendaraan/c')}}" method="post">
+                                        @csrf
+                                        <td><button class="btn btn-info submit"><i class="fa fa-plus"></i></button></td>
+                                        <td><input name="jenis" class="form-control" placeholder="Jenis Kendaraan"></td>
+                                        <td>
+                                            <select name="mode_id" id="mode_id" class="form-control">
+                                                @foreach($mode_transportasi as $mt)
+                                                <option value="{{$mt['id']}}">{{$mt['mode']}}</option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                    </form>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
