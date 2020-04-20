@@ -482,9 +482,7 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Kendaraan</th>
-                                    <th>User</th>
                                     <th>Rayon</th>
-                                    <th>Lettercode</th>
                                     <th>Jumlah</th>
                                 </tr>
                             </thead>
@@ -492,10 +490,17 @@
                                 @foreach($ketersediaan_kendaraan as $kknd)
                                 <tr>
                                     <td>{{$kknd['id']}}</td>
-                                    <td>{{$kknd['id_kendaraan']}}</td>
-                                    <td>{{$kknd['id_user']}}</td>
-                                    <td>{{$kknd['id_rayon']}}</td>
-                                    <td>{{$kknd['id_letter']}}</td>
+                                    <td>
+                                        {{$kendaraan->where('id', $kknd['id_kendaraan'])->first()['no']}}
+                                    </td>
+                                    <td>
+                                        {{
+                                            $rayon->where('id',$data_rayon->where('id', $kknd['id_rayon'])
+                                            ->first()['id'])->first()['nama']
+                                        }}:
+                                        {{$data_rayon->where('id', $kknd['id_rayon'])->first()['wilayah']}}
+                                    </td>
+                                    <td>{{$kknd['jumlah']}}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -520,13 +525,13 @@
                         {{-- @yield('tabel_jenis_kendaraan') --}}
                         {{-- @yield('kendaraan') --}}
                         @elseif(auth()->user()->group_id == 3)
-                        @yield('mode_transportasi')
-                        @yield('tabel_jenis_kendaraan')
-                        @yield('kendaraan')
+                        {{-- @yield('mode_transportasi') --}}
+                        {{-- @yield('tabel_jenis_kendaraan') --}}
+                        @yield('tabel_ketersediaan_kendaraan')
                         @elseif(auth()->user()->group_id == 4)
-                        @yield('mode_transportasi')
-                        @yield('tabel_jenis_kendaraan')
-                        @yield('kendaraan')
+                        {{-- @yield('mode_transportasi') --}}
+                        {{-- @yield('tabel_jenis_kendaraan') --}}
+                        @yield('tabel_ketersediaan_kendaraan')
                         @endif
                     </div>
                 </div>

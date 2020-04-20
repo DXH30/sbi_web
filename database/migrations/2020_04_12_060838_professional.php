@@ -20,9 +20,9 @@ class Professional extends Migration
 			$table->string('keahlian');
 			$table->string('alamat');
 			$table->string('rtrw');
-            $table->unsignedBigInteger('id_kel');
+            $table->unsignedBigInteger('id_kel')->nullable();
             $table->foreign('id_kel')->references('id_kel')->on('kelurahan');
-            $table->unsignedBigInteger('id_kec');
+            $table->unsignedBigInteger('id_kec')->nullable();
             $table->foreign('id_kec')->references('id_kec')->on('kecamatan');
             $table->unsignedBigInteger('id_kab');
             $table->foreign('id_kab')->references('id_kab')->on('kabupaten');

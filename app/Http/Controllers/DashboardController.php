@@ -24,6 +24,7 @@ use App\Rayon;
 use App\DataRayon;
 use App\Admin;
 use App\Kategori;
+use App\StatusKendaraan;
 use Highlight\Mode;
 
 class DashboardController extends Controller
@@ -154,7 +155,8 @@ class DashboardController extends Controller
                     'nama_wakil' => 'required',
                     'jabatan' => 'required',
                     'no_hp' => 'required',
-                    'asos_id' => 'required'
+                    'asos_id' => 'required',
+                    'rayon_id' => 'required'
                 ]);
 
                 $data_in = Perusahaan::firstOrNew(array('user_id' => Auth::id()));
@@ -175,6 +177,7 @@ class DashboardController extends Controller
                 $data_in->logo_perusahaan = 'perusahaan_' . Auth::id() . ".png";
                 $data_in->user_id = Auth::id();
                 $data_in->asos_id = $request->asos_id;
+                $data_in->rayon_id = $request->rayon_id;
                 if ($validator->fails()) {
                     return redirect()->back()->withErrors(["Mohon lengkapi data terlebih dahulu"]);
                 } else {
@@ -189,8 +192,6 @@ class DashboardController extends Controller
                     'keahlian' => 'required',
                     'alamat' => 'required',
                     'rtrw' => 'required',
-                    'id_kel' => 'required',
-                    'id_kec' => 'required',
                     'id_kab' => 'required',
                     'id_prov' => 'required',
                     'kode_pos' => 'required',
@@ -200,7 +201,8 @@ class DashboardController extends Controller
                     'nik' => 'required',
                     'nama_perusahaan' => 'required',
                     'email_perusahaan' => 'required',
-                    'asos_id' => 'required'
+                    'asos_id' => 'required',
+                    'rayon_id' => 'required'
                 ]);
 
                 $data_in = Professional::firstOrNew(array('user_id' => Auth::id()));
@@ -224,6 +226,7 @@ class DashboardController extends Controller
                 $data_in->foto_ktp = 'professional_ktp_' . Auth::id() . ".png";
                 $data_in->user_id = Auth::id();
                 $data_in->asos_id = $request->asos_id;
+                $data_in->rayon_id = $request->rayon_id;
 
                 if ($validator->fails()) {
                     return redirect()->back()->withErrors(["Mohon lengkapi data terlebih dahulu"]);
@@ -541,14 +544,14 @@ class DashboardController extends Controller
                 $validator = Validator::make($request->all(), [
                     'id_kendaraan' => 'required',
                     'id_rayon' => 'required',
-                    'id_letter' => 'required',
+                    'id_status' => 'required',
                     'jumlah'
                 ]);
                 $data_in = new KetersediaanKendaraan();
                 $data_in->id_kendaraan = $request->id_kendaraan;
                 $data_in->id_user = Auth::id();
                 $data_in->id_rayon = $request->id_rayon;
-                $data_in->id_letter = $request->id_letter;
+                $data_in->id_status = $request->id_status;
                 $data_in->jumlah = $request->jumlah;
                 if ($validator->fails()) {
                     return redirect()->back()->withErrors(["Mohon lengkapi data terlebih dahulu"]);
@@ -576,7 +579,9 @@ class DashboardController extends Controller
                 'jenis_kendaraan' => JenisKendaraan::get(),
                 'kendaraan' => Kendaraan::get(),
                 'rayon' => Rayon::get(),
-                'lokasi' => Lokasi::get()
+                'data_rayon' => DataRayon::get(),
+                'lokasi' => Lokasi::get(),
+                'status_kendaraan' => StatusKendaraan::get()
             ];
             return view('dashboard.kendaraan', $obj);
         }

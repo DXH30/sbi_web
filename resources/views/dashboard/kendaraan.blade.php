@@ -194,30 +194,31 @@
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Rayon</label>
                                 <div class="col-sm-10">
                                     <select class="form-control m-b" name="id_rayon">
-                                        @foreach($rayon as $rayont)
+                                        @foreach($data_rayon as $rayont)
                                         @if(isset($rayon->first()->id) && $rayont['id'] ==
                                         $rayon->first()->id)
-                                        <option value="{{$rayont['id']}}" selected>{{$rayont['nama']}}</option>
+                                        <option value="{{$rayont['id']}}" selected>
+                                            {{$rayon->where('id', $rayont['id_rayon'])->first()['nama']}} :
+                                            {{$rayont['wilayah']}}
+                                        </option>
                                         @else
-                                        <option value="{{$rayont['id']}}">{{$rayont['nama']}}</option>
+                                        <option value="{{$rayont['id']}}">
+                                            {{$rayon->where('id', $rayont['id_rayon'])->first()['nama']}} :
+                                            {{$rayont['wilayah']}}
+                                        </option>
                                         @endif
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
-                            <div class="form-group row"><label class="col-sm-2 col-form-label">Lokasi</label>
+                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Status Unit</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-b" name="id_letter">
-                                        @foreach($lokasi as $lok)
-                                        @if(isset($lokasi->first()->id) && $lok['id'] ==
-                                        $lokasi->first()->id)
-                                        <option value="{{$lok['id']}}" selected>
-                                            {{$lok['lettercode']}}:{{$lok['lokasi']}}</option>
-                                        @else
-                                        <option value="{{$lok['id']}}">{{$lok['lettercode']}}:{{$lok['lokasi']}}
+                                    <select class="form-control m-b" name="id_status">
+                                        @foreach($status_kendaraan as $st)
+                                        <option value="{{$st['id']}}">
+                                            {{$st['status']}}
                                         </option>
-                                        @endif
                                         @endforeach
                                     </select>
                                 </div>

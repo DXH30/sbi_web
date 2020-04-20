@@ -182,6 +182,20 @@
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
+                            <div class="form-group row">
+                                <label for="" class="col-sm-2 col-form-label">Rayon</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control" name="rayon_id" id="rayon_id">
+                                        @foreach($data_rayon as $dr)
+                                        <option value="{{$dr['id']}}">
+                                            {{$rayon->where('id', $dr['id_rayon'])->first()['nama']}} :
+                                            {{$dr['wilayah']}}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Nama Perusahaan</label>
                                 <div class="col-sm-10"><input type="text" name="nama" class="form-control"
                                         value="{{$perusahaan->first()->nama ?? ''}}"></div>
