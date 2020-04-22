@@ -27,6 +27,8 @@ class CreateUsersTable extends Migration
             $table->unsignedBigInteger('group_id');
             $table->foreign('group_id')->references('id')->on('groups')->onDelete('cascade');
             $table->boolean('have_profile')->default(false);
+            $table->boolean('verified')->default(false);
+            $table->integer('token')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

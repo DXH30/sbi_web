@@ -158,7 +158,7 @@
                             <div class="form-group row">
                                 <div class="custom-file">
                                     <input id="logo" type="file" class="custom-file-input" name="logo_asosiasi">
-                                    <label for="logo" class="custom-file-label">Logo Asosiasi</label>
+                                <label for="logo" class="custom-file-label">{{$asosiasi->first()->logo_asosiasi ?? 'Logo Asosiasi'}}</label>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
@@ -169,6 +169,13 @@
                                 </div>
                             </div>
                         </form>
+                        <script>
+                            document.querySelector('.custom-file-input').addEventListener('change',function(e){
+                                var fileName = document.getElementById("logo").files[0].name;
+                                var nextSibling = e.target.nextElementSibling
+                                nextSibling.innerText = fileName
+                                });
+                        </script>
                         @elseif(auth()->user()->group_id == 3)
                         <form method="post" enctype="multipart/form-data" action="{{url('profile/c')}}">
                             @csrf

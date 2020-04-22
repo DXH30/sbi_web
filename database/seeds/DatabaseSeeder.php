@@ -22,5 +22,6 @@ class DatabaseSeeder extends Seeder
         $this->call(KategoriSeeder::class);
         $this->call(LettercodeSeeder::class);
         $this->call(KendaraanSeeder::class);
+        $this->call(ProfileSeeder::class);
     }
 }

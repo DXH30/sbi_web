@@ -29,6 +29,9 @@ class UsersTableSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s"),
             'group_id' => 1,
+            'have_profile' => 1,
+            'verified' => 1,
+            'token' => rand(10000,99999)
         ]);
 
         DB::table('users')->insert([
@@ -39,6 +42,9 @@ class UsersTableSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s"),
             'group_id' => 2,
+            'have_profile' => 1,
+            'verified' => 1,
+            'token' => rand(10000,99999)
         ]);
 
         DB::table('users')->insert([
@@ -49,6 +55,8 @@ class UsersTableSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s"),
             'group_id' => 3,
+            'have_profile' => 1,
+            'token' => rand(10000,99999)
         ]);
 
         DB::table('users')->insert([
@@ -59,6 +67,8 @@ class UsersTableSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s"),
             'group_id' => 4,
+            'have_profile' => 1,
+            'token' => rand(10000,99999)
         ]);
     }
 }

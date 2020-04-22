@@ -14,7 +14,16 @@
                 <ul class="nav metismenu" id="side-menu">
                     <li class="nav-header">
                         <div class="dropdown profile-element">
-                            <img alt="image" class="rounded-circle" src="img/profile_small.jpg">
+                            <?php
+                            if(auth()->user()->group_id == 1):
+                            $logo = 'img/profile_small.jpg';
+                            elseif(auth()->user()->group_id == 2):
+                            $logo = asset('img/profile').'/'.$asosiasi->where('user_id', Auth::id())->first()['logo_asosiasi'];
+                            elseif(auth()->user()->group_id == 3):
+                            elseif(auth()->user()->group_id == 4):
+                            endif
+                            ?>
+                            <img alt="image" width="50px" height="50px" class="rounded-circle" src="{{$logo ?? 'img/profile_small.jpg'}}">
                             <span class="block m-t-xs font-bold">{{ Auth::user()->name }}</span>
                             <span class="text-muted text-xs block">{{ Auth::user()->email }}</span>
                         </div>

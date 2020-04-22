@@ -191,20 +191,20 @@
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Rayon</label>
+                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Lokasi</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-b" name="id_rayon">
-                                        @foreach($data_rayon as $rayont)
-                                        @if(isset($rayon->first()->id) && $rayont['id'] ==
-                                        $rayon->first()->id)
-                                        <option value="{{$rayont['id']}}" selected>
-                                            {{$rayon->where('id', $rayont['id_rayon'])->first()['nama']}} :
-                                            {{$rayont['wilayah']}}
+                                    <select class="form-control m-b" name="id_letter">
+                                        @foreach($lokasi as $lk)
+                                        @if(isset($lokasi->first()->id) && $lk['id'] ==
+                                        $lokasi->first()->id)
+                                        <option value="{{$lk['id']}}" selected>
+                                            {{$lk['lettercode']}} :
+                                            {{$lk['lokasi']}}
                                         </option>
                                         @else
-                                        <option value="{{$rayont['id']}}">
-                                            {{$rayon->where('id', $rayont['id_rayon'])->first()['nama']}} :
-                                            {{$rayont['wilayah']}}
+                                        <option value="{{$lk['id']}}">
+                                            {{$lk['lettercode']}} :
+                                            {{$lk['lokasi']}}
                                         </option>
                                         @endif
                                         @endforeach

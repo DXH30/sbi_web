@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Middleware\CheckProfile;
+use App\Http\Middleware\CheckToken;
 use App\User;
 use App\Group;
 use App\Asosiasi;
@@ -33,6 +35,7 @@ class DashboardController extends Controller
     {
         $this->middleware('auth');
         $this->middleware(CheckProfile::class);
+        $this->middleware(CheckToken::class);
     }
 
     public function __invoke()
@@ -120,7 +123,8 @@ class DashboardController extends Controller
                     'npwp' => 'required',
                     'ketua_umum' => 'required',
                     'nik_ketum' => 'required',
-                    'no_hp' => 'required'
+                    'no_hp' => 'required',
+                    'logo_asosiasi' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
                 ]);
 
                 $data_in = Asosiasi::firstOrNew(array('user_id' => Auth::id()));
@@ -130,12 +134,20 @@ class DashboardController extends Controller
                 $data_in->ketua_umum = $request->ketua_umum;
                 $data_in->nik_ketum = $request->nik_ketum;
                 $data_in->no_hp = $request->no_hp;
-                $data_in->logo_asosiasi = 'asosiasi_' . Auth::id() . ".png";
+                if(isset(Asosiasi::get()->where('user_id', Auth::id())->first()['logo_asosiasi']))
+                    $filename = Asosiasi::get()->where('user_id', Auth::id())->first()['logo_asosiasi'];
+                else
+                    $filename = Hash::make(rand().$data_in->nama).".".$request->logo_asosiasi->extension();
+                $data_in->logo_asosiasi = $filename;
+
                 $data_in->user_id = Auth::id();
                 if ($validator->fails()) {
-                    return redirect()->back()->withErrors(["Mohon lengkapi data terlebih dahulu"]);
+                    $errors = $validator->errors();
+                    return redirect()->back()->withErrors($errors);
                 } else {
                     $data_in->save();
+                    if(isset($request->logo_asosiasi))
+                        $request->logo_asosiasi->move(public_path('img/profile'), $filename);
                     User::where('id', Auth::id())->update(['have_profile' => 1]);
                     return redirect()->back();
                 }
@@ -543,14 +555,15 @@ class DashboardController extends Controller
             if (Auth::user()->group_id == 3 || Auth::user()->group_id == 4) {
                 $validator = Validator::make($request->all(), [
                     'id_kendaraan' => 'required',
-                    'id_rayon' => 'required',
+                    'id_letter' => 'required',
                     'id_status' => 'required',
-                    'jumlah'
+                    'jumlah' => 'required'
                 ]);
+
                 $data_in = new KetersediaanKendaraan();
                 $data_in->id_kendaraan = $request->id_kendaraan;
                 $data_in->id_user = Auth::id();
-                $data_in->id_rayon = $request->id_rayon;
+                $data_in->id_letter = $request->id_letter;
                 $data_in->id_status = $request->id_status;
                 $data_in->jumlah = $request->jumlah;
                 if ($validator->fails()) {
@@ -584,6 +597,34 @@ class DashboardController extends Controller
                 'status_kendaraan' => StatusKendaraan::get()
             ];
             return view('dashboard.kendaraan', $obj);
+        }
+    }
+
+    public function keanggotaan($a = NULL, Request $request)
+    {
+        if ($a == 'u') {
+            $id = $request->input('id');
+            $token = $request->input('token');
+            $token_v = User::get()->where('id', $id)->first()['token'];
+            if ($token == $token_v) {
+                User::where('id', $id)->update(['verified' => 1]);
+                return redirect()->route('dashboard');
+            } else {
+                return redirect()->back()->withErrors('Token salah!');
+            }
+        } else {
+            $obj = [
+                'user' => User::get(),
+                'asosiasi' => Asosiasi::get(),
+                'perusahaan' => Perusahaan::get(),
+                'professional' => Professional::get()
+            ];
+            if (auth()->user()->group_id == 2) {
+                $asos_id = Asosiasi::get()->where('user_id', auth()->user()->id)->first()['id'];
+                $obj['perusahaan'] = Perusahaan::get()->where('asos_id', $asos_id);
+                $obj['professional'] = Professional::get()->where('asos_id', $asos_id);
+            }
+            return view('dashboard.keanggotaan', $obj);
         }
     }
 }

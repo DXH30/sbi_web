@@ -43,7 +43,10 @@ Route::get('/kategori', 'DashboardController@kategori')->name('kategori');
 Route::get('/kategori/{a}', 'DashboardController@kategori');
 Route::post('/kategori/{a}', 'DashboardController@kategori');
 
-Route::get('/keanggotaan', 'DashboardController');
+Route::get('/keanggotaan', 'DashboardController@keanggotaan');
+Route::post('/keanggotaan/{a}', 'DashboardController@keanggotaan');
+Route::get('/vtoken', 'TokenController@verify');
+Route::post('/vtoken/{a}', 'TokenController@verify');
 
 Route::get('/rayon', 'DashboardController@rayon')->name('rayon');
 Route::get('/rayon/{a}', 'DashboardController@rayon');

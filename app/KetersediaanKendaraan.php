@@ -11,7 +11,6 @@ class KetersediaanKendaraan extends Model
         'id',
         'id_kendaraan',
         'id_user',
-        'id_rayon',
         'id_letter',
         'jumlah'
     ];

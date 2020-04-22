@@ -48,8 +48,10 @@ class Kendaraan extends Migration
             $table->foreign('id_kendaraan')->references('id')->on('kendaraan');
             $table->unsignedBigInteger('id_user');
             $table->foreign('id_user')->references('id')->on('users');
-            $table->unsignedBigInteger('id_rayon');
-            $table->foreign('id_rayon')->references('id')->on('data_rayon');
+            // $table->unsignedBigInteger('id_rayon');
+            // $table->foreign('id_rayon')->references('id')->on('data_rayon');
+            $table->unsignedBigInteger('id_letter');
+            $table->foreign('id_letter')->references('id')->on('lokasi');
             $table->unsignedBigInteger('id_status');
             $table->foreign('id_status')->references('id')->on('status_kendaraan');
             $table->unsignedBigInteger('jumlah');

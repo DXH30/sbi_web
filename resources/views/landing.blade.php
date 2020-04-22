@@ -19,33 +19,33 @@
 @endsection
 @section('navbar')
 <div class="navbar-wrapper">
-        <nav class="navbar navbar-default navbar-fixed-top navbar-expand-md" role="navigation">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">SBI</a>
-                <div class="navbar-header page-scroll">
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
-                        <i class="fa fa-bars"></i>
-                    </button>
-                </div>
-                <div class="collapse navbar-collapse justify-content-end" id="navbar">
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a class="nav-link page-scroll" href="#page-top">Home</a></li>
-                        <li><a class="nav-link page-scroll" href="#contact">Kontak</a></li>
-                        @guest
-                        <li><a class="nav-link" href="{{ url('/login') }}">Login</a></li>
-                        <li><a class="nav-link" href="{{ url('/register') }}">Register</a></li>
-                        @endguest
-                        @auth
-                        <li><a class="nav-link" href="{{ url('/dashboard') }}">Dashboard</a></li>
-                        @endauth
-                    </ul>
-                </div>
+    <nav class="navbar navbar-default navbar-fixed-top navbar-expand-md" role="navigation">
+        <div class="container">
+            <a class="navbar-brand" href="{{ url('/') }}">SBI</a>
+            <div class="navbar-header page-scroll">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+                    <i class="fa fa-bars"></i>
+                </button>
             </div>
-        </nav>
+            <div class="collapse navbar-collapse justify-content-end" id="navbar">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a class="nav-link page-scroll" href="#page-top">Home</a></li>
+                    <li><a class="nav-link page-scroll" href="#contact">Kontak</a></li>
+                    @guest
+                    <li><a class="nav-link" href="{{ url('/login') }}">Login</a></li>
+                    <li><a class="nav-link" href="{{ url('/register') }}">Register</a></li>
+                    @endguest
+                    @auth
+                    <li><a class="nav-link" href="{{ url('/dashboard') }}">Dashboard</a></li>
+                    @endauth
+                </ul>
+            </div>
+        </div>
+    </nav>
 </div>
 @endsection
 @section('content')
-<div id="inSlider" class="carousel slide" data-ride="carousel" >
+<div id="inSlider" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
         <li data-target="#inSlider" data-slide-to="0" class="active"></li>
         <li data-target="#inSlider" data-slide-to="1"></li>
@@ -54,14 +54,14 @@
         <div class="carousel-item active">
             <div class="container">
                 <div class="carousel-caption">
-                    <h1>Octomoda<br/>
+                    <h1>Octomoda<br />
                         SBI</h1>
                     <p>
                         <a class="btn btn-lg btn-primary" href="#" role="button">READ MORE</a>
                     </p>
                 </div>
                 <div class="carousel-image wow zoomIn">
-                    <img src="img/landing/laptop.png" alt="laptop"/>
+                    <img src="img/landing/laptop.png" alt="laptop" />
                 </div>
             </div>
             <!-- Set background for slide in css -->
@@ -71,7 +71,7 @@
         <div class="carousel-item">
             <div class="container">
                 <div class="carousel-caption blank">
-                    <h1>Octomoda <br/> SBI.</h1>
+                    <h1>Octomoda <br /> SBI.</h1>
                     <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
                 </div>
             </div>
@@ -101,15 +101,17 @@
         <div class="row m-b-lg justify-content-center">
             <div class="col-lg-3 ">
                 <address>
-                    <strong><span class="navy">Company name, Inc.</span></strong><br/>
-                    795 Folsom Ave, Suite 600<br/>
-                    San Francisco, CA 94107<br/>
+                    <strong><span class="navy">Company name, Inc.</span></strong><br />
+                    795 Folsom Ave, Suite 600<br />
+                    San Francisco, CA 94107<br />
                     <abbr title="Phone">P:</abbr> (123) 456-7890
                 </address>
             </div>
             <div class="col-lg-4">
                 <p class="text-color">
-                    Consectetur adipisicing elit. Aut eaque, totam corporis laboriosam veritatis quis ad perspiciatis, totam corporis laboriosam veritatis, consectetur adipisicing elit quos non quis ad perspiciatis, totam corporis ea,
+                    Consectetur adipisicing elit. Aut eaque, totam corporis laboriosam veritatis quis ad perspiciatis,
+                    totam corporis laboriosam veritatis, consectetur adipisicing elit quos non quis ad perspiciatis,
+                    totam corporis ea,
                 </p>
             </div>
         </div>
@@ -131,7 +133,8 @@
         </div>
         <div class="row">
             <div class="col-lg-12 text-center m-t-lg m-b-lg">
-                <p><strong>&copy; 2015 Company Name</strong><br/> consectetur adipisicing elit. Aut eaque, laboriosam veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.</p>
+                <p><strong>&copy; 2015 Company Name</strong><br /> consectetur adipisicing elit. Aut eaque, laboriosam
+                    veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.</p>
             </div>
         </div>
     </div>
