@@ -34,12 +34,11 @@ class DashboardController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware(CheckProfile::class);
-        $this->middleware(CheckToken::class);
     }
 
     public function __invoke()
     {
+        // $this->middleware(CheckToken::class);
         $obj = array();
         if (Auth::user()->have_profile == 0) {
             return redirect()->route('profile');
@@ -74,6 +73,7 @@ class DashboardController extends Controller
             'asosiasi_list' => Asosiasi::get(),
             'data_rayon' => DataRayon::get(),
             'rayon' => Rayon::get(),
+            'kategori' => Kategori::get(),
         ];
 
         // $obj['data_rayon'] = DataRayon::where('id_asos', $id_asos)->get();
@@ -118,6 +118,7 @@ class DashboardController extends Controller
                 }
             } else if (Auth::user()->group_id == 2) {
                 $validator = Validator::make($request->all(), [
+                    'kat_id' => 'required',
                     'nama' => 'required',
                     'telp_kantor' => 'required',
                     'npwp' => 'required',
@@ -128,16 +129,17 @@ class DashboardController extends Controller
                 ]);
 
                 $data_in = Asosiasi::firstOrNew(array('user_id' => Auth::id()));
+                $data_in->kat_id = $request->kat_id;
                 $data_in->nama = $request->nama;
                 $data_in->telp_kantor = $request->telp_kantor;
                 $data_in->npwp = $request->npwp;
                 $data_in->ketua_umum = $request->ketua_umum;
                 $data_in->nik_ketum = $request->nik_ketum;
                 $data_in->no_hp = $request->no_hp;
-                if(isset(Asosiasi::get()->where('user_id', Auth::id())->first()['logo_asosiasi']))
+                if (isset(Asosiasi::get()->where('user_id', Auth::id())->first()['logo_asosiasi']))
                     $filename = Asosiasi::get()->where('user_id', Auth::id())->first()['logo_asosiasi'];
                 else
-                    $filename = Hash::make(rand().$data_in->nama).".".$request->logo_asosiasi->extension();
+                    $filename = 'ass_' . Auth::id() . "." . $request->logo_asosiasi->extension();
                 $data_in->logo_asosiasi = $filename;
 
                 $data_in->user_id = Auth::id();
@@ -146,7 +148,7 @@ class DashboardController extends Controller
                     return redirect()->back()->withErrors($errors);
                 } else {
                     $data_in->save();
-                    if(isset($request->logo_asosiasi))
+                    if (isset($request->logo_asosiasi))
                         $request->logo_asosiasi->move(public_path('img/profile'), $filename);
                     User::where('id', Auth::id())->update(['have_profile' => 1]);
                     return redirect()->back();
@@ -368,7 +370,10 @@ class DashboardController extends Controller
         } else {
             $obj = [
                 'data_rayon' => DataRayon::get(),
-                'rayon' => Rayon::get()
+                'rayon' => Rayon::get(),
+                'asosiasi' => Asosiasi::get(),
+                'perusahaan' => Perusahaan::get(),
+                'professional' => Professional::get()
             ];
             return view('dashboard.data_rayon', $obj);
         }
@@ -508,24 +513,44 @@ class DashboardController extends Controller
                 $validator = Validator::make($request->all(), [
                     'no' => 'required',
                     'merk' => 'required',
-                    'ukuran_karoseri' => 'required',
-                    'ukuran_mobil' => 'required',
+                    'ukuran_karoseri_tp' => 'required',
+                    'ukuran_karoseri_p' => 'required',
+                    'ukuran_karoseri_l' => 'required',
+                    'ukuran_karoseri_t' => 'required',
+                    'ukuran_mobil_p' => 'required',
+                    'ukuran_mobil_l' => 'required',
+                    'ukuran_mobil_t' => 'required',
                     'berat_kosong' => 'required',
                     'berat_max' => 'required',
                     'model_mesin' => 'required',
                     'kap_silinder' => 'required',
                     'kecepatan_max' => 'required',
                     'tenaga_max' => 'required',
-                    'gambar' => 'required',
+                    'gambar' => 'image|mimes:jpeg,png,jpg,gif,svg|max: max',
                     'id_jenis' => 'required'
                 ]);
 
                 $data_in = Kendaraan::firstOrNew(array('id' => $request->id));
-                $data_in->no = $request->no;
-                $data_in->merk = $request->merk;
+                $ukuran_karoseri = [
+                    'tipe' => $request->ukuran_karoseri_tp,
+                    'panjang' => $request->ukuran_karoseri_p,
+                    'lebar' => $request->ukuran_karoseri_l,
+                    'tinggi' => $request->ukuran_karoseri_t,
+                    'dalam' => $request->ukuran_karoseri_d,
+                ];
+                $ukuran_mobil = [
+                    'panjang' => $request->ukuran_mobil_p,
+                    'lebar' => $request->ukuran_mobil_l,
+                    'tinggi' => $request->ukuran_mobil_t,
+                ];
+                $data_in->deskripsi = [
+                    'deskripsi' => $request->deskripsi,
+                    'no' => $request->no,
+                    'merk' => $request->merk
+                ];
                 $data_in->ukuran = json_encode([
-                    'ukuran_karoseri' => $request->ukuran_karoseri,
-                    'ukuran_mobil' => $request->ukuran_mobil
+                    'ukuran_karoseri' => $ukuran_karoseri,
+                    'ukuran_mobil' => $ukuran_mobil
                 ]);
 
                 $data_in->berat = json_encode([
@@ -540,11 +565,15 @@ class DashboardController extends Controller
                     'tenaga_max' => $request->tenaga_max,
                 ]);
 
-                $data_in->gambar = $request->gambar;
+                $filename = Hash::make(date('Y-m-d h:i:s')) . "." . $request->gambar->extension();
+                $data_in->gambar = $filename;
+
                 $data_in->id_jenis = $request->id_jenis;
                 if ($validator->fails()) {
                     return redirect()->back()->withErrors(["Mohon lengkapi data terlebih dahulu"]);
                 } else {
+                    if (isset($request->gambar))
+                        $request->gambar->move(public_path('img/kendaraan'), $filename);
                     $data_in->save();
                     return redirect()->back();
                 }
@@ -602,6 +631,7 @@ class DashboardController extends Controller
 
     public function keanggotaan($a = NULL, Request $request)
     {
+        $this->middleware(CheckToken::class);
         if ($a == 'u') {
             $id = $request->input('id');
             $token = $request->input('token');

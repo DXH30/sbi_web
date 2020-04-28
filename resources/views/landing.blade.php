@@ -27,6 +27,9 @@
                     <i class="fa fa-bars"></i>
                 </button>
             </div>
+            <form name="logout" method="post" action="{{ url('/logout') }}">
+                @csrf
+            <form>
             <div class="collapse navbar-collapse justify-content-end" id="navbar">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a class="nav-link page-scroll" href="#page-top">Home</a></li>
@@ -37,6 +40,7 @@
                     @endguest
                     @auth
                     <li><a class="nav-link" href="{{ url('/dashboard') }}">Dashboard</a></li>
+                    <li><a class="nav-link" href="#" onclick="document.forms['logout'].submit(); return false;">Logout</a></li>
                     @endauth
                 </ul>
             </div>

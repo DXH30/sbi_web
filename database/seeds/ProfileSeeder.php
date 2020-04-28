@@ -21,17 +21,19 @@ class ProfileSeeder extends Seeder
 
         // Asosiasi
         $asosiasi = [
+            'kat_id' => '1',
             'nama' => 'Asosiasi Satu',
             'telp_kantor' => '0812345678',
             'npwp' => '999000999',
             'ketua_umum' => 'Ketua Satu',
             'nik_ketum' => '123123123123',
             'no_hp' => '09009088012',
-            'logo_asosiasi' => '1.jpg',
+            'logo_asosiasi' => 'ass_1.png',
             'user_id' => '2',
             'created_at' => date('Y-m-d'),
             'updated_at' => date('Y-m-d')
         ];
+
         DB::table('asosiasi')->insert($asosiasi);
 
         $data_rayon_list = [
@@ -57,7 +59,7 @@ class ProfileSeeder extends Seeder
             'nama_wakil' => 'Wakil',
             'jabatan' => 'Direktur',
             'no_hp' => '08123124',
-            'logo_perusahaan' => '2.png',
+            'logo_perusahaan' => 'per_1.png',
             'user_id' => '3',
             'asos_id' => '1',
             'rayon_id' => '1',

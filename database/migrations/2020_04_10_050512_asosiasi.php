@@ -31,6 +31,8 @@ class Asosiasi extends Migration
 
         Schema::create('asosiasi', function(Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('kat_id');
+            $table->foreign('kat_id')->references('id')->on('kategori')->onDelete('cascade');
             $table->string('nama');
             $table->string('telp_kantor');
             $table->string('npwp');

@@ -29,6 +29,7 @@ class RegistrationController extends Controller
         $request['password'] = Hash::make($request['password']);
         $email_exists = User::where('email', '=', $request['email'])->count();
         $user_exists = User::where('name', '=', $request['name'])->count();
+
         if (User::where('email', '=', $request['email'])->exists()) {
             return redirect()->to('/login')->withErrors(["Email sudah terdaftar silahkan login"]);
         }

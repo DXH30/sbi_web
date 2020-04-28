@@ -125,6 +125,22 @@
                         @elseif(auth()->user()->group_id == 2)
                         <form method="post" enctype="multipart/form-data" action="{{url('profile/c')}}">
                             @csrf
+                            <div class="form-group row">
+                                <label for="" class="col-sm-2 col-form-label">Kategori</label>
+                                <div class="col-sm-10">
+                                    <select name="kat_id" id="kategori" class="form-control">
+                                        @foreach($kategori as $kat)
+                                        @if(isset($asosiasi->first()->kat_id) && $kat['id'] ==
+                                        $asosiasi->first()->kat_id)
+                                        <option value="{{$kat['id']}}" selected>{{$kat['nama']}}</option>
+                                        @else
+                                        <option value="{{$kat['id']}}">{{$kat['nama']}}</option>
+                                        @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
                             <div class="form-group row"><label class="col-sm-2 col-form-label">Nama Asosiasi</label>
                                 <div class="col-sm-10"><input type="text" name="nama" class="form-control"
                                         value="{{$asosiasi->first()->nama ?? ''}}"></div>

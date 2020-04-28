@@ -21,11 +21,11 @@ class CheckProfile
             return redirect('/');
         }
 
-        // if ((Route::current() != 'profile') && (Auth::user()->have_profile == 0)) {
-        //     return redirect()->route('profile');
-        // } else {
-        //     return $next($request);
-        // }
+        if (Auth::user()->have_profile == 0) {
+            return redirect()->route('profile');
+        } else {
+            return $next($request);
+        }
 
         return $next($request);
     }

@@ -32,9 +32,30 @@ class KendaraanSeeder extends Seeder
         ];
 
         DB::table('status_kendaraan')->insert($status_kendaraan);
+
+        $ukuran_karoseri = [
+            'tipe' => 'a01',
+            'panjang' => '5',
+            'lebar' => '4',
+            'tinggi' => '1',
+            'dalam' => '4',
+        ];
+
+        $ukuran_mobil = [
+            'panjang' => '13',
+            'lebar' => '2',
+            'tinggi' => '4',
+        ];
+
+        $deskripsi = json_encode([
+            'deskripsi' => "Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem, nostrum?",
+            'no' => "A213",
+            'Merk' => "Toyota"
+        ]);
+
         $ukuran = json_encode([
-            'ukuran_karoseri' => '100',
-            'ukuran_mobil' => '200'
+            'ukuran_karoseri' => $ukuran_karoseri,
+            'ukuran_mobil' => $ukuran_mobil
         ]);
 
         $berat = json_encode([
@@ -51,8 +72,7 @@ class KendaraanSeeder extends Seeder
 
         $list_kendaraan = [
             [
-                'no' => 'A01',
-                'merk' => 'Satu',
+                'deskripsi' => $deskripsi,
                 'ukuran' => $ukuran,
                 'berat' => $berat,
                 'spesifikasi' => $spesifikasi,
@@ -60,8 +80,7 @@ class KendaraanSeeder extends Seeder
                 'id_jenis' => '1'
             ],
             [
-                'no' => 'A02',
-                'merk' => 'Dua',
+                'deskripsi' => $deskripsi,
                 'ukuran' => $ukuran,
                 'berat' => $berat,
                 'spesifikasi' => $spesifikasi,
@@ -69,8 +88,7 @@ class KendaraanSeeder extends Seeder
                 'id_jenis' => '2'
             ],
             [
-                'no' => 'A03',
-                'merk' => 'Tiga',
+                'deskripsi' => $deskripsi,
                 'ukuran' => $ukuran,
                 'berat' => $berat,
                 'spesifikasi' => $spesifikasi,

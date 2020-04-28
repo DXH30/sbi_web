@@ -83,6 +83,125 @@
         </div>
     </div>
     <div class="wrapper wrapper-content animated fadeInRight">
+        @section('kendaraan')
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox ">
+                    <div class="ibox-title">
+                        <h5>Kendaraan</h5>
+                        @if($errors->any())
+                        <h4>{{ $errors->first() }}</h4>
+                        @endif
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <h1>Kendaraan</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Hapus</th>
+                                    <th>Deskripsi</th>
+                                    <th>Ukuran Karoseri</th>
+                                    <th>Ukuran Mobil</th>
+                                    <th>Berat</th>
+                                    <th>Spesifikasi</th>
+                                    <th>Gambar</th>
+                                    <th>Jenis</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($kendaraan as $knd)
+                                <tr>
+                                    <td>
+                                        <a href="{{url('/kendaraan/d?id=').$knd['id']}}" class="btn btn-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $berat = json_decode($knd['berat'], true);
+                                        $berat_key = array_keys($berat);
+                                        ?>
+                                        <table>
+                                            @foreach($berat_key as $key)
+                                            <tr>
+                                                <td><strong>{{$key}}</strong></td>
+                                                <td>{{$berat[$key]}}</td>
+                                            </tr>
+                                            @endforeach
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $ukuran = json_decode($knd['ukuran'], true);
+                                        $ukuran_k_key = array_keys($ukuran['ukuran_karoseri']);
+                                        $ukuran_m_key = array_keys($ukuran['ukuran_mobil']);
+                                        ?>
+                                        <table>
+                                            @foreach($ukuran_k_key as $key)
+                                            <tr>
+                                                <td><strong>{{$key}}</strong></td>
+                                                <td>{{$ukuran['ukuran_karoseri'][$key]}}</td>
+                                            </tr>
+                                            @endforeach
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            @foreach($ukuran_m_key as $key)
+                                            <tr>
+                                                <td><strong>{{$key}}</strong></td>
+                                                <td>{{$ukuran['ukuran_mobil'][$key]}}</td>
+                                            </tr>
+                                            @endforeach
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $berat = json_decode($knd['berat'], true);
+                                        $berat_key = array_keys($berat);
+                                        ?>
+                                        <table>
+                                            @foreach($berat_key as $key)
+                                            <tr>
+                                                <td><strong>{{$key}}</strong></td>
+                                                <td>{{$berat[$key]}}</td>
+                                            </tr>
+                                            @endforeach
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $spesifikasi = json_decode($knd['spesifikasi'], true);
+                                        $spesifikasi_key = array_keys($spesifikasi);
+                                        ?>
+                                        <table>
+                                            @foreach($spesifikasi_key as $key)
+                                            <tr>
+                                                <td><strong>{{$key}}</strong></td>
+                                                <td>{{$spesifikasi[$key]}}</td>
+                                            </tr>
+                                            @endforeach
+                                        </table>
+                                    </td>
+                                    <td>{{$knd['gambar']}}</td>
+                                    <td>{{$jenis_kendaraan->where('id', $knd['id_jenis'])->first()['jenis']}}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @endsection
         <div class="row">
             <div class="col-lg-12">
                 <div class="ibox ">
@@ -98,10 +217,111 @@
                         </div>
                     </div>
                     <div class="ibox-content">
+                        @section('kendaraan')
+                        <h1>Kendaraan</h1>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Hapus</th>
+                                    <th>Deskripsi</th>
+                                    <th>Ukuran Karoseri</th>
+                                    <th>Ukuran Mobil</th>
+                                    <th>Berat</th>
+                                    <th>Spesifikasi</th>
+                                    <th>Gambar</th>
+                                    <th>Jenis</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($kendaraan as $knd)
+                                <tr>
+                                    <td>
+                                        <a href="{{url('/kendaraan/d?id=').$knd['id']}}" class="btn btn-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $berat = json_decode($knd['berat'], true);
+                                        $berat_key = array_keys($berat);
+                                        ?>
+                                        <table>
+                                            @foreach($berat_key as $key)
+                                            <tr>
+                                                <td><strong>{{$key}}</strong></td>
+                                                <td>{{$berat[$key]}}</td>
+                                            </tr>
+                                            @endforeach
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $ukuran = json_decode($knd['ukuran'], true);
+                                        $ukuran_k_key = array_keys($ukuran['ukuran_karoseri']);
+                                        $ukuran_m_key = array_keys($ukuran['ukuran_mobil']);
+                                        ?>
+                                        <table>
+                                            @foreach($ukuran_k_key as $key)
+                                            <tr>
+                                                <td><strong>{{$key}}</strong></td>
+                                                <td>{{$ukuran['ukuran_karoseri'][$key]}}</td>
+                                            </tr>
+                                            @endforeach
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            @foreach($ukuran_m_key as $key)
+                                            <tr>
+                                                <td><strong>{{$key}}</strong></td>
+                                                <td>{{$ukuran['ukuran_mobil'][$key]}}</td>
+                                            </tr>
+                                            @endforeach
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $berat = json_decode($knd['berat'], true);
+                                        $berat_key = array_keys($berat);
+                                        ?>
+                                        <table>
+                                            @foreach($berat_key as $key)
+                                            <tr>
+                                                <td><strong>{{$key}}</strong></td>
+                                                <td>{{$berat[$key]}}</td>
+                                            </tr>
+                                            @endforeach
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $spesifikasi = json_decode($knd['spesifikasi'], true);
+                                        $spesifikasi_key = array_keys($spesifikasi);
+                                        ?>
+                                        <table>
+                                            @foreach($spesifikasi_key as $key)
+                                            <tr>
+                                                <td><strong>{{$key}}</strong></td>
+                                                <td>{{$spesifikasi[$key]}}</td>
+                                            </tr>
+                                            @endforeach
+                                        </table>
+                                    </td>
+                                    <td>{{$knd['gambar']}}</td>
+                                    <td>{{$jenis_kendaraan->where('id', $knd['id_jenis'])->first()['jenis']}}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        @endsection
                         {{-- Cek grup Admin atau yang lainnya --}}
                         @if(auth()->user()->group_id == 1)
-                        <form method="post" action="{{ url('kendaraan/c')}}">
+                        <form method="post" action="{{ url('kendaraan/c')}}" enctype="multipart/form-data">
                             @csrf
+                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Deskripsi</label>
+                                <div class="col-sm-10"><input type="text" name="deskripsi" class="form-control"></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">No Kendaraan</label>
                                 <div class="col-sm-10"><input type="text" name="no" class="form-control"></div>
                             </div>
@@ -110,23 +330,49 @@
                                 <div class="col-sm-10"><input type="text" name="merk" class="form-control"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Ukuran Karoseri</label>
-                                <div class="col-sm-10"><input type="text" name="ukuran_karoseri" class="form-control">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Ukuran Karoseri</label>
+                                <div class="col-sm-2">
+                                    <input type="text" name="ukuran_karoseri_tp" class="form-control"
+                                        placeholder="Tipe">
+                                </div>
+                                <div class="col-sm-2">
+                                    <input type="text" name="ukuran_karoseri_p" class="form-control"
+                                        placeholder="Panjang">
+                                </div>
+                                <div class="col-sm-2">
+                                    <input type="text" name="ukuran_karoseri_l" class="form-control"
+                                        placeholder="Lebar">
+                                </div>
+                                <div class="col-sm-2">
+                                    <input type="text" name="ukuran_karoseri_t" class="form-control"
+                                        placeholder="Tinggi">
+                                </div>
+                                <div class="col-sm-2">
+                                    <input type="text" name="ukuran_karoseri_d" class="form-control"
+                                        placeholder="Dalam">
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Ukuran mobil</label>
-                                <div class="col-sm-10"><input type="text" name="ukuran_mobil" class="form-control">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Ukuran mobil</label>
+                                <div class="col-sm-3">
+                                    <input type="text" name="ukuran_mobil_p" class="form-control" placeholder="Panjang">
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="text" name="ukuran_mobil_l" class="form-control" placeholder="Lebar">
+                                </div>
+                                <div class="col-sm-3">
+                                    <input type="text" name="ukuran_mobil_t" class="form-control" placeholder="Tinggi">
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Berat Kosong</label>
-                                <div class="col-sm-10"><input type="text" name="berat_kosong" class="form-control">
+                            <div class="form-group row"><label class="col-sm-2 col-form-label">Berat</label>
+                                <div class="col-sm-5"><input type="text" name="berat_kosong" class="form-control"
+                                        placeholder="Kosong">
                                 </div>
-                            </div>
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Berat Max</label>
-                                <div class="col-sm-10"><input type="text" name="berat_max" class="form-control"></div>
+                                <div class="col-sm-5"><input type="text" name="berat_max" class="form-control"
+                                        placeholder="Max"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Model Mesin</label>
@@ -147,11 +393,14 @@
                                 <div class="col-sm-10"><input type="text" name="tenaga_max" class="form-control"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Gambar</label>
-                                <div class="col-sm-10"><input type="text" name="gambar" class="form-control"></div>
+                            <div class="form-group row">
+                                <div class="custom-file">
+                                    <input id="gambarm" type="file" class="custom-file-input" name="gambar">
+                                    <label for="gambarm" class="custom-file-label">Gambar</label>
+                                </div>
                             </div>
                             <div class="hr-line-dashed"></div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Jenis</label>
+                            <div class="form-group row"><label class="col-sm-2 col-form-label">Jenis</label>
                                 <div class="col-sm-10">
                                     <select class="form-control m-b" name="id_jenis">
                                         @foreach($jenis_kendaraan as $jk)
@@ -173,6 +422,13 @@
                                 </div>
                             </div>
                         </form>
+                        <script>
+                            document.querySelector('.custom-file-input').addEventListener('change',function(e){
+                                var fileName = document.getElementById("gambarm").files[0].name;
+                                var nextSibling = e.target.nextElementSibling
+                                nextSibling.innerText = fileName
+                                });
+                        </script>
                         @elseif(auth()->user()->group_id == 3 || auth()->user()->group_id == 4)
                         <form method="post" action="{{url('kendaraan/c')}}">
                             @csrf
@@ -180,11 +436,33 @@
                                 <div class="col-sm-10">
                                     <select class="form-control m-b" name="id_kendaraan">
                                         @foreach($kendaraan as $knd)
+                                        <?php
+                                            $deskripsi = json_decode($knd['deskripsi'], true);
+                                            $deskripsi_key = array_keys($deskripsi);
+                                        ?>
                                         @if(isset($kendaraan->first()->id) && $knd['id'] ==
                                         $kendaraan->first()->id)
-                                        <option value="{{$knd['id']}}" selected>{{$knd['no']}}</option>
+                                        <option value="{{$knd['id']}}" selected>
+                                            <table>
+                                                @foreach($deskripsi_key as $key)
+                                                <tr>
+                                                    <td><strong>{{$key}}</strong></td>
+                                                    <td>{{$deskripsi[$key]}}</td>
+                                                </tr>
+                                                @endforeach
+                                            </table>
+                                        </option>
                                         @else
-                                        <option value="{{$knd['id']}}">{{$knd['no']}}</option>
+                                        <option value="{{$knd['id']}}" selected>
+                                            <table>
+                                                @foreach($deskripsi_key as $key)
+                                                <tr>
+                                                    <td><strong>{{$key}}</strong></td>
+                                                    <td>{{$deskripsi[$key]}}</td>
+                                                </tr>
+                                                @endforeach
+                                            </table>
+                                        </option>
                                         @endif
                                         @endforeach
                                     </select>
@@ -240,6 +518,7 @@
                 </div>
             </div>
         </div>
+        @yield('kendaraan')
     </div>
     <div class="footer">
         <div>
@@ -303,6 +582,8 @@
                     };
                     toastr.success('Sistem Informasi Ekspedisi', 'Selamat datang di Octomoda');
 
-                }, 1300);
+                },
+            1300);
+    });
 </script>
 @endsection

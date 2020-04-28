@@ -32,8 +32,7 @@ class Kendaraan extends Migration
 
         Schema::create('kendaraan', function(Blueprint $table) {
             $table->id();
-            $table->string('no');
-            $table->string('merk');
+            $table->string('deskripsi');
             $table->string('ukuran');
             $table->string('berat');
             $table->text('spesifikasi');

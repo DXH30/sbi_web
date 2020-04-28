@@ -16,7 +16,8 @@ class UsersTableSeeder extends Seeder
             ['name' => 'admin'],
             ['name' => 'asosiasi'],
             ['name' => 'perusahaan'],
-            ['name' => 'professional']
+            ['name' => 'professional'],
+            ['name' => 'user']
         ];
 
         DB::table('groups')->insert($groupdata);

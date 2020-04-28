@@ -39,38 +39,41 @@ Route::get('/dashboard', 'DashboardController')->name('dashboard');
 Route::get('/profile', 'DashboardController@profile')->name('profile')->middleware('verified');
 Route::post('/profile/{a}', 'DashboardController@profile');
 
-Route::get('/kategori', 'DashboardController@kategori')->name('kategori');
-Route::get('/kategori/{a}', 'DashboardController@kategori');
-Route::post('/kategori/{a}', 'DashboardController@kategori');
-
-Route::get('/keanggotaan', 'DashboardController@keanggotaan');
-Route::post('/keanggotaan/{a}', 'DashboardController@keanggotaan');
 Route::get('/vtoken', 'TokenController@verify');
 Route::post('/vtoken/{a}', 'TokenController@verify');
 
-Route::get('/rayon', 'DashboardController@rayon')->name('rayon');
-Route::get('/rayon/{a}', 'DashboardController@rayon');
-Route::post('/rayon/{a}', 'DashboardController@rayon');
+Route::middleware(['check_profile', 'token_verified'])->group(function () {
+    Route::get('/kategori', 'DashboardController@kategori')->name('kategori');
+    Route::get('/kategori/{a}', 'DashboardController@kategori');
+    Route::post('/kategori/{a}', 'DashboardController@kategori');
 
-Route::get('/data_rayon', 'DashboardController@data_rayon')->name('data_rayon');
-Route::get('/data_rayon/{a}', 'DashboardController@data_rayon');
-Route::post('/data_rayon/{a}', 'DashboardController@data_rayon');
+    Route::get('/keanggotaan', 'DashboardController@keanggotaan')->name('keanggotaan');
+    Route::post('/keanggotaan/{a}', 'DashboardController@keanggotaan');
 
-Route::get('/lokasi', 'DashboardController@lokasi')->name('lokasi');
-Route::get('/lokasi/{a}', 'DashboardController@lokasi');
-Route::post('/lokasi/{a}', 'DashboardController@lokasi');
+    Route::get('/rayon', 'DashboardController@rayon')->name('rayon');
+    Route::get('/rayon/{a}', 'DashboardController@rayon');
+    Route::post('/rayon/{a}', 'DashboardController@rayon');
 
-Route::get('/mode_transportasi', 'DashboardController@mode_transportasi')->name('mode_transportasi');
-Route::get('/mode_transportasi/{a}', 'DashboardController@mode_transportasi');
-Route::post('/mode_transportasi/{a}', 'DashboardController@mode_transportasi');
+    Route::get('/data_rayon', 'DashboardController@data_rayon')->name('data_rayon');
+    Route::get('/data_rayon/{a}', 'DashboardController@data_rayon');
+    Route::post('/data_rayon/{a}', 'DashboardController@data_rayon');
 
-Route::get('/jenis_kendaraan', 'DashboardController@jenis_kendaraan')->name('jenis_kendaraan');
-Route::get('/jenis_kendaraan/{a}', 'DashboardController@jenis_kendaraan');
-Route::post('/jenis_kendaraan/{a}', 'DashboardController@jenis_kendaraan');
+    Route::get('/lokasi', 'DashboardController@lokasi')->name('lokasi');
+    Route::get('/lokasi/{a}', 'DashboardController@lokasi');
+    Route::post('/lokasi/{a}', 'DashboardController@lokasi');
 
-Route::get('/kendaraan', 'DashboardController@kendaraan')->name('kendaraan');
-Route::get('/kendaraan/{a}', 'DashboardController@kendaraan');
-Route::post('/kendaraan/{a}', 'DashboardController@kendaraan');
+    Route::get('/mode_transportasi', 'DashboardController@mode_transportasi')->name('mode_transportasi');
+    Route::get('/mode_transportasi/{a}', 'DashboardController@mode_transportasi');
+    Route::post('/mode_transportasi/{a}', 'DashboardController@mode_transportasi');
+
+    Route::get('/jenis_kendaraan', 'DashboardController@jenis_kendaraan')->name('jenis_kendaraan');
+    Route::get('/jenis_kendaraan/{a}', 'DashboardController@jenis_kendaraan');
+    Route::post('/jenis_kendaraan/{a}', 'DashboardController@jenis_kendaraan');
+
+    Route::get('/kendaraan', 'DashboardController@kendaraan')->name('kendaraan');
+    Route::get('/kendaraan/{a}', 'DashboardController@kendaraan');
+    Route::post('/kendaraan/{a}', 'DashboardController@kendaraan');
+});
 
 // Provinsi, Kecamatan, Kabupaten
 Route::get('/getProvinsi', 'ApiController@getProvinsi');

@@ -9,8 +9,7 @@ class Kendaraan extends Model
     protected $table = 'kendaraan';
 
     protected $fillable = [
-        'no',
-        'merk',
+        'deskripsi',
         'ukuran',
         'berat',
         'spesifikasi',

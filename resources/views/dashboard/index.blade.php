@@ -411,10 +411,10 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>No</th>
-                                    <th>Merk</th>
-                                    <th>Ukuran</th>
+                                    <th>Hapus</th>
+                                    <th>Deskripsi</th>
+                                    <th>Ukuran Karoseri</th>
+                                    <th>Ukuran Mobil</th>
                                     <th>Berat</th>
                                     <th>Spesifikasi</th>
                                     <th>Gambar</th>
@@ -424,19 +424,46 @@
                             <tbody>
                                 @foreach($kendaraan as $knd)
                                 <tr>
-                                    <td>{{$knd['id']}}</td>
-                                    <td>{{$knd['no']}}</td>
-                                    <td>{{$knd['merk']}}</td>
+                                    <td>
+                                        <a href="{{url('/kendaraan/d?id=').$knd['id']}}" class="btn btn-danger">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        $berat = json_decode($knd['berat'], true);
+                                        $berat_key = array_keys($berat);
+                                        ?>
+                                        <table>
+                                            @foreach($berat_key as $key)
+                                            <tr>
+                                                <td><strong>{{$key}}</strong></td>
+                                                <td>{{$berat[$key]}}</td>
+                                            </tr>
+                                            @endforeach
+                                        </table>
+                                    </td>
                                     <td>
                                         <?php
                                         $ukuran = json_decode($knd['ukuran'], true);
-                                        $ukuran_key = array_keys($ukuran);
+                                        $ukuran_k_key = array_keys($ukuran['ukuran_karoseri']);
+                                        $ukuran_m_key = array_keys($ukuran['ukuran_mobil']);
                                         ?>
                                         <table>
-                                            @foreach($ukuran_key as $key)
+                                            @foreach($ukuran_k_key as $key)
                                             <tr>
                                                 <td><strong>{{$key}}</strong></td>
-                                                <td>{{$ukuran[$key]}}</td>
+                                                <td>{{$ukuran['ukuran_karoseri'][$key]}}</td>
+                                            </tr>
+                                            @endforeach
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table>
+                                            @foreach($ukuran_m_key as $key)
+                                            <tr>
+                                                <td><strong>{{$key}}</strong></td>
+                                                <td>{{$ukuran['ukuran_mobil'][$key]}}</td>
                                             </tr>
                                             @endforeach
                                         </table>
@@ -600,6 +627,7 @@
                     };
                     toastr.success('Sistem Informasi Ekspedisi', 'Selamat datang di Octomoda');
 
-                }, 1300);
+                }, 1300)
+    });
 </script>
 @endsection
