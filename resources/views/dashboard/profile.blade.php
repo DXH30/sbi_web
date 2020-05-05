@@ -151,6 +151,51 @@
                                         value="{{$asosiasi->first()->telp_kantor ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
+                            <div class="form-group row"><label class="col-sm-2 col-form-label">Alamat Kantor</label>
+                                <div class="col-sm-10"><input type="text" name="alamat_kantor" class="form-control"
+                                        value="{{$asosiasi->first()->alamat_kantor ?? ''}}"></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group row"><label class="col-sm-2 col-form-label">Kabupaten/Kota</label>
+                                <div class="col-sm-10"><input type="text" name="kab_id" class="form-control"
+                                        value="{{$asosiasi->first()->kab_id ?? ''}}"></div>
+                            </div>
+			    <div class="hr-line-dashed"></div>
+                            <div class="form-group row"><label class="col-sm-2 col-form-label">Provinsi</label>
+                                <div class="col-sm-10"><input type="text" name="prov_id" class="form-control"
+                                        value="{{$asosiasi->first()->prov_id ?? ''}}"></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group row"><label class="col-sm-2 col-form-label">Kode Pos</label>
+                                <div class="col-sm-10"><input type="text" name="kode_pos" class="form-control"
+                                        value="{{$asosiasi->first()->kode_pos ?? ''}}"></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group row"><label class="col-sm-2 col-form-label">Website</label>
+                                <div class="col-sm-10"><input type="text" name="website" class="form-control"
+                                        value="{{$asosiasi->first()->website ?? ''}}"></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group row"><label class="col-sm-2 col-form-label">No. Akta Notaris</label>
+                                <div class="col-sm-10"><input type="text" name="no_akta_notaris" class="form-control"
+                                        value="{{$asosiasi->first()->no_akta_notaris ?? ''}}"></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group row"><label class="col-sm-2 col-form-label">No. Kemenkumham</label>
+                                <div class="col-sm-10"><input type="text" name="no_kemenkumham" class="form-control"
+                                        value="{{$asosiasi->first()->no_kemenkumham ?? ''}}"></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group row"><label class="col-sm-2 col-form-label">Nama Wakil</label>
+                                <div class="col-sm-10"><input type="text" name="nama_wakil" class="form-control"
+                                        value="{{$asosiasi->first()->nama_wakil ?? ''}}"></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group row"><label class="col-sm-2 col-form-label">Jabatan</label>
+                                <div class="col-sm-10"><input type="text" name="jabatan" class="form-control"
+                                        value="{{$asosiasi->first()->jabatan ?? ''}}"></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">NPWP</label>
                                 <div class="col-sm-10"><input type="text" name="npwp" class="form-control"
                                         value="{{$asosiasi->first()->npwp ?? ''}}"></div>
@@ -314,7 +359,7 @@
                             <div class="form-group row">
                                 <div class="custom-file">
                                     <input id="logo" type="file" class="custom-file-input" name="logo_perusahaan">
-                                    <label for="logo" class="custom-file-label">Logo Perusahaan</label>
+                                <label for="logo" class="custom-file-label">{{$perusahaan->first()->logo_perusahaan ?? 'Logo Perusahaan'}}</label>
                                 </div>
                             </div>
                             <div class="form-group row">

@@ -13,41 +13,7 @@ class Perusahaan extends Migration
      */
     public function up()
     {
-        Schema::create('jenis', function(Blueprint $table) {
-            $table->id('id_jenis');
-            $table->string('nama');
-        });
-
-        Schema::create('provinsi', function(Blueprint $table){
-            $table->id('id_prov');
-            $table->string('nama');
-        });
-
-        Schema::create('kabupaten', function(Blueprint $table) {
-            $table->id('id_kab');
-            $table->unsignedBigInteger('id_prov');
-            $table->foreign('id_prov')->references('id_prov')->on('provinsi');
-            $table->string('nama');
-            $table->unsignedBigInteger('id_jenis');
-            $table->foreign('id_jenis')->references('id_jenis')->on('jenis');
-        });
-
-        Schema::create('kecamatan', function(Blueprint $table) {
-            $table->id('id_kec');
-            $table->unsignedBigInteger('id_kab');
-            $table->foreign('id_kab')->references('id_kab')->on('kabupaten');
-            $table->string('nama');
-        });
-
-        Schema::create('kelurahan', function(Blueprint $table) {
-            $table->id('id_kel');
-            $table->unsignedBigInteger('id_kec');
-            $table->foreign('id_kec')->references('id_kec')->on('kecamatan');
-            $table->string('nama');
-            $table->unsignedBigInteger('id_jenis');
-            $table->foreign('id_jenis')->references('id_jenis')->on('jenis');
-        });
-
+        
         Schema::create('perusahaan', function(Blueprint $table) {
             $table->id();
             $table->string('nama');

@@ -26,8 +26,8 @@
         <form class="m-t" role="form" action="{{route('login')}}" method="post">
             @csrf
             <div class="form-group">
-                <input id="name" type="name" class="form-control @error('name') is-invalid @enderror"
-                    name="name" value="{{ old('name') }}" required placeholder="Username / Email" autofocus>
+                <input id="name" type="name" class="form-control @error('name') is-invalid @enderror" name="name"
+                    value="{{ old('name') }}" required placeholder="Username / Email" autofocus>
                 @error('name')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -59,7 +59,7 @@
                 </div>
             </div>
 
-            <a href=""><small>{{ __('Lupa Password ?') }}</small></a>
+            <a href="{{route('password.request')}}"><small>{{ __('Lupa Password ?') }}</small></a>
             <p class="text-muted text-center"><small>Belum punya akun ?</small></p>
             <a class="btn btn-sm btn-white btn-block" href="register">Buat akun</a>
         </form>

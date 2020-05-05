@@ -20,7 +20,9 @@
                             elseif(auth()->user()->group_id == 2):
                             $logo = asset('img/profile').'/'.$asosiasi->where('user_id', Auth::id())->first()['logo_asosiasi'];
                             elseif(auth()->user()->group_id == 3):
+                            $logo = asset('img/profile').'/'.$perusahaan->where('user_id', Auth::id())->first()['logo_perusahaan'];
                             elseif(auth()->user()->group_id == 4):
+                            $logo = asset('img/profile').'/'.$professional->where('user_id', Auth::id())->first()['logo_professional'];
                             endif
                             ?>
                             <img alt="image" width="50px" height="50px" class="rounded-circle" src="{{$logo ?? 'img/profile_small.jpg'}}">

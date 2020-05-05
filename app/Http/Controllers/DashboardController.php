@@ -122,6 +122,15 @@ class DashboardController extends Controller
                     'nama' => 'required',
                     'telp_kantor' => 'required',
                     'npwp' => 'required',
+		    'alamat_kantor' => 'required',
+		    'kab_id' => 'required',
+		    'prov_id' => 'required',
+		    'kode_pos' => 'required',
+		    'website' => 'required',
+		    'no_akta_notaris' => 'required',
+		    'no_kemenkumham' => 'required',
+		    'nama_wakil' => 'required',
+		    'jabatan' => 'required',
                     'ketua_umum' => 'required',
                     'nik_ketum' => 'required',
                     'no_hp' => 'required',
@@ -133,9 +142,19 @@ class DashboardController extends Controller
                 $data_in->nama = $request->nama;
                 $data_in->telp_kantor = $request->telp_kantor;
                 $data_in->npwp = $request->npwp;
+		$data_in->alamat_kantor = $request->alamat_kantor;
+		$data_in->kab_id = $request->kab_id;
+		$data_in->prov_id = $request->prov_id;
+		$data_in->kode_pos = $request->kode_pos;
+		$data_in->website = $request->website;
+		$data_in->no_akta_notaris = $request->no_akta_notaris;
+		$data_in->no_kemenkumham = $request->no_kemenkumham;
+		$data_in->nama_wakil = $request->nama_wakil;
+		$data_in->jabatan = $request->jabatan;
                 $data_in->ketua_umum = $request->ketua_umum;
                 $data_in->nik_ketum = $request->nik_ketum;
                 $data_in->no_hp = $request->no_hp;
+
                 if (isset(Asosiasi::get()->where('user_id', Auth::id())->first()['logo_asosiasi']))
                     $filename = Asosiasi::get()->where('user_id', Auth::id())->first()['logo_asosiasi'];
                 else
@@ -170,7 +189,8 @@ class DashboardController extends Controller
                     'jabatan' => 'required',
                     'no_hp' => 'required',
                     'asos_id' => 'required',
-                    'rayon_id' => 'required'
+                    'rayon_id' => 'required',
+                    'logo_perusahaan' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
                 ]);
 
                 $data_in = Perusahaan::firstOrNew(array('user_id' => Auth::id()));
@@ -192,14 +212,25 @@ class DashboardController extends Controller
                 $data_in->user_id = Auth::id();
                 $data_in->asos_id = $request->asos_id;
                 $data_in->rayon_id = $request->rayon_id;
+		
+		if (isset(Perusahaan::get()->where('user_id', Auth::id())->first()['logo_perusahaan']))
+                    $filename = Perusahaan::get()->where('user_id', Auth::id())->first()['logo_perusahaan'];
+                else
+                    $filename = 'perusahaan_' . Auth::id() . "." . $request->logo_perusahaan->extension();
+                $data_in->logo_perusahaan = $filename;
+
+                $data_in->user_id = Auth::id();
                 if ($validator->fails()) {
-                    return redirect()->back()->withErrors(["Mohon lengkapi data terlebih dahulu"]);
+                    $errors = $validator->errors();
+                    return redirect()->back()->withErrors($errors);
                 } else {
                     $data_in->save();
+                    if (isset($request->logo_perusahaan))
+                        $request->logo_perusahaan->move(public_path('img/profile'), $filename);
                     User::where('id', Auth::id())->update(['have_profile' => 1]);
                     return redirect()->back();
-                }
-            } else if (Auth::user()->group_id == 4) {
+                }		
+	    } else if (Auth::user()->group_id == 4) {
                 $validator = Validator::make($request->all(), [
                     'nama' => 'required',
                     'email' => 'required',
@@ -507,6 +538,10 @@ class DashboardController extends Controller
 
     public function kendaraan($a = NULL, Request $request)
     {
+	if (isset($request->jn))
+	    $jenis = $request->jn;
+	else
+	    $jenis = 0;
         if ($a == 'c') {
             // Untuk input jenis kendaraan (asosiasi)
             if (Auth::user()->group_id == 1) {
@@ -526,7 +561,7 @@ class DashboardController extends Controller
                     'kap_silinder' => 'required',
                     'kecepatan_max' => 'required',
                     'tenaga_max' => 'required',
-                    'gambar' => 'image|mimes:jpeg,png,jpg,gif,svg|max: max',
+                    'gambar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
                     'id_jenis' => 'required'
                 ]);
 
@@ -543,11 +578,11 @@ class DashboardController extends Controller
                     'lebar' => $request->ukuran_mobil_l,
                     'tinggi' => $request->ukuran_mobil_t,
                 ];
-                $data_in->deskripsi = [
+                $data_in->deskripsi = json_encode([
                     'deskripsi' => $request->deskripsi,
                     'no' => $request->no,
                     'merk' => $request->merk
-                ];
+                ]);
                 $data_in->ukuran = json_encode([
                     'ukuran_karoseri' => $ukuran_karoseri,
                     'ukuran_mobil' => $ukuran_mobil
@@ -565,7 +600,8 @@ class DashboardController extends Controller
                     'tenaga_max' => $request->tenaga_max,
                 ]);
 
-                $filename = Hash::make(date('Y-m-d h:i:s')) . "." . $request->gambar->extension();
+                $filename =  Kendaraan::get()->count()+1 .".". $request->gambar->extension();
+
                 $data_in->gambar = $filename;
 
                 $data_in->id_jenis = $request->id_jenis;
@@ -574,6 +610,7 @@ class DashboardController extends Controller
                 } else {
                     if (isset($request->gambar))
                         $request->gambar->move(public_path('img/kendaraan'), $filename);
+		 #   dd($data_in->getAttributes());
                     $data_in->save();
                     return redirect()->back();
                 }
@@ -583,14 +620,14 @@ class DashboardController extends Controller
             // Untuk input ketersediaan kendaraan (profesional)
             if (Auth::user()->group_id == 3 || Auth::user()->group_id == 4) {
                 $validator = Validator::make($request->all(), [
-                    'id_kendaraan' => 'required',
+                    'id' => 'required',
                     'id_letter' => 'required',
                     'id_status' => 'required',
                     'jumlah' => 'required'
                 ]);
 
                 $data_in = new KetersediaanKendaraan();
-                $data_in->id_kendaraan = $request->id_kendaraan;
+                $data_in->id_kendaraan = $request->id;
                 $data_in->id_user = Auth::id();
                 $data_in->id_letter = $request->id_letter;
                 $data_in->id_status = $request->id_status;
@@ -619,12 +656,21 @@ class DashboardController extends Controller
         } else {
             $obj = [
                 'jenis_kendaraan' => JenisKendaraan::get(),
-                'kendaraan' => Kendaraan::get(),
                 'rayon' => Rayon::get(),
                 'data_rayon' => DataRayon::get(),
                 'lokasi' => Lokasi::get(),
-                'status_kendaraan' => StatusKendaraan::get()
+		'status_kendaraan' => StatusKendaraan::get(),
+		'ketersediaan_kendaraan' => KetersediaanKendaraan::get(),
+		'mode_transportasi' => ModeTransportasi::get(),
+		'asosiasi' => Asosiasi::get(),
+                'perusahaan' => Perusahaan::get(),
+                'professional' => Professional::get(),
+		'kendaraan' => Kendaraan::get()->where('id_jenis', $jenis)
+
             ];
+	    if (isset($jenis))
+		$obj['kendaraan'] = Kendaraan::get()->where('id_jenis', $jenis);
+	    
             return view('dashboard.kendaraan', $obj);
         }
     }

@@ -249,8 +249,10 @@
                                                 <td>{{$usaha['no_hp']}}</td>
                                             </tr>
                                             <tr>
-                                                <th>Logo Perusahaan</th>
-                                                <td>{{$usaha['logo_perusahaan']}}</td>
+					    	<td>Logo</td>
+                                                <td>
+                                                    <img width="100px" src='{{asset('img/profile/').'/'.$usaha['logo_perusahaan']}}'>
+                                                </td>
                                             </tr>
                                         </table>
                                     </td>

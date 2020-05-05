@@ -27,6 +27,41 @@ class Asosiasi extends Migration
             $table->id();
             $table->string('lettercode');
             $table->string('lokasi');
+	});
+
+	Schema::create('jenis', function(Blueprint $table) {
+            $table->id('id_jenis');
+            $table->string('nama');
+        });
+
+        Schema::create('provinsi', function(Blueprint $table){
+            $table->id('id_prov');
+            $table->string('nama');
+        });
+
+        Schema::create('kabupaten', function(Blueprint $table) {
+            $table->id('id_kab');
+            $table->unsignedBigInteger('id_prov');
+            $table->foreign('id_prov')->references('id_prov')->on('provinsi');
+            $table->string('nama');
+            $table->unsignedBigInteger('id_jenis');
+            $table->foreign('id_jenis')->references('id_jenis')->on('jenis');
+        });
+
+        Schema::create('kecamatan', function(Blueprint $table) {
+            $table->id('id_kec');
+            $table->unsignedBigInteger('id_kab');
+            $table->foreign('id_kab')->references('id_kab')->on('kabupaten');
+            $table->string('nama');
+        });
+
+        Schema::create('kelurahan', function(Blueprint $table) {
+            $table->id('id_kel');
+            $table->unsignedBigInteger('id_kec');
+            $table->foreign('id_kec')->references('id_kec')->on('kecamatan');
+            $table->string('nama');
+            $table->unsignedBigInteger('id_jenis');
+            $table->foreign('id_jenis')->references('id_jenis')->on('jenis');
         });
 
         Schema::create('asosiasi', function(Blueprint $table) {
@@ -35,6 +70,17 @@ class Asosiasi extends Migration
             $table->foreign('kat_id')->references('id')->on('kategori')->onDelete('cascade');
             $table->string('nama');
             $table->string('telp_kantor');
+	    $table->string('alamat_kantor');
+	    $table->unsignedBigInteger('kab_id');
+	    $table->foreign('kab_id')->references('id_kab')->on('kabupaten')->onDelete('cascade');
+	    $table->unsignedBigInteger('prov_id');
+	    $table->foreign('prov_id')->references('id_prov')->on('provinsi')->onDelete('cascade');
+	    $table->string('kode_pos');
+	    $table->string('website');
+	    $table->string('no_akta_notaris');
+	    $table->string('no_kemenkumham');
+	    $table->string('nama_wakil');
+	    $table->string('jabatan');
             $table->string('npwp');
             $table->string('ketua_umum');
             $table->string('nik_ketum');
