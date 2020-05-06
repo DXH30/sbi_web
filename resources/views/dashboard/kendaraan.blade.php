@@ -122,7 +122,7 @@
                                     </td>
 				    <td>
 					<?php
-					$dkendaraan = $kendaraan->where('id', $kknd['id'])->first()['deskripsi'];
+					$dkendaraan = $kendaraanl->where('id', $kknd['id_kendaraan'])->first()['deskripsi'];
 					if(isset($dkendaraaan)):
                                         $deskripsi = json_decode($dkendaraan, true);
                                         $deskripsi_key = array_keys($deskripsi);
@@ -403,15 +403,9 @@
                                 });
                         </script>
                         @elseif(auth()->user()->group_id == 3 || auth()->user()->group_id == 4)
-			@foreach($mode_transportasi as $mt)
-			<ul>
-				<li>{{$mt['mode']}}
-				@foreach($jenis_kendaraan->where('mode_id', $mt['id']) as $jk)
-					<a href="{{url('kendaraan?jn=').$jk['id']}}" class="btn btn-info">{{$jk['jenis']}}</a>
+				@foreach($jenis_kendaraan as $jk)
+					<a href="{{url('kendaraan?&mt=').$mt.'&jn='.$jk['id']}}" class="btn btn-info">{{$jk['jenis']}}</a>
 				@endforeach
-				</li>
-			</ul>
-			@endforeach
                         <table class="table">
                             <thead>
                                 <tr>

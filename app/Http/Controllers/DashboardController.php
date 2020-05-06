@@ -665,13 +665,19 @@ class DashboardController extends Controller
 		'asosiasi' => Asosiasi::get(),
                 'perusahaan' => Perusahaan::get(),
                 'professional' => Professional::get(),
-		'kendaraan' => Kendaraan::get()->where('id_jenis', $jenis)
+		'kendaraan' => Kendaraan::get()->where('id_jenis', $jenis),
+		'kendaraanl' => Kendaraan::get(),
 
             ];
 	    if (isset($jenis))
-		$obj['kendaraan'] = Kendaraan::get()->where('id_jenis', $jenis);
-	    
-            return view('dashboard.kendaraan', $obj);
+		$obj['kendaraan'] = Kendaraan::get()->where('id_jenis', $jenis); 
+	    if (!isset($_GET['mt'])) {
+		return view('dashboard.kendaraan_pilih', $obj);
+	    } else {
+                $obj['jenis_kendaraan'] = JenisKendaraan::get()->where('mode_id', $_GET['mt']);
+		$obj['mt'] = $_GET['mt'];
+		return view('dashboard.kendaraan', $obj);
+	    }
         }
     }
 

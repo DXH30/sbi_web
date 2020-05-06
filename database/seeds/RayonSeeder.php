@@ -12,9 +12,10 @@ class RayonSeeder extends Seeder
     public function run()
     {
         $rayon_list = [
-            ['nama' => 'Rayon 1'],
-            ['nama' => 'Rayon 2'],
-            ['nama' => 'Rayon 3']
+            ['nama' => 'DPP (Dewan Pimpinan Pusat)'],
+            ['nama' => 'DPW (Dewan Pimpinan Wilayah)'],
+            ['nama' => 'DPC (Dewan Pimpinan Cabang)'],
+            ['nama' => 'DPD (Dewan Pimpinan Daerah)']
         ];
         DB::table('rayon')->insert($rayon_list);
     }
