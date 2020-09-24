@@ -18,11 +18,29 @@
                             if(auth()->user()->group_id == 1):
                             $logo = 'img/profile_small.jpg';
                             elseif(auth()->user()->group_id == 2):
-                            $logo = asset('img/profile').'/'.$asosiasi->where('user_id', Auth::id())->first()['logo_asosiasi'];
+                                if($asosiasi->where('user_id', Auth::id())->first() !== NULL) {
+                                    $logo = asset('img/profile').'/'.$asosiasi->where('user_id', Auth::id())->first()['logo_asosiasi'];
+                                } else {
+                                    $logo = "";
+                                }
                             elseif(auth()->user()->group_id == 3):
-                            $logo = asset('img/profile').'/'.$perusahaan->where('user_id', Auth::id())->first()['logo_perusahaan'];
+                                if($perusahaan->where('user_id', Auth::id())->first() !== NULL) {
+                                    $logo = asset('img/profile').'/'.$perusahaan->where('user_id', Auth::id())->first()['logo_perusahaan'];
+                                } else {
+                                    $logo = "";
+                                }
                             elseif(auth()->user()->group_id == 4):
-                            $logo = asset('img/profile').'/'.$professional->where('user_id', Auth::id())->first()['logo_professional'];
+                                if ($professional->where('user_id', Auth::id())->first() !== NULL) {
+                                    $logo = asset('img/profile').'/'.$professional->where('user_id', Auth::id())->first()['logo_professional'];
+                                } else {
+                                    $logo = "";
+                                }
+                            elseif(auth()->user()->group_id == 6):
+                                if ($asosiasi->where('user_id', Auth::id())->first() !== NULL) {
+                                    $logo = asset('img/profile').'/'.$asosiasi->where('user_id', Auth::id())->first()['logo_asosiasi'];
+                                } else {
+                                    $logo = "";
+                                }
                             endif
                             ?>
                             <img alt="image" width="50px" height="50px" class="rounded-circle" src="{{$logo ?? 'img/profile_small.jpg'}}">
@@ -54,13 +72,29 @@
                             <li><a href="{{url('mode_transportasi')}}">Mode Transportasi</a></li>
                             <li><a href="{{url('jenis_kendaraan')}}">Jenis Kendaraan</a></li>
                             <li><a href="{{url('kendaraan')}}">Kendaraan</a></li>
-                            <li><a href="{{url('lokasi')}}">Lokasi</a></li>
+                            <li>
+                            <a href="#">Lokasi <span class="fa arrow"></span></a>
+                              <ul class="nav nav-third-level">
+                                <li><a href="{{url('lettercode')}}">Lettercode</a></li>
+                                <li><a href="{{url('kode_pos')}}">Kode Pos</a></li>
+                                <li><a href="{{url('bandara')}}">Bandara</a></li>
+                                <li><a href="{{url('pelabuhan')}}">Pelabuhan</a></li>
+                                <li><a href="{{url('stasiun')}}">Stasiun</a></li>
+                                <li><a href="{{url('terminal')}}">Terminal</a></li>
+                              </ul>
+                            </li>
                             <li><a href="{{url('keanggotaan')}}">Keanggotaan</a></li>
                             @elseif(auth()->user()->group_id == 2)
                             <li><a href="{{url('keanggotaan')}}">Keanggotaan</a></li>
+                            <li><a href="{{url('iuran')}}">Iuran</a></li>
                             <li><a href="{{url('data_rayon')}}">Data Rayon</a></li>
+                            <li><a href="{{url('agenda')}}">Agenda</a></li>
                             @elseif(auth()->user()->group_id == 3 || auth()->user()->group_id == 4)
+                            <li><a href="{{url('daftar_asosiasi')}}">Daftar Asosiasi</a></li>
+                            <li><a href="{{url('iuran')}}">Iuran</a></li>
                             <li><a href="{{url('kendaraan')}}">+ Kendaraan</a></li>
+                            @elseif(auth()->user()->group_id == 6)
+                            <li><a href="{{url('keanggotaan')}}">Keanggotaan</a></li>
                             @endif
                         </ul>
                     </li>

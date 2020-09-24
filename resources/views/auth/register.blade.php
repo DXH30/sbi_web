@@ -11,6 +11,7 @@
 <link href="{{ asset('css/plugins/iCheck/custom.css') }}" rel="stylesheet">
 <link href="{{ asset('css/animate.css') }}" rel="stylesheet">
 <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 @endsection
 @section('content')
 <div class="middle-box text-center loginscreen   animated fadeInDown">
@@ -41,7 +42,18 @@
                 </div>
                 <div class="form-group">
                     <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name"
-                        value="{{ old('name') }}" required autocomplete="name" placeholder="{{ __('Name') }}" autofocus>
+                        value="{{ old('name') }}" required autocomplete="name" placeholder="{{ __('Username') }}" autofocus>
+                        <script>
+                        $("input#name").on({
+keydown: function(e) {
+if (e.which === 32)
+return false;
+},
+change: function() {
+this.value = this.value.replace(/\s/g, "");
+}
+});
+                        </script>
                     @error('name')
                     <span class="invalid-feedback" role="alert">
                         <strong>{{ $message }}</strong>

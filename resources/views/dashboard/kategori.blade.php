@@ -14,6 +14,9 @@
 <!-- Gritter -->
 <link href="{{asset('js/plugins/gritter/jquery.gritter.css')}}" rel="stylesheet">
 
+<!-- Sweetalert -->
+<link href="{{asset('css/plugins/sweetalert/sweetalert.css')}}" rel="stylesheet">
+
 <link href="{{asset('css/animate.css')}}" rel="stylesheet">
 <link href="{{asset('css/style.css')}}" rel="stylesheet">
 
@@ -181,7 +184,8 @@
 <!-- Toastr -->
 <script src="{{asset('js/plugins/toastr/toastr.min.js')}}"></script>
 
-
+<!-- Sweetalert -->
+<script src="{{asset('js/plugins/sweetalert/sweetalert.min.js')}}"></script>
 <script>
     $(document).ready(function() {
                 setTimeout(function() {
@@ -194,5 +198,19 @@
                     toastr.success('Sistem Informasi Ekspedisi', 'Selamat datang di Octomoda');
 
                 }, 1300);
+    });
+    $('.btn-danger').on('click', function(e) {
+        e.preventDefault();
+        var link = $(this).attr('href');
+        swal({
+            title: "Apakah anda yakin ?",
+            text: "Menghapus kategori ini",
+            showCancelButton: true,
+            closeOnConfirm: false,
+        }, function() {
+            window.location.href = link;
+        });
+    });
+
 </script>
 @endsection

@@ -16,13 +16,14 @@ class Perusahaan extends Migration
         
         Schema::create('perusahaan', function(Blueprint $table) {
             $table->id();
+            $table->string('noanggota')->nullable();
             $table->string('nama');
             $table->string('email');
             $table->string('alamat');
-            $table->unsignedBigInteger('id_kab');
-            $table->foreign('id_kab')->references('id_kab')->on('kabupaten');
-            $table->unsignedBigInteger('id_prov');
-            $table->foreign('id_prov')->references('id_prov')->on('provinsi');
+            $table->unsignedBigInteger('kab_id');
+            $table->foreign('kab_id')->references('id_kab')->on('kabupaten')->onDelete('cascade');
+            $table->unsignedBigInteger('prov_id');
+            $table->foreign('prov_id')->references('id_prov')->on('provinsi')->onDelet('cascade');
             $table->unsignedInteger('telp');
             $table->string('website');
             $table->string('no_akta_notaris');
@@ -34,11 +35,11 @@ class Perusahaan extends Migration
             $table->string('no_hp');
             $table->string('logo_perusahaan');
             $table->unsignedBigInteger('user_id')->unique();
-            $table->foreign('user_id')->references('id')->on('users');
-            $table->unsignedBigInteger('asos_id');
-            $table->foreign('asos_id')->references('id')->on('asosiasi');
-            $table->unsignedBigInteger('rayon_id');
-            $table->foreign('rayon_id')->references('id')->on('data_rayon');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->unsignedBigInteger('asos_id')->nullable();
+            $table->foreign('asos_id')->references('id')->on('asosiasi')->onDelete('cascade');
+            $table->unsignedBigInteger('rayon_id')->nullable();
+            $table->foreign('rayon_id')->references('id')->on('data_rayon')->onDelete('cascade');
             $table->timestamps();
         });
     }

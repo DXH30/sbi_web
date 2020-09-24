@@ -17,6 +17,9 @@
 <link href="{{asset('css/animate.css')}}" rel="stylesheet">
 <link href="{{asset('css/style.css')}}" rel="stylesheet">
 
+{{-- Datatable --}}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.css"/>
+
 <style type="text/css">
     .jqstooltip {
         position: absolute;
@@ -120,9 +123,9 @@
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </td>
-				    <td>
-					<?php
-					$dkendaraan = $kendaraanl->where('id', $kknd['id_kendaraan'])->first()['deskripsi'];
+                                    <td>
+                                        <?php
+					$dkendaraan = $kendaraanl->where('id', $kknd['id_kendaraan'])->first()['deskripsi'] ?? '';
 					if(isset($dkendaraaan)):
                                         $deskripsi = json_decode($dkendaraan, true);
                                         $deskripsi_key = array_keys($deskripsi);
@@ -135,10 +138,10 @@
                                             </tr>
                                             @endforeach
                                         </table>
-					<?php endif ?>
+                                        <?php endif ?>
                                     </td>
                                     <td>
-				    	{{$lokasi->where('id', $kknd['id_letter'])->first()['lettercode']}}
+                                        {{$lokasi->where('id', $kknd['id_letter'])->first()['lettercode']}}
                                     </td>
                                     <td>{{$kknd['jumlah']}}</td>
                                 </tr>
@@ -149,7 +152,7 @@
                 </div>
             </div>
         </div>
-	@endsection
+        @endsection
 
         @section('kendaraan')
         <div class="row">
@@ -171,36 +174,41 @@
                     </div>
                     <div class="ibox-content">
                         <h1>Kendaraan</h1>
-                        <table class="table">
+                        <table id="tabel_kendaraan" class="table" width="100%">
                             <thead>
                                 <tr>
-                                    <th>Hapus</th>
-                                    <th>Gambar</th>
+                                    <th></th>
                                     <th>Deskripsi</th>
                                     <th>Ukuran Karoseri</th>
                                     <th>Ukuran Mobil</th>
                                     <th>Berat</th>
                                     <th>Spesifikasi</th>
-                                    <th>Jenis</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($kendaraan as $knd)
+                                @foreach($kendaraanl as $knd)
                                 <tr>
                                     <td>
+                                        <img width="120px" src='{{asset('img/kendaraan/').'/'.$knd['gambar']}}'>
                                         <a href="{{url('/kendaraan/d?id=').$knd['id']}}" class="btn btn-danger">
                                             <i class="fa fa-trash"></i>
                                         </a>
+                                        <a href="{{url('/edit/kendaraan?id=').$knd['id']}}" class="btn btn-success">
+                                            <i class="fa fa-pencil"></i>
+                                        </a>
                                     </td>
-				    <td>
-				    	<img width="100px" src='{{asset('img/kendaraan/').'/'.$knd['gambar']}}'>
-				    </td>
                                     <td>
                                         <?php
                                         $deskripsi = json_decode($knd['deskripsi'], true);
                                         $deskripsi_key = array_keys($deskripsi);
                                         ?>
                                         <table>
+                                            <tr>
+                                                <th>Jenis</th>
+                                                <td>
+                                                    {{$jenis_kendaraan->where('id', $knd['id_jenis'])->first()['jenis']}}
+                                                </td>
+                                            </tr>
                                             @foreach($deskripsi_key as $key)
                                             <tr>
                                                 <td><strong>{{$key}}</strong></td>
@@ -262,7 +270,7 @@
                                             @endforeach
                                         </table>
                                     </td>
-                                    <td>{{$jenis_kendaraan->where('id', $knd['id_jenis'])->first()['jenis']}}</td>
+                                    <td></td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -390,7 +398,6 @@
                             <div class="hr-line-dashed"></div>
                             <div class="form-group row">
                                 <div class="col-sm-4 col-sm-offset-2">
-                                    <button class="btn btn-white btn-sm" type="submit">Hapus</button>
                                     <button class="btn btn-primary btn-sm" type="submit">Simpan</button>
                                 </div>
                             </div>
@@ -403,9 +410,10 @@
                                 });
                         </script>
                         @elseif(auth()->user()->group_id == 3 || auth()->user()->group_id == 4)
-				@foreach($jenis_kendaraan as $jk)
-					<a href="{{url('kendaraan?&mt=').$mt.'&jn='.$jk['id']}}" class="btn btn-info">{{$jk['jenis']}}</a>
-				@endforeach
+                        @foreach($jenis_kendaraan as $jk)
+                        <a href="{{url('kendaraan?&mt=').$mt.'&jn='.$jk['id']}}"
+                            class="btn btn-info">{{$jk['jenis']}}</a>
+                        @endforeach
                         <table class="table">
                             <thead>
                                 <tr>
@@ -418,10 +426,10 @@
                                 @foreach($kendaraan as $knd)
                                 <form method="post" action="{{url('kendaraan/c')}}">
                                     @csrf
-				    <tr>
-					<td>
-					    <img width="100px" src='{{asset('img/kendaraan/').'/'.$knd['gambar']}}'>
-					</td>
+                                    <tr>
+                                        <td>
+                                            <img width="100px" src='{{asset('img/kendaraan/').'/'.$knd['gambar']}}'>
+                                        </td>
                                         <td>
                                             <input type="hidden" name="id" value="{{$knd['id']}}">
                                             <?php
@@ -446,18 +454,70 @@
                                             </div>
                                             <div class="hr-line-dashed"></div>
                                             <div class="row col-sm-12">
-                                                <label class="col-form-label col-sm-2" for="id_letter">Lokasi</label>
+                                                @if($_GET['mt'] == 1)
+                                                <label class="col-form-label col-sm-2" for="id_terminal">Terminal</label>
+                                                <div class="col-sm-10">
+                                                    <select class="form-control m-b" id="id_terminal" name="id_terminal">
+                                                        @foreach($terminal as $lk)
+                                                        <option value="{{$lk['id']}}">
+                                                            {{$lk['kode']}} :
+                                                            {{$lk['nama']}}
+                                                        </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                @elseif($_GET['mt'] == 2)
+                                                <label class="col-form-label col-sm-2" for="id_pelabuhan">Pelabuhan</label>
+                                                <div class="col-sm-10">
+                                                    <select class="form-control m-b" id="id_pelabuhan" name="id_pelabuhan">
+                                                        @foreach($pelabuhan as $lk)
+                                                        <option value="{{$lk['id']}}">
+                                                            {{$lk['kode']}} :
+                                                            {{$lk['nama']}}
+                                                        </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                @elseif($_GET['mt'] == 4)
+                                                <label class="col-form-label col-sm-2" for="id_stasiun">Stasiun</label>
+                                                <div class="col-sm-10">
+                                                    <select class="form-control m-b" id="id_stasiun" name="id_stasiun">
+                                                        @foreach($stasiun as $lk)
+                                                        <option value="{{$lk['id']}}">
+                                                            {{$lk['kode']}} :
+                                                            {{$lk['nama']}}
+                                                        </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                @elseif($_GET['mt'] == 3)
+                                                <label class="col-form-label col-sm-2" for="id_bandara">Bandara</label>
+                                                <div class="col-sm-10">
+                                                    <select class="form-control m-b" id="id_bandara" name="id_bandara">
+                                                        @foreach($bandara as $lk)
+                                                        <option value="{{$lk['id']}}">
+                                                            {{$lk['kode']}} :
+                                                            {{$lk['nama']}}
+                                                        </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                @endif
+                                            </div>
+                                            <div class="hr-line-dashed"></div>
+                                            <div class="row col-sm-12">
+                                                <label class="col-form-label col-sm-2" for="id_letter">Kode Pos</label>
                                                 <div class="col-sm-10">
                                                     <select class="form-control m-b" name="id_letter">
-                                                        @foreach($lokasi as $lk)
+                                                        @foreach($kode_pos as $lk)
                                                         <option value="{{$lk['id']}}">
-                                                            {{$lk['lettercode']}} :
-                                                            {{$lk['lokasi']}}
+                                                            {{$lk['kode']}}
                                                         </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                             </div>
+
                                             <div class="hr-line-dashed"></div>
                                             <div class="row col-sm-12">
                                                 <label class="col-form-label col-sm-2" for="id_status">Status
@@ -487,11 +547,11 @@
                 </div>
             </div>
         </div>
-	@if(auth()->user()->group_id == 1):
-	@yield('kendaraan')
+        @if(auth()->user()->group_id == 1)
+        @yield('kendaraan')
         @elseif(auth()->user()->group_id == 3 || auth()->user()->group_id == 4)
         @yield('ketersediaan_kendaraan')
-	@endif
+        @endif
     </div>
     <div class="footer">
         <div>
@@ -505,6 +565,7 @@
 
 <!-- Mainly scripts -->
 <script src="{{asset('js/jquery-3.1.1.min.js')}}"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.21/datatables.min.js"></script>
 <script src="{{asset('js/popper.min.js')}}"></script>
 <script src="{{asset('js/bootstrap.js')}}"></script>
 <script src="{{asset('js/plugins/metisMenu/jquery.metisMenu.js')}}"></script>

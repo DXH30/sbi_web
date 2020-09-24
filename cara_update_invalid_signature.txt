@@ -1,0 +1,3 @@
+/var/www/html/didik/sbi_web/vendor/laravel/framework/src/Illuminate/Routing/UrlGenerator.php
+di function hasCorrectSignature
+url = str_replace("http://","https://", $url);

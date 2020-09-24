@@ -13,6 +13,9 @@ class Perusahaan extends Model
         'email',
         'alamat',
         'kota_id',
-        'provinsi_id'
+        'provinsi_id',
+        'nib',
+        'kode_kbli',
+        'nama_kbli'
     ];
 }

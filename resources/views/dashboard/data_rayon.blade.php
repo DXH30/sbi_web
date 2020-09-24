@@ -105,6 +105,9 @@
                                     <th>Hapus</th>
                                     <th>Rayon</th>
                                     <th>Wilayah</th>
+                                    <th>Parent</th>
+                                    <th>Username</th>
+                                    <th>Password</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -117,13 +120,28 @@
                                     </td>
                                     <td>{{$rayon->where('id', $dr['id_rayon'])->first()['nama']}}</td>
                                     <td>{{$dr['wilayah']}}</td>
+                                    <td>
+                                        <?php
+$id_parent = $dr['id_parent'];
+try {
+$data_parent = $data_rayon->where('id', $id_parent)->first();
+$nama = $rayon->where('id', $data_parent['id_rayon'])->first()['nama'];
+$wilayah = $data_rayon->where('id', $id_parent)->first()['wilayah'];
+echo $nama.' : '.$wilayah;
+} catch (Exception $e) {
+    echo "";
+}
+                                        ?>
+                                    </td>
+                                    <td>{{$user->where('id', $dr['user_id'])->first()['name']}}</td>
+                                    <td>{{$dr['default_password']}}</td>
                                 </tr>
                                 @endforeach
                                 <tr>
                                     <form action="{{url('/data_rayon/c')}}" method="post">
                                         @csrf
                                         <td><button class="btn btn-info submit"><i class="fa fa-plus"></i></button></td>
-                                        <td>
+                                        <td id="kolom_rayon">
                                             <select class="form-control" name="id_rayon" id="id_rayon">
                                                 @foreach($rayon as $ray)
                                                 <option value="{{$ray['id']}}">{{$ray['nama']}}</option>
@@ -133,6 +151,45 @@
                                         <td>
                                             <input type="text" class="form-control" name="wilayah">
                                         </td>
+                                        <td>
+                                            <select class="form-control" name="id_parent" id="id_parent">
+                                            </select>
+        
+                                            <script>
+var kolom_rayon = document.getElementById('kolom_rayon');
+var rayon_input = document.getElementById('id_rayon');
+var parent_input = document.getElementById('id_parent');
+var tambahParent = function() {
+    if (rayon_input.value == 1) {
+        parent_input.innerHTML = ""; 
+    } else if (rayon_input.value == 2) {
+        parent_input.innerHTML = `
+            @foreach($dpp as $d)
+            <option value='{{$d['id']}}'>DPP {{$d['wilayah']}}</option>
+            @endforeach
+            `;
+    } else if (rayon_input.value == 3) {
+        parent_input.innerHTML = `
+            @foreach($dpw as $d)
+            <option value='{{$d['id']}}'>DPW {{$d['wilayah']}}</option>
+            @endforeach
+            `;
+    } else if (rayon_input.value == 4) {
+        parent_input.innerHTML = `
+            @foreach($dpc as $d)
+            <option value='{{$d['id']}}'>DPC {{$d['wilayah']}}</option>
+            @endforeach
+            `;
+    } else {
+        parent_input.innerHTML = "";
+    }
+};
+rayon_input.addEventListener('click', tambahParent, false);
+                                            </script>
+
+                                        </td>
+                                        <td>NULL</td>
+                                        <td>NULL</td>
                                     </form>
                                 </tr>
                             </tbody>
@@ -194,16 +251,17 @@
 
 
 <script>
-    $(document).ready(function() {
-                setTimeout(function() {
-                    toastr.options = {
-                        closeButton: true,
-                        progressBar: true,
-                        showMethod: 'slideDown',
-                        timeOut: 4000
-                    };
-                    toastr.success('Sistem Informasi Ekspedisi', 'Selamat datang di Octomoda');
+$(document).ready(function() {
+    setTimeout(function() {
+        toastr.options = {
+        closeButton: true,
+            progressBar: true,
+            showMethod: 'slideDown',
+            timeOut: 4000
+    };
+        toastr.success('Sistem Informasi Ekspedisi', 'Selamat datang di Octomoda');
 
-                }, 1300);
-</script>
+    }, 1300);
+    });
+    </script>
 @endsection

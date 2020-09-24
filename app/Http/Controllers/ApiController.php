@@ -8,6 +8,19 @@ use App\Provinsi;
 use App\Kecamatan;
 use App\Kabupaten;
 use App\Kelurahan;
+use App\DataRayon;
+use App\ConsulBarang;
+use App\PortHandling;
+use App\Konsolidator;
+use App\RegulatedAgent;
+use App\AirportWarehouse;
+use App\Packing;
+use App\AgentCargo;
+use App\PortToPort;
+use App\DoorToDoor;
+use App\Gudang;
+use App\OrderTruckServices;
+
 
 class ApiController extends Controller
 {
@@ -74,5 +87,127 @@ class ApiController extends Controller
                 $kelurahan = Kelurahan::where(['id_kec' => $id_kec, 'id_kel' => $id_kel])->get();
         }
         return response()->json($kelurahan);
+    }
+
+    public function getDataRayon($id_asos = NULL) {
+        if ($id_asos == NULL) {
+          $data_rayon = DataRayon::get();
+        } else {
+            $data_rayon = DataRayon::select('data_rayon.*', 'rayon.nama')
+                ->where(['id_asos' => $id_asos])
+                                  ->leftJoin('rayon', 'data_rayon.id_rayon', '=', 'rayon.id')
+                                  ->get();
+        }
+        return response()->json($data_rayon);
+    }
+
+    public function getConsulBarang($id_user = NULL) {
+        if ($id_user == NULL) {
+          $data_consul = ConsulBarang::get();
+        } else {
+          $data_consul = ConsulBarang::where(['user_id' => $id_user])
+                                    ->get();
+        }
+        return response()->json($data_consul);
+    }
+
+    public function getPortHandling($id_user = NULL) {
+        if ($id_user == NULL) {
+          $data_port = PortHandling::get();
+        } else {
+          $data_port = PortHandling::where(['user_id' => $id_user])
+                                    ->get();
+        }
+        return response()->json($data_port);
+    }
+
+    public function getKonsolidator($id_user = NULL) {
+        if ($id_user == NULL) {
+          $data_konsolidator = Konsolidator::get();
+        } else {
+          $data_konsolidator = Konsolidator::where(['user_id' => $id_user])
+                                    ->get();
+        }
+        return response()->json($data_konsolidator);
+    }
+
+    public function getRegulatedAgent($id_user = NULL) {
+        if ($id_user == NULL) {
+          $data_regulated = RegulatedAgent::get();
+        } else {
+          $data_regulated = RegulatedAgent::where(['user_id' => $id_user])
+                                    ->get();
+        }
+        return response()->json($data_regulated);
+    }
+
+    public function getAirportWarehouse($id_user = NULL) {
+        if ($id_user == NULL) {
+          $data_airport = AirportWarehouse::get();
+        } else {
+          $data_airport = AirportWarehouse::where(['user_id' => $id_user])
+                                    ->get();
+        }
+        return response()->json($data_airport);
+    }
+
+    public function getPacking($id_user = NULL) {
+        if ($id_user == NULL) {
+          $data_packing = Packing::get();
+        } else {
+          $data_packing = Packing::where(['user_id' => $id_user])
+                                    ->get();
+        }
+        return response()->json($data_packing);
+    }
+
+    public function getAgentCargo($id_user = NULL) {
+        if ($id_user == NULL) {
+          $data_agent = AgentCargo::get();
+        } else {
+          $data_agent = AgentCargo::where(['user_id' => $id_user])
+                                    ->get();
+        }
+        return response()->json($data_agent);
+    }
+
+    public function getPortToPort($id_user = NULL) {
+        if ($id_user == NULL) {
+          $data_port = PortToPort::get();
+        } else {
+          $data_port = PortToPort::where(['user_id' => $id_user])
+                                    ->get();
+        }
+        return response()->json($data_port);
+    }
+
+    public function getDoorToDoor($id_user = NULL) {
+        if ($id_user == NULL) {
+          $data_door = DoorToDoor::get();
+        } else {
+          $data_door = DoorToDoor::where(['user_id' => $id_user])
+                                    ->get();
+        }
+        return response()->json($data_door);
+    }
+
+    public function getGudang($id_user = NULL) {
+        if ($id_user == NULL) {
+          $data_gudang = Gudang::get();
+        } else {
+          $data_gudang = Gudang::where(['user_id' => $id_user])
+                                    ->get();
+        }
+        return response()->json($data_gudang);
+    }
+    
+    public function getOrderTruckServices($id_user = NULL) {
+        if ($id_user == NULL) {
+          $data_truck = OrderTruckServices::get();
+        } else {
+          $data_truck = OrderTruckServices::where(['user_id' => $id_user])
+                                    ->get();
+        }
+        return response()->json($data_truck);
     }
 }

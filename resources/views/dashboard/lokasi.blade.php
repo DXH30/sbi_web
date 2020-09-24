@@ -85,7 +85,7 @@
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div class="col-lg-12">
-                <div class="ibox ">
+                <div class="ibox">
                     <div class="ibox-title">
                         <h5>Form isian Lettercode</h5>
                         <div class="ibox-tools">
@@ -111,7 +111,7 @@
                                 @foreach($lokasi as $letter)
                                 <tr>
                                     <td>
-                                        <a href="{{url('/lokasi/d?id=').$letter['id']}}" class="btn btn-danger">
+                                        <a href="{{url('/lettercode/d?id=').$letter['id']}}" class="btn btn-danger">
                                             <i class="fa fa-trash"></i>
                                         </a>
                                     </td>
@@ -120,7 +120,7 @@
                                 </tr>
                                 @endforeach
                                 <tr>
-                                    <form action="{{url('/lokasi/c')}}" method="post">
+                                    <form action="{{url('/lettercode/c')}}" method="post">
                                         @csrf
                                         <td><button class="btn btn-info submit"><i class="fa fa-plus"></i></button></td>
                                         <td><input name="lettercode" class="form-control" placeholder="lettercode"></td>

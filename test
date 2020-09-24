@@ -1,0 +1,11 @@
+drop table consul_barang;
+drop table port_handling;
+drop table konsolidator;
+drop table regulated_agent;
+drop table airport_warehouse;
+drop table packing;
+drop table agent_cargo;
+drop table port_to_port;
+drop table door_to_door;
+drop table order_truck_services;
+drop table gudang;

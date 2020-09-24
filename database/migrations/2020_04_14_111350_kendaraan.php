@@ -37,7 +37,7 @@ class Kendaraan extends Migration
             $table->string('berat');
             $table->text('spesifikasi');
             $table->string('gambar');
-            $table->unsignedBigInteger('id_jenis');
+            $table->unsignedBigInteger('id_jenis')->nullable();
             $table->foreign('id_jenis')->references('id')->on('jenis_kendaraan');
         });
 
@@ -51,7 +51,7 @@ class Kendaraan extends Migration
             // $table->foreign('id_rayon')->references('id')->on('data_rayon');
             $table->unsignedBigInteger('id_letter');
             $table->foreign('id_letter')->references('id')->on('lokasi');
-            $table->unsignedBigInteger('id_status');
+            $table->unsignedBigInteger('id_status')->nullable();
             $table->foreign('id_status')->references('id')->on('status_kendaraan');
             $table->unsignedBigInteger('jumlah');
         });

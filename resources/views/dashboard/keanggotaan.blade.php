@@ -18,6 +18,9 @@
 <link href="{{asset('css/animate.css')}}" rel="stylesheet">
 <link href="{{asset('css/style.css')}}" rel="stylesheet">
 
+<!-- Sweetalert -->
+<link href="{{asset('css/plugins/sweetalert/sweetalert.css')}}" rel="stylesheet">
+
 <style type="text/css">
     .jqstooltip {
         position: absolute;
@@ -106,7 +109,7 @@
                                     <th>Terverifikasi</th>
                                     <th>Token</th>
                                     <th>Nama Asosiasi</th>
-                                    <th>Deskripsi</th>
+                                    <th>Edit/Hapus</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -130,23 +133,9 @@
                                     </td>
                                     <td>{{$ass['nama']}}</td>
                                     <td>
-                                        <table>
-                                            <tr>
-                                                <td>Telp</td>
-                                                <td>{{$ass['telp_kantor']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Ketua Umum</td>
-                                                <td>{{$ass['ketua_umum']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Logo</td>
-                                                <td>
-                                                    <img width="100px" src='{{asset('img/profile/').'/'.$ass['logo_asosiasi']}}'>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
+                                      <a class="btn btn-info" href="{{url('edit/asosiasi/').'?id='.$ass['id']}}"><i class="fa fa-pencil"></i></a>
+                                      <a class="btn btn-danger" href="{{url('keanggotaan/d').'?id='.$ass['user_id']}}"><i class="fa fa-trash"></i></a>
+                                   </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -175,21 +164,21 @@
                                     <th>Terverifikasi</th>
                                     <th>Token</th>
                                     <th>Nama</th>
-                                    <th>Deksripsi</th>
+                                    <th>Edit/Hapus</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($perusahaan as $usaha)
                                 <tr>
                                     <td>
-                                        @if($user->where('id', $usaha['user_id'])->first()['verified'])
+                                        @if($user->where('id', $usaha['user_id'])->first()['verified'] == 1)
                                         <button class='btn btn-success'><i class="fa fa-check"></i></button>
                                         @else
                                         <button class='btn btn-danger'><i class="fa fa-times"></i></button>
                                         @endif
                                     </td>
                                     <td>
-                                        @if($user->where('id', $usaha['user_id'])->first()['verified'])
+                                        @if($user->where('id', $usaha['user_id'])->first()['verified'] == 1)
                                         <button class='btn btn-success'>TERVERIFIKASI</button>
                                         @else
                                         <input type="checkbox" data-toggle="toggle"
@@ -199,62 +188,8 @@
                                     </td>
                                     <td>{{$usaha['nama']}}</td>
                                     <td>
-                                        <table>
-                                            <tr>
-                                                <th>Email</th>
-                                                <td>{{$usaha['email']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>provinsi</th>
-                                                <td>{{$usaha['id_prov']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>kabupaten</th>
-                                                <td>{{$usaha['id_kab']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Telp</th>
-                                                <td>{{$usaha['telp']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Website</th>
-                                                <td>{{$usaha['website']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>No Akta Notaris</th>
-                                                <td>{{$usaha['no_akta_notaris']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>NPWP</th>
-                                                <td>{{$usaha['npwp']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>No Kemenkumham</th>
-                                                <td>{{$usaha['no_kemenkumham']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>NIK</th>
-                                                <td>{{$usaha['nik']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Nama Wakil</th>
-                                                <td>{{$usaha['nama_wakil']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Jabatan</th>
-                                                <td>{{$usaha['jabatan']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>No Hp</th>
-                                                <td>{{$usaha['no_hp']}}</td>
-                                            </tr>
-                                            <tr>
-					    	<td>Logo</td>
-                                                <td>
-                                                    <img width="100px" src='{{asset('img/profile/').'/'.$usaha['logo_perusahaan']}}'>
-                                                </td>
-                                            </tr>
-                                        </table>
+                                        <a class="btn btn-info" href="{{url('edit/perusahaan/').'?id='.$usaha['id']}}"><i class="fa fa-pencil"></i></a>
+                                        <a class="btn btn-danger" href="{{url('keanggotaan/d').'?id='.$usaha['user_id']}}"><i class="fa fa-trash"></i></a>
                                     </td>
                                 </tr> @endforeach
                             </tbody>
@@ -280,7 +215,7 @@
                                     <th>Terverifikasi</th>
                                     <th>Token</th>
                                     <th>Nama</th>
-                                    <th>Deskripsi</th>
+                                    <th>Edit/Hapus</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -294,81 +229,14 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if($user->where('id', $usaha['user_id'])->first()['verified'])
-                                        <button class='btn btn-success'>TERVERIFIKASI</button>
-                                        @else
                                         <input type="checkbox" data-toggle="toggle"
                                             data-on="{{$user->where('id', $prof['user_id'])->first()['token']}}"
                                             data-off="cek Token" data-onstyle="success" data-offstyle="danger">
-                                        @endif
                                     </td>
                                     <td>{{$prof['nama']}}</td>
                                     <td>
-                                        <table>
-                                            <tr>
-                                                <th>Email</th>
-                                                <td>{{$prof['email']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Keahlian</th>
-                                                <td>{{$prof['keahlian']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Alamat</th>
-                                                <td>
-                                                    <table>
-                                                        <tr>
-                                                            <td>Kelurahan</td>
-                                                            <td>{{$prof['id_kel']}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Kecamatan</td>
-                                                            <td>{{$prof['id_kec']}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Kabupaten</td>
-                                                            <td>{{$prof['id_kab']}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Provinsi</td>
-                                                            <td>{{$prof['id_prov']}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Kode Pos</td>
-                                                            <td>{{$prof['kode_pos']}}</td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <th>NPWP</th>
-                                                <td>{{$prof['npwp']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Tempat/Tanggal Lahir</th>
-                                                <td>{{$prof['tempat_lahir']}}, {{$prof['tanggal_lahir']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>NIK</th>
-                                                <td>{{$prof['nik']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Nama Perusahaan</th>
-                                                <td>{{$prof['nama_perusahaan']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Email Perusahaan</th>
-                                                <td>{{$prof['email_perusahaan']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Foto</th>
-                                                <td>{{$prof['foto']}}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Foto KTP</th>
-                                                <td>{{$prof['foto_ktp']}}</td>
-                                            </tr>
-                                        </table>
+                                        <a class="btn btn-info" href="{{url('edit/professional/').'?id='.$prof['id']}}"><i class="fa fa-pencil"></i></a>
+                                        <a class="btn btn-danger" href="{{url('keanggotaan/d').'?id='.$prof['user_id']}}"><i class="fa fa-trash"></i></a>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -377,12 +245,55 @@
                     </div>
                 </div>
                 @endsection
+                @section('tabel_noanggota') <div class="ibox ">
+                    <div class="ibox-title">
+                        <h5>Professional</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>No Anggota</th>
+                                    <th>Terpakai</th>
+                                    <th>Hapus</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($noanggota as $na)
+                                <tr>
+																	<td>{{$na->nomor}}</td>
+																	<td><button class="btn btn-warning">Belum</button></td>
+                                  <td><a class="btn btn-danger" href="{{url('generate_nomor_anggota/d?id=').$na->id}}"><i class="fa fa-times"></i></td>
+                                </tr>
+                                @endforeach
+																<tr>
+																<td colspan="2">
+																<a class="btn btn-info" href="{{url('generate_nomor_anggota')}}">Generate</a>
+																</td>
+																</tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                @endsection
 
                 @if(auth()->user()->group_id == 1)
+				@yield('tabel_noanggota')
                 @yield('tabel_asosiasi')
                 @yield('tabel_perusahaan')
                 @yield('tabel_professional')
                 @elseif(auth()->user()->group_id == 2)
+                @yield('tabel_perusahaan')
+                @yield('tabel_professional')
+                @elseif(auth()->user()->group_id == 6)
                 @yield('tabel_perusahaan')
                 @yield('tabel_professional')
                 @endif
@@ -398,6 +309,9 @@
 @endsection
 
 @section('script')
+
+<!-- Sweetalert -->
+<script src="{{asset('js/plugins/sweetalert/sweetalert.min.js')}}"></script>
 
 <!-- Mainly scripts -->
 <script src="{{asset('js/jquery-3.1.1.min.js')}}"></script>
@@ -453,5 +367,26 @@
                     toastr.success('Sistem Informasi Ekspedisi', 'Selamat datang di Octomoda');
 
                 }, 1300);
+    });
+    @if (\Session::has('message'))
+        swal({
+            type: "warning",
+            title: "Gagal hapus user",
+            text: "{!! \Session::get('message') !!}"
+        });
+    @endif
+
+    $('.btn-danger').on('click', function(e) {
+        e.preventDefault();
+        var link = $(this).attr('href');
+        swal({
+            title: "Apakah anda yakin ?",
+            text: "Menghapus user ini",
+            showCancelButton: true,
+            closeOnConfirm: false,
+        }, function() {
+            window.location.href = link;
+        });
+    });
 </script>
 @endsection

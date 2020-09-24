@@ -49,6 +49,19 @@ class UsersTableSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
+            'name' => 'asosiasi_2',
+            'email' => 'asosiasi2@email.com',
+            'password' => Hash::make('password123'),
+            'email_verified_at' => date("Y-m-d H:i:s"),
+            'created_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("Y-m-d H:i:s"),
+            'group_id' => 2,
+            'have_profile' => 1,
+            'verified' => 0,
+            'token' => rand(10000,99999)
+        ]);
+
+        DB::table('users')->insert([
             'name' => 'perusahaan',
             'email' => 'perusahaan@email.com',
             'password' => Hash::make('password123'),
@@ -57,8 +70,22 @@ class UsersTableSeeder extends Seeder
             'updated_at' => date("Y-m-d H:i:s"),
             'group_id' => 3,
             'have_profile' => 1,
+            'verified' => 1,
             'token' => rand(10000,99999)
         ]);
+
+        DB::table('users')->insert([
+            'name' => 'perusahaan_2',
+            'email' => 'perusahaan2@email.com',
+            'password' => Hash::make('password123'),
+            'email_verified_at' => date("Y-m-d H:i:s"),
+            'created_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("Y-m-d H:i:s"),
+            'group_id' => 3,
+            'have_profile' => 0,
+            'token' => rand(10000,99999)
+        ]);
+
 
         DB::table('users')->insert([
             'name' => 'professional',
@@ -68,8 +95,22 @@ class UsersTableSeeder extends Seeder
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s"),
             'group_id' => 4,
+            'verified' => 1,
             'have_profile' => 1,
             'token' => rand(10000,99999)
         ]);
+
+        DB::table('users')->insert([
+            'name' => 'professional_2',
+            'email' => 'professional2@email.com',
+            'password' => Hash::make('password123'),
+            'email_verified_at' => date("Y-m-d H:i:s"),
+            'created_at' => date("Y-m-d H:i:s"),
+            'updated_at' => date("Y-m-d H:i:s"),
+            'group_id' => 4,
+            'have_profile' => 0,
+            'token' => rand(10000,99999)
+        ]);
+
     }
 }

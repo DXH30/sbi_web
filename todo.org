@@ -1,0 +1,2 @@
+ * untuk konsul barang, yang harus dilakukan adalah bagaimana cara 
+ * ketika konsul kendaraan disisi.

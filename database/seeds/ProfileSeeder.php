@@ -24,15 +24,15 @@ class ProfileSeeder extends Seeder
             'kat_id' => '1',
             'nama' => 'Asosiasi Satu',
             'telp_kantor' => '0812345678',
-	    'alamat_kantor' => 'Jl. Raya',
-	    'prov_id' => 11, 
-	    'kab_id' => 1101,
-	    'kode_pos' => '1234',
-	    'website' => 'example.com',
-	    'no_akta_notaris' => 'A1114',
-	    'no_kemenkumham' => 'BC1231',
-	    'nama_wakil' => 'Abdul Wakil',
-	    'jabatan' => 'Direktur',
+            'alamat_kantor' => 'Jl. Raya',
+            'prov_id' => 11, 
+            'kab_id' => 1101,
+            'kode_pos' => '1234',
+            'website' => 'example.com',
+            'no_akta_notaris' => 'A1114',
+            'no_kemenkumham' => 'BC1231',
+            'nama_wakil' => 'Abdul Wakil',
+            'jabatan' => 'Direktur',
             'npwp' => '999000999',
             'ketua_umum' => 'Ketua Satu',
             'nik_ketum' => '123123123123',
@@ -52,13 +52,13 @@ class ProfileSeeder extends Seeder
         ];
         DB::table('data_rayon')->insert($data_rayon_list);
 
-        // Perusahaan
+        // Perusahaan terverifikasi
         $perusahaan = [
             'nama' => 'Perusahaan Satu',
             'email' => 'abc@def.com',
             'alamat' => 'jalan',
-            'id_prov' => '11',
-            'id_kab' => '1101',
+            'prov_id' => '11',
+            'kab_id' => '1101',
             'telp' => '829301234',
             'website' => 'website.com',
             'no_akta_notaris' => 'a0123',
@@ -70,11 +70,13 @@ class ProfileSeeder extends Seeder
             'no_hp' => '08123124',
             'logo_perusahaan' => 'per_1.png',
             'user_id' => '3',
-            'asos_id' => '1',
-            'rayon_id' => '1',
+            #            'asos_id' => '1',
+            #            'rayon_id' => '1',
             'created_at' => date('Y-m-d'),
             'updated_at' => date('Y-m-d')
         ];
         DB::table('perusahaan')->insert($perusahaan);
+
+        // Perusahaan tidak terverifikasi
     }
 }

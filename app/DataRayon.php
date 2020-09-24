@@ -11,7 +11,9 @@ class DataRayon extends Model
         'id',
         'id_rayon',
         'id_asos',
-        'wilayah'
+        'wilayah',
+        'default_password',
+        'id_parent'
     ];
     public $timestamps = false;
 }

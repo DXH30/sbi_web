@@ -66,7 +66,7 @@
     </div>
     <div class="row wrapper border-bottom white-bg page-heading">
         <div class="col-lg-10">
-            <h2>Basic Form</h2>
+            <h2>Profile</h2>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
                     <a href="/home">Home</a>
@@ -87,7 +87,7 @@
             <div class="col-lg-12">
                 <div class="ibox ">
                     <div class="ibox-title">
-                        <h5>Sebelum melanjutkan <small>Mohon lengkapi profil anda terlebih dahulu</small></h5>
+                        <h5>Sebelum melanjutkan <small class="alert-danger">Mohon lengkapi profil anda terlebih dahulu</small></h5>
                         @if($errors->any())
                         <h4>{{ $errors->first() }}</h4>
                         @endif
@@ -125,6 +125,12 @@
                         @elseif(auth()->user()->group_id == 2)
                         <form method="post" enctype="multipart/form-data" action="{{url('profile/c')}}">
                             @csrf
+                            <div class="form-group row"><label for="" class="col-sm-2 col-form-label">No Anggota</label>
+                                <div class="col-sm-10"><input type="text" name="noanggota" class="form-control"
+                                        value="{{$asosiasi->first()->noanggota ?? ''}}" disabled></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+
                             <div class="form-group row">
                                 <label for="" class="col-sm-2 col-form-label">Kategori</label>
                                 <div class="col-sm-10">
@@ -146,6 +152,22 @@
                                         value="{{$asosiasi->first()->nama ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
+                            <div class="form-group row"><label class="col-sm-2 col-form-label">NIB</label>
+                                <div class="col-sm-10"><input type="text" name="nib" class="form-control"
+                                        value="{{$asosiasi->first()->nib ?? ''}}"></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group row"><label class="col-sm-2 col-form-label">Kode KBLI</label>
+                                <div class="col-sm-10"><input type="text" name="kode_kbli" class="form-control"
+                                        value="{{$asosiasi->first()->kode_kbli ?? ''}}"></div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group row"><label class="col-sm-2 col-form-label">Nama KBLI</label>
+                                <div class="col-sm-10"><input type="text" name="nama_kbli" class="form-control"
+                                        value="{{$asosiasi->first()->nama_kbli ?? ''}}"></div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">No. Telp Kantor</label>
                                 <div class="col-sm-10"><input type="text" name="telp_kantor" class="form-control"
                                         value="{{$asosiasi->first()->telp_kantor ?? ''}}"></div>
@@ -156,14 +178,29 @@
                                         value="{{$asosiasi->first()->alamat_kantor ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
-                            <div class="form-group row"><label class="col-sm-2 col-form-label">Kabupaten/Kota</label>
-                                <div class="col-sm-10"><input type="text" name="kab_id" class="form-control"
-                                        value="{{$asosiasi->first()->kab_id ?? ''}}"></div>
-                            </div>
-			    <div class="hr-line-dashed"></div>
                             <div class="form-group row"><label class="col-sm-2 col-form-label">Provinsi</label>
-                                <div class="col-sm-10"><input type="text" name="prov_id" class="form-control"
-                                        value="{{$asosiasi->first()->prov_id ?? ''}}"></div>
+                                <div class="col-sm-10">
+                                    <select class="form-control m-b" name="prov_id" id="provinsi">
+                                      @if(isset($asosiasi->first()->prov_id))
+                                        <option value="{{$asosiasi->first()->prov_id}}">
+                                        {{$provinsi->where('id_prov', $asosiasi->first()->prov_id)->first()['nama']}}
+                                        </option>
+                                      @endif
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group row"><label class="col-sm-2 col-form-label">Kabupaten/Kota</label>
+                                <div class="col-sm-10">
+                                    <select class="form-control m-b" name="kab_id" id="kabupaten">
+                                      @if(isset($asosiasi->first()->kab_id))
+                                        <option value="{{$asosiasi->first()->kab_id}}">
+                                        {{$kabupaten->where('id_kab', $asosiasi->first()->kab_id)->first()['nama']}}
+                                        </option>
+                                      @endif
+                                    </select>
+
+                                </div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group row"><label class="col-sm-2 col-form-label">Kode Pos</label>
@@ -217,9 +254,73 @@
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group row">
-                                <div class="custom-file">
-                                    <input id="logo" type="file" class="custom-file-input" name="logo_asosiasi">
-                                <label for="logo" class="custom-file-label">{{$asosiasi->first()->logo_asosiasi ?? 'Logo Asosiasi'}}</label>
+                                <label class="col-sm-2 col-form-label">Logo Asosiasi <small class="alert-info">png</small></label>
+                                <div class="col-sm-10">
+                                    <div class="custom-file">
+                                        <input id="logo" type="file" class="custom-file-input" name="logo_asosiasi">
+                                        <label for="logo" class="custom-file-label">{{$asosiasi->first()->logo_asosiasi ?? 'Logo Asosiasi'}} <small class="alert-danger">Max: 2MB</small></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Akta Notaris <small class="alert-info">pdf</small></label>
+                                <div class="col-sm-10">
+                                    <div class="custom-file">
+                                        <input id="file_akte" type="file" class="custom-file-input" name="file_akte">
+                                        <label for="file_akte" class="custom-file-label">{{$asosiasi->first()->file_akte ?? 'File Akta Notaris'}} <small class="alert-danger">Max: 20MB</small></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">NPWP</label>
+                                <div class="col-sm-10">
+                                    <div class="custom-file">
+                                        <input id="file_npwp" type="file" class="custom-file-input" name="file_npwp">
+                                        <label for="file_npwp" class="custom-file-label">{{$asosiasi->first()->file_npwp ?? 'File NPWP'}} <small class="alert-danger">Max: 2MB</small></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Kemenkumham</label>
+                                <div class="col-sm-10">
+                                    <div class="custom-file">
+                                        <input id="file_kemen" type="file" class="custom-file-input" name="file_kemen">
+                                        <label for="file_kemen" class="custom-file-label">{{$asosiasi->first()->file_kemen ?? 'File Kemen'}} <small class="alert-danger">Max: 2MB</small></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Surat Domisili <small class="alert-info">pdf</small></label>
+                                <div class="col-sm-10">
+
+                                    <div class="custom-file">
+                                        <input id="file_domisili" type="file" class="custom-file-input" name="file_domisili">
+                                        <label for="file_domisili" class="custom-file-label">{{$asosiasi->first()->file_domisili ?? 'File Domisili'}} <small class="alert-danger">Max: 2MB</small></label>
+                                    </div>
+                                </div>
+                        </div>
+                        <div class="hr-line-dashed"></div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">KTP</label>
+                                <div class="col-sm-10">
+                                    <div class="custom-file">
+                                        <input id="file_ktp" type="file" class="custom-file-input" name="file_ktp">
+                                        <label for="file_ktp" class="custom-file-label">{{$asosiasi->first()->file_ktp ?? 'File KTP'}} <small class="alert-danger">Max: 2MB</small></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Struktur</label>
+                                <div class="col-sm-10">
+                                    <div class="custom-file">
+                                        <input id="file_struktur" type="file" class="custom-file-input" name="file_struktur">
+                                        <label for="file_struktur" class="custom-file-label">{{$asosiasi->first()->file_struktur ?? 'File Struktur'}} <small class="alert-danger">Max: 2MB</small></label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
@@ -235,131 +336,164 @@
                                 var fileName = document.getElementById("logo").files[0].name;
                                 var nextSibling = e.target.nextElementSibling
                                 nextSibling.innerText = fileName
-                                });
+                            });
+
+                            document.querySelector('#file_domisili').addEventListener('change', function(e) {
+                                var fileName = document.getElementById("file_domisili").files[0].name;
+                                var nextSibling = e.target.nextElementSibling;
+                                nextSibling.innerText = fileName
+                            });
+
+                            document.querySelector('#file_akte').addEventListener('change', function(e) {
+                                var fileName = document.getElementById("file_akte").files[0].name;
+                                var nextSibling = e.target.nextElementSibling;
+                                nextSibling.innerText = fileName
+                            });
+                            document.querySelector('#file_npwp').addEventListener('change', function(e) {
+                                var fileName = document.getElementById("file_npwp").files[0].name;
+                                var nextSibling = e.target.nextElementSibling;
+                                nextSibling.innerText = fileName
+                            });
+                            document.querySelector('#file_kemen').addEventListener('change', function(e) {
+                                var fileName = document.getElementById("file_kemen").files[0].name;
+                                var nextSibling = e.target.nextElementSibling;
+                                nextSibling.innerText = fileName
+                            });
+                            document.querySelector('#file_domisili').addEventListener('change', function(e) {
+                                var fileName = document.getElementById("file_domisili").files[0].name;
+                                var nextSibling = e.target.nextElementSibling;
+                                nextSibling.innerText = fileName
+                            });
+                            document.querySelector('#file_ktp').addEventListener('change', function(e) {
+                                var fileName = document.getElementById("file_ktp").files[0].name;
+                                var nextSibling = e.target.nextElementSibling;
+                                nextSibling.innerText = fileName
+                            });
+                            document.querySelector('#file_struktur').addEventListener('change', function(e) {
+                                var fileName = document.getElementById("file_struktur").files[0].name;
+                                var nextSibling = e.target.nextElementSibling;
+                                nextSibling.innerText = fileName
+                            });
                         </script>
                         @elseif(auth()->user()->group_id == 3)
                         <form method="post" enctype="multipart/form-data" action="{{url('profile/c')}}">
                             @csrf
                             <div class="form-group row"><label for="" class="col-sm-2 col-form-label">Asosiasi</label>
                                 <div class="col-sm-10">
-                                    <select name="asos_id" id="" class="form-control">
+                                    <select name="asos_id" id="asosiasi" class="form-control">
                                         @foreach($asosiasi_list as $asos)
                                         <option value="{{$asos['id']}}">{{$asos['nama']}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
+
                             <div class="hr-line-dashed"></div>
                             <div class="form-group row">
                                 <label for="" class="col-sm-2 col-form-label">Rayon</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control" name="rayon_id" id="rayon_id">
+                                    <select class="form-control" name="rayon_id" id="data_rayon">
                                         @foreach($data_rayon as $dr)
                                         <option value="{{$dr['id']}}">
-                                            {{$rayon->where('id', $dr['id_rayon'])->first()['nama']}} :
-                                            {{$dr['wilayah']}}
+                                        {{$rayon->where('id', $dr['id_rayon'])->first()['nama']}} :
+                                        {{$dr['wilayah']}}
                                         </option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Nama Perusahaan</label>
+
+                            <div class="form-group row"><label class="col-sm-2 col-form-label">Nama Perusahaan</label>
                                 <div class="col-sm-10"><input type="text" name="nama" class="form-control"
-                                        value="{{$perusahaan->first()->nama ?? ''}}"></div>
+                                                                                      value="{{$perusahaan->first()->nama ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Email</label>
                                 <div class="col-sm-10"><input type="email" name="email" class="form-control"
-                                        value="{{$perusahaan->first()->email ?? ''}}"></div>
+                                                                                        value="{{$perusahaan->first()->email ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Alamat</label>
                                 <div class="col-sm-10"><input type="text" name="alamat" class="form-control"
-                                        value="{{$perusahaan->first()->alamat ?? ''}}"></div>
+                                                                                        value="{{$perusahaan->first()->alamat ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Provinsi</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-b" name="id_prov">
-                                        @foreach($provinsi as $prov)
-                                        @if(isset($perusahaan->first()->id_prov) && $prov['id_prov'] ==
-                                        $perusahaan->first()->id_prov)
-                                        <option value="{{$prov['id_prov']}}" selected>{{$prov['nama']}}</option>
-                                        @else
-                                        <option value="{{$prov['id_prov']}}">{{$prov['nama']}}</option>
+                                    <select class="form-control m-b" name="prov_id" id="provinsi">
+                                        @if(isset($perusahaan->first()->prov_id))
+                                        <option value="{{$perusahaan->first()->prov_id}}">
+                                        {{$provinsi->where('id_prov', $perusahaan->first()->prov_id)->first()->nama}}
+                                        </option>
                                         @endif
-                                        @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Kabupaten</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-b" name="id_kab">
-                                        @foreach($kabupaten as $kab)
-                                        @if(isset($perusahaan->first()->id_kab) && $prov['id_kab'] ==
-                                        $perusahaan->first()->id_kab)
-                                        <option value="{{$kab['id_kab']}}" selected>{{$kab['nama']}}</option>
-                                        @else
-                                        <option value="{{$kab['id_kab']}}">{{$kab['nama']}}</option>
+                                    <select class="form-control m-b" name="kab_id" id="kabupaten">
+                                        @if(isset($perusahaan->first()->kab_id))
+                                        <option value="{{$perusahaan->first()->kab_id}}">
+                                        {{$kabupaten->where('id_kab', $perusahaan->first()->kab_id)->first()->nama}}
+                                        </option>
                                         @endif
-                                        @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Telp</label>
                                 <div class="col-sm-10"><input type="text" name="telp" class="form-control"
-                                        value="{{$perusahaan->first()->telp ?? ''}}"></div>
+                                                                                      value="{{$perusahaan->first()->telp ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Website</label>
                                 <div class="col-sm-10"><input type="text" name="website" class="form-control"
-                                        value="{{$perusahaan->first()->website ?? ''}}"></div>
+                                                                                         value="{{$perusahaan->first()->website ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">No Akta Notaris</label>
                                 <div class="col-sm-10"><input type="text" name="no_akta_notaris" class="form-control"
-                                        value="{{$perusahaan->first()->no_akta_notaris ?? ''}}">
+                                                                                                 value="{{$perusahaan->first()->no_akta_notaris ?? ''}}">
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">NPWP</label>
                                 <div class="col-sm-10"><input type="text" name="npwp" class="form-control"
-                                        value="{{$perusahaan->first()->npwp ?? ''}}"></div>
+                                                                                      value="{{$perusahaan->first()->npwp ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">No Kemenkumham</label>
                                 <div class="col-sm-10"><input type="text" name="no_kemenkumham" class="form-control"
-                                        value="{{$perusahaan->first()->no_kemenkumham ?? ''}}">
+                                                                                                value="{{$perusahaan->first()->no_kemenkumham ?? ''}}">
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">NIK</label>
                                 <div class="col-sm-10"><input type="text" name="nik" class="form-control"
-                                        value="{{$perusahaan->first()->nik ?? ''}}"></div>
+                                                                                     value="{{$perusahaan->first()->nik ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Nama Wakil</label>
                                 <div class="col-sm-10"><input type="text" name="nama_wakil" class="form-control"
-                                        value="{{$perusahaan->first()->nama_wakil ?? ''}}"></div>
+                                                                                            value="{{$perusahaan->first()->nama_wakil ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Jabatan</label>
                                 <div class="col-sm-10"><input type="text" name="jabatan" class="form-control"
-                                        value="{{$perusahaan->first()->jabatan ?? ''}}"></div>
+                                                                                         value="{{$perusahaan->first()->jabatan ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">No HP</label>
                                 <div class="col-sm-10"><input type="text" name="no_hp" class="form-control"
-                                        value="{{$perusahaan->first()->no_hp ?? ''}}"></div>
+                                                                                       value="{{$perusahaan->first()->no_hp ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group row">
                                 <div class="custom-file">
                                     <input id="logo" type="file" class="custom-file-input" name="logo_perusahaan">
-                                <label for="logo" class="custom-file-label">{{$perusahaan->first()->logo_perusahaan ?? 'Logo Perusahaan'}}</label>
+                                    <label for="logo" class="custom-file-label">{{$perusahaan->first()->logo_perusahaan ?? 'Logo Perusahaan'}}</label>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -374,124 +508,155 @@
                             @csrf
                             <div class="form-group row"><label for="" class="col-sm-2 col-form-label">Asosiasi</label>
                                 <div class="col-sm-10">
-                                    <select name="asos_id" id="" class="form-control">
+                                    <select name="asos_id" id="asosiasi" class="form-control">
                                         @foreach($asosiasi_list as $asos)
                                         <option value="{{$asos['id']}}">{{$asos['nama']}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
+
                             <div class="hr-line-dashed"></div>
                             <div class="form-group row">
                                 <label for="" class="col-sm-2 col-form-label">Rayon</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control" name="rayon_id" id="rayon_id">
-                                        @foreach($data_rayon as $dr)
-                                        <option value="{{$dr['id']}}">
-                                            {{$rayon->where('id', $dr['id_rayon'])->first()['nama']}} :
-                                            {{$dr['wilayah']}}
-                                        </option>
-                                        @endforeach
+                                    <select class="form-control" name="rayon_id" id="data_rayon">
                                     </select>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Nama</label>
                                 <div class="col-sm-10"><input type="text" name="nama" class="form-control"
-                                        value="{{$professional->first()->nama ?? ''}}"></div>
+                                                                                      value="{{$professional->first()->nama ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Email</label>
                                 <div class="col-sm-10"><input type="email" name="email" class="form-control"
-                                        value="{{$professional->first()->email ?? ''}}"></div>
+                                                                                        value="{{$professional->first()->email ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Keahlian</label>
                                 <div class="col-sm-10"><input type="text" name="keahlian" class="form-control"
-                                        value="{{$professional->first()->keahlian ?? ''}}"></div>
+                                                                                          value="{{$professional->first()->keahlian ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Alamat</label>
                                 <div class="col-sm-10"><input type="text" name="alamat" class="form-control"
-                                        value="{{$professional->first()->alamat ?? ''}}"></div>
+                                                                                        value="{{$professional->first()->alamat ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">RTRW</label>
                                 <div class="col-sm-10"><input type="text" name="rtrw" class="form-control"
-                                        value="{{$professional->first()->rtrw ?? ''}}"></div>
+                                                                                      value="{{$professional->first()->rtrw ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Provinsi</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-b" name="id_prov" id="provinsi">
+                                    <select class="form-control m-b" name="prov_id" id="provinsi">
+                                        @if(isset($professional->first()->prov_id))
+                                        <option value="{{$professional->first()->prov_id}}">
+                                        {{$provinsi->where('id_prov', $professional->first()->prov_id)->first()->nama}}
+                                        </option>
+                                        @endif
                                     </select>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Kabupaten</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-b" name="id_kab" id="kabupaten">
+                                    <select class="form-control m-b" name="kab_id" id="kabupaten">
+                                        @if(isset($professional->first()->kab_id))
+                                        <option value="{{$professional->first()->kab_id}}">
+                                        {{$kabupaten->where('id_kab', $professional->first()->kab_id)->first()->nama}}
+                                        </option>
+                                        @endif
                                     </select>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Kecamatan</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-b" name="id_kec" id="kecamatan">
+                                    <select class="form-control m-b" name="kec_id" id="kecamatan">
+                                        @if(isset($professional->first()->kec_id))
+                                        <option value="{{$professional->first()->kec_id}}">
+                                        {{$kecamatan->where('id_kec', $professional->first()->kec_id)->first()->nama}}
+                                        </option>
+                                        @endif
                                     </select>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Kelurahan</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control m-b" name="id_kel" id="kelurahan">
+                                    <select class="form-control m-b" name="kel_id" id="kelurahan">
+                                        @if(isset($professional->first()->kel_id))
+                                        <option value="{{$professional->first()->kel_id}}">
+                                        {{$kelurahan->where('id_kel', $professional->first()->kel_id)->first()['nama']}}
+                                        </option>
+                                        @endif
                                     </select>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Kode Pos</label>
                                 <div class="col-sm-10"><input type="text" name="kode_pos" class="form-control"
-                                        value="{{$professional->first()->kode_pos ?? ''}}"></div>
+                                                                                          value="{{$professional->first()->kode_pos ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">NPWP</label>
                                 <div class="col-sm-10"><input type="text" name="npwp" class="form-control"
-                                        value="{{$professional->first()->npwp ?? ''}}"></div>
+                                                                                      value="{{$professional->first()->npwp ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Tempat Lahir</label>
                                 <div class="col-sm-10"><input type="text" name="tempat_lahir" class="form-control"
-                                        value="{{$professional->first()->tempat_lahir ?? ''}}"></div>
+                                                                                              value="{{$professional->first()->tempat_lahir ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Tanggal Lahir</label>
                                 <div class="col-sm-10"><input type="date" name="tanggal_lahir" class="form-control"
-                                        value="{{$professional->first()->tanggal_lahir ?? ''}}"></div>
+                                                                                               value="{{$professional->first()->tanggal_lahir ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">NIK</label>
                                 <div class="col-sm-10"><input type="text" name="nik" class="form-control"
-                                        value="{{$professional->first()->nik ?? ''}}"></div>
+                                                                                     value="{{$professional->first()->nik ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Nama Perusahaan</label>
                                 <div class="col-sm-10"><input type="text" name="nama_perusahaan" class="form-control"
-                                        value="{{$professional->first()->nama_perusahaan ?? ''}}"></div>
+                                                                                                 value="{{$professional->first()->nama_perusahaan ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row"><label class="col-sm-2 col-form-label">Email Perusahaan</label>
                                 <div class="col-sm-10"><input type="text" name="email_perusahaan" class="form-control"
-                                        value="{{$professional->first()->email_perusahaan ?? ''}}"></div>
+                                                                                                  value="{{$professional->first()->email_perusahaan ?? ''}}"></div>
                             </div>
                             <div class="hr-line-dashed"></div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Foto</label>
-                                <div class="col-sm-10"><input type="text" name="foto" class="form-control"
-                                        value="{{$professional->first()->foto ?? ''}}"></div>
+                            <div class="form-group row">
+                                <div class="custom-file">
+                                    <input id="logo" type="file" class="custom-file-input" name="foto">
+                                    <label for="logo" class="custom-file-label">{{$professional->first()->foto ?? 'Foto Professional'}}</label>
+                                </div>
                             </div>
                             <div class="hr-line-dashed"></div>
-                            <div class="form-group  row"><label class="col-sm-2 col-form-label">Foto KTP</label>
-                                <div class="col-sm-10"><input type="text" name="foto_ktp" class="form-control"
-                                        value="{{$professional->first()->foto_ktp ?? ''}}"></div>
+                            <div class="form-group row">
+                                <div class="custom-file">
+                                    <input id="logo" type="file" class="custom-file-input" name="foto_ktp">
+                                    <label for="logo" class="custom-file-label">{{$professional->first()->foto_ktp ?? 'Foto KTP'}}</label>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashesd"></div>
+                            <div class="form-group row">
+                                <div class="custom-file">
+                                    <input id="logo_kk" type="file" class="custom-file-input" name="file_kk">
+                                    <label for="logo_kk" type="custom-file-label">{{$professional->first()->file_kk ?? 'Foto KK'}}</label>
+                                </div>
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group row">
+                                <div class="custom-file">
+                                </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-sm-4 col-sm-offset-2">
@@ -500,6 +665,23 @@
                                 </div>
                             </div>
                         </form>
+                        @elseif(auth()->user()->group_id == 6) 
+<table class="table table-stripped">
+<tbody>
+<tr>
+<th>Wilayah</th><td>{{$data_rayon['wilayah']}}</td>
+</tr>
+<tr>
+<th>Username</th><td>{{$user->where('id', $data_rayon['user_id'])->first()['name']}}</td>
+</tr>
+<tr>
+<th>Jenis</th><td>{{$rayon->where('id', $data_rayon['id_rayon'])->first()['nama']}}</td>
+</tr>
+<tr>
+<th>Default password</th><td>{{$data_rayon['default_password']}}</td>
+</tr>
+</tbody>
+</table>
                         @endif
                     </div>
                 </div>
@@ -559,162 +741,200 @@
 
 <script>
     $(document).ready(function() {
-                setTimeout(function() {
-                    toastr.options = {
-                        closeButton: true,
-                        progressBar: true,
-                        showMethod: 'slideDown',
-                        timeOut: 4000
-                    };
-                    toastr.success('Sistem Informasi Ekspedisi', 'Selamat datang di Octomoda');
+        setTimeout(function() {
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'slideDown',
+                timeOut: 4000
+            };
+            toastr.success('Sistem Informasi Ekspedisi', 'Selamat datang di Octomoda');
 
-                }, 1300);
+        }, 1300);
 
-                @if(auth()->user()->group_id == 4)
+        @if(auth()->user()->group_id == 4)
+            var provinsi = $('#provinsi');
+        var kabupaten = $('#kabupaten');
+        var kecamatan = $('#kecamatan');
+        var kelurahan = $('#kelurahan');
+        @if(isset($professional->first()->id_prov))
+            $.ajax({
+                url: "{{url('/getProvinsi')}}/{{ $professional->first()->id_prov }}",
+                type: "GET",
+                success: function(result) {
+                    provinsi_list = result;
                     var provinsi = $('#provinsi');
+                    // provinsi.empty();
+                    // provinsi.append('<option></option>');
+                    for (var i = 0; i < provinsi_list.length; i++) {
+                        provinsi.append('<option value='+provinsi_list[i]['id_prov']+'>'+provinsi_list[i]['nama']+'</option>');
+                    }
+                }
+            });
+        @if(isset($professional->first()->id_kab))
+            $.ajax({
+                url: "{{url('/getKabupaten')}}/{{$professional->first()->id_prov}}/{{ $professional->first()->id_kab }}",
+                type: "GET",
+                success: function(result) {
+                    kabupaten_list = result;
+                    var kabupaten = $('#kabupaten');
+                    // provinsi.empty();
+                    // provinsi.append('<option></option>');
+                    for (var i = 0; i < kabupaten_list.length; i++) {
+                        kabupaten.append('<option value='+kabupaten_list[i]['id_kab']+'>'+kabupaten_list[i]['nama']+'</option>');
+                    }
+                }
+            });
+        @if(isset($professional->first()->id_kec))
+            $.ajax({
+                url: "{{url('/getKecamatan')}}/{{$professional->first()->id_kab}}/{{ $professional->first()->id_kec }}",
+                type: "GET",
+                success: function(result) {
+                    kecamatan_list = result;
+                    var kecamatan = $('#kecamatan');
+                    // provinsi.empty();
+                    // provinsi.append('<option></option>');
+                    for (var i = 0; i < kecamatan_list.length; i++) {
+                        kecamatan.append('<option value='+kecamatan_list[i]['id_kec']+'>'+kecamatan_list[i]['nama']+'</option>');
+                    }
+                }
+            });
+        @if(isset($professional->first()->id_kel))
+            $.ajax({
+                url: "{{url('/getKelurahan')}}/{{$professional->first()->id_kec}}/{{ $professional->first()->id_kel }}",
+                type: "GET",
+                success: function(result) {
+                    kelurahan_list = result;
+                    var kelurahan = $('#kelurahan');
+                    // provinsi.empty();
+                    // provinsi.append('<option></option>');
+                    for (var i = 0; i < kelurahan_list.length; i++) {
+                        kelurahan.append('<option value='+kelurahan_list[i]['id_kel']+'>'+kelurahan_list[i]['nama']+'</option>');
+                    }
+                }
+            });
+        @else
+            kecamatan.append('<option></option>');
+        @endif
+        @else
+            kecamatan.append('<option></option>');
+        @endif
+        @else
+            kabupaten.append('<option></option>');
+        @endif
+        @else
+            provinsi.append('<option></option>');
+        @endif
+        @endif
+
+        $.ajax({
+            url: "{{url('/getProvinsi')}}",
+            type: "GET",
+            success: function(result) {
+                provinsi_list = result;
+                var provinsi = $('#provinsi');
+                // provinsi.empty();
+                // provinsi.append('<option></option>');
+                for (var i = 0; i < provinsi_list.length; i++) {
+                    provinsi.append('<option value='+provinsi_list[i]['id_prov']+'>'+provinsi_list[i]['nama']+'</option>');
+                }
+            }
+        });
+
+        $('#provinsi').change(function() {
+            var id_prov = $(this).find(':selected')[0].value;
+            var kabupaten_list = [];
+            $.ajax({
+                url: "{{url('/getKabupaten')}}"+'/'+id_prov,
+                type: "GET",
+                success: function(result) {
+                    kabupaten_list = result;
                     var kabupaten = $('#kabupaten');
                     var kecamatan = $('#kecamatan');
                     var kelurahan = $('#kelurahan');
-                    @if(isset($professional->first()->id_prov))
-                        $.ajax({
-                            url: "{{url('/getProvinsi')}}/{{ $professional->first()->id_prov }}",
-                            type: "GET",
-                            success: function(result) {
-                                provinsi_list = result;
-                                var provinsi = $('#provinsi');
-                                // provinsi.empty();
-                                // provinsi.append('<option></option>');
-                                for (var i = 0; i < provinsi_list.length; i++) {
-                                    provinsi.append('<option value='+provinsi_list[i]['id_prov']+'>'+provinsi_list[i]['nama']+'</option>');
-                                }
-                            }
-                        });
-                            @if(isset($professional->first()->id_kab))
-                            $.ajax({
-                                url: "{{url('/getKabupaten')}}/{{$professional->first()->id_prov}}/{{ $professional->first()->id_kab }}",
-                                type: "GET",
-                                success: function(result) {
-                                    kabupaten_list = result;
-                                    var kabupaten = $('#kabupaten');
-                                    // provinsi.empty();
-                                    // provinsi.append('<option></option>');
-                                    for (var i = 0; i < kabupaten_list.length; i++) {
-                                        kabupaten.append('<option value='+kabupaten_list[i]['id_kab']+'>'+kabupaten_list[i]['nama']+'</option>');
-                                    }
-                                }
-                            });
-                                @if(isset($professional->first()->id_kec))
-                                $.ajax({
-                                    url: "{{url('/getKecamatan')}}/{{$professional->first()->id_kab}}/{{ $professional->first()->id_kec }}",
-                                    type: "GET",
-                                    success: function(result) {
-                                        kecamatan_list = result;
-                                        var kecamatan = $('#kecamatan');
-                                        // provinsi.empty();
-                                        // provinsi.append('<option></option>');
-                                        for (var i = 0; i < kecamatan_list.length; i++) {
-                                            kecamatan.append('<option value='+kecamatan_list[i]['id_kec']+'>'+kecamatan_list[i]['nama']+'</option>');
-                                        }
-                                    }
-                                });
-                                    @if(isset($professional->first()->id_kel))
-                                    $.ajax({
-                                        url: "{{url('/getKelurahan')}}/{{$professional->first()->id_kec}}/{{ $professional->first()->id_kel }}",
-                                        type: "GET",
-                                        success: function(result) {
-                                            kelurahan_list = result;
-                                            var kelurahan = $('#kelurahan');
-                                            // provinsi.empty();
-                                            // provinsi.append('<option></option>');
-                                            for (var i = 0; i < kelurahan_list.length; i++) {
-                                                kelurahan.append('<option value='+kelurahan_list[i]['id_kel']+'>'+kelurahan_list[i]['nama']+'</option>');
-                                            }
-                                        }
-                                    });
-                                    @else
-                                        kecamatan.append('<option></option>');
-                                    @endif
-                                @else
-                                    kecamatan.append('<option></option>');
-                                @endif
-                            @else
-                                kabupaten.append('<option></option>');
-                            @endif
-                    @else
-                        provinsi.append('<option></option>');
-                    @endif
-                @endif
-
-                $.ajax({
-                    url: "{{url('/getProvinsi')}}",
-                    type: "GET",
-                    success: function(result) {
-                        provinsi_list = result;
-                        var provinsi = $('#provinsi');
-                        // provinsi.empty();
-                        // provinsi.append('<option></option>');
-                        for (var i = 0; i < provinsi_list.length; i++) {
-                            provinsi.append('<option value='+provinsi_list[i]['id_prov']+'>'+provinsi_list[i]['nama']+'</option>');
-                        }
+                    kabupaten.empty();
+                    kecamatan.empty();
+                    kelurahan.empty();
+                    for (var i = 0; i < kabupaten_list.length; i++) {
+                        kabupaten.append('<option value='+kabupaten_list[i]['id_kab']+'>'+kabupaten_list[i]['nama']+'</option>');
                     }
-                });
+                }
+            });
+        });
 
-                $('#provinsi').change(function() {
-                    var id_prov = $(this).find(':selected')[0].value;
-                    var kabupaten_list = [];
-                    $.ajax({
-                        url: "{{url('/getKabupaten')}}"+'/'+id_prov,
-                        type: "GET",
-                        success: function(result) {
-                            kabupaten_list = result;
-                            var kabupaten = $('#kabupaten');
-                            var kecamatan = $('#kecamatan');
-                            var kelurahan = $('#kelurahan');
-                            kabupaten.empty();
-                            kecamatan.empty();
-                            kelurahan.empty();
-                            for (var i = 0; i < kabupaten_list.length; i++) {
-                                kabupaten.append('<option value='+kabupaten_list[i]['id_kab']+'>'+kabupaten_list[i]['nama']+'</option>');
-                            }
-                        }
-                    });
-                });
+        $('#kabupaten').change(function() {
+            var id_kab = $(this).find(':selected')[0].value;
+            var kecamatan_list = [];
+            $.ajax({
+                url: "{{url('/getKecamatan')}}"+'/'+id_kab,
+                type: "GET",
+                success: function(result) {
+                    kecamatan_list = result;
+                    var kecamatan = $('#kecamatan');
+                    var kelurahan = $('#kelurahan');
+                    kecamatan.empty();
+                    kelurahan.empty();
+                    for (var i = 0; i < kecamatan_list.length; i++) {
+                        kecamatan.append('<option value='+kecamatan_list[i]['id_kec']+'>'+kecamatan_list[i]['nama']+'</option>');
+                    }
+                }
+            });
+        });
 
-                $('#kabupaten').change(function() {
-                    var id_kab = $(this).find(':selected')[0].value;
-                    var kecamatan_list = [];
-                    $.ajax({
-                        url: "{{url('/getKecamatan')}}"+'/'+id_kab,
-                        type: "GET",
-                        success: function(result) {
-                            kecamatan_list = result;
-                            var kecamatan = $('#kecamatan');
-                            var kelurahan = $('#kelurahan');
-                            kecamatan.empty();
-                            kelurahan.empty();
-                            for (var i = 0; i < kecamatan_list.length; i++) {
-                                kecamatan.append('<option value='+kecamatan_list[i]['id_kec']+'>'+kecamatan_list[i]['nama']+'</option>');
-                            }
-                        }
-                    });
-                });
+        $('#kecamatan').change(function() {
+            var id_kec = $(this).find(':selected')[0].value;
+            var kelurahan_list = [];
+            $.ajax({
+                url: "{{url('/getKelurahan')}}"+'/'+id_kec,
+                type: "GET",
+                success: function(result) {
+                    kelurahan_list = result;
+                    var kelurahan = $('#kelurahan');
+                    kelurahan.empty();
+                    for (var i = 0; i < kelurahan_list.length; i++) {
+                        kelurahan.append('<option value='+kelurahan_list[i]['id_kel']+'>'+kelurahan_list[i]['nama']+'</option>');
+                    }
+                }
+            });
+        });
 
-                $('#kecamatan').change(function() {
-                    var id_kec = $(this).find(':selected')[0].value;
-                    var kelurahan_list = [];
-                    $.ajax({
-                        url: "{{url('/getKelurahan')}}"+'/'+id_kec,
-                        type: "GET",
-                        success: function(result) {
-                            kelurahan_list = result;
-                            var kelurahan = $('#kelurahan');
-                            kelurahan.empty();
-                            for (var i = 0; i < kelurahan_list.length; i++) {
-                                kelurahan.append('<option value='+kelurahan_list[i]['id_kel']+'>'+kelurahan_list[i]['nama']+'</option>');
-                            }
-                        }
-                    });
-                });
+        var id_asos = $('#asosiasi').find(':selected')[0].value;
+        var data_rayon_list = [];
+        $.ajax({
+            url: "{{url('/getDataRayon')}}"+'/'+id_asos,
+            type: "GET",
+            success: function(result) {
+                data_rayon_list = result;
+                var data_rayon = $('#data_rayon');
+                data_rayon.empty();
+                for (var i = 0; i < data_rayon_list.length; i++) {
+                    data_rayon.append('<option value='+data_rayon_list[i]['id']+'>'+
+                        data_rayon_list[i]['nama']+' : '+
+                        data_rayon_list[i]['wilayah']+
+                        '</option>');
+                }
+            }
+        });
+
+        $('#asosiasi').change(function() {
+            var id_asos = $(this).find(':selected')[0].value;
+            var data_rayon_list = [];
+            $.ajax({
+                url: "{{url('/getDataRayon')}}"+'/'+id_asos,
+                type: "GET",
+                success: function(result) {
+                    data_rayon_list = result;
+                    var data_rayon = $('#data_rayon');
+                    data_rayon.empty();
+                    for (var i = 0; i < data_rayon_list.length; i++) {
+                        data_rayon.append('<option value='+data_rayon_list[i]['id']+'>'+
+                            data_rayon_list[i]['nama']+' : '+
+                            data_rayon_list[i]['wilayah']+
+                            '</option>');
+                    }
+                }
+            });
+        });
     });
 </script>
 @endsection
